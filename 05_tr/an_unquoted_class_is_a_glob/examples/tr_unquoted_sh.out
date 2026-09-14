@@ -1,0 +1,24 @@
+$ ls
+
+$ echo [:lower:] [:upper:]
+[:lower:] [:upper:]
+
+$ echo hello | tr [:lower:] [:upper:]
+HELLO
+
+$ shopt -s failglob; echo hello | tr [:lower:] [:upper:]; echo "status $?"; shopt -u failglob
+tr_unquoted_sh.sh: line 7: no match: [:lower:]
+status 1
+
+$ touch e
+
+$ echo [:lower:] [:upper:]
+e e
+
+$ echo hello | tr [:lower:] [:upper:]; echo "status $?"
+hello
+status 0
+
+$ echo hello | tr '[:lower:]' '[:upper:]'
+HELLO
+

@@ -1,0 +1,19 @@
+$ echo hello | tr [:lower:] [:upper:]; echo "status $?"
+(eval):1: no matches found: [:lower:]
+status 1
+
+$ setopt no_nomatch; echo hello | tr [:lower:] [:upper:]; unsetopt no_nomatch
+HELLO
+
+$ touch e
+
+$ echo [:lower:] [:upper:]
+e e
+
+$ echo hello | tr [:lower:] [:upper:]; echo "status $?"
+hello
+status 0
+
+$ echo hello | tr '[:lower:]' '[:upper:]'
+HELLO
+

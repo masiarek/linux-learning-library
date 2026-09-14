@@ -89,6 +89,11 @@ NAV_ORDER: dict[str, list[str]] = {
         "README.md",
         "a_pipeline_reports_its_last_command",
     ],
+    "05_tr": [
+        "README.md",
+        "a_class_is_a_set",
+        "an_unquoted_class_is_a_glob",
+    ],
 }
 
 

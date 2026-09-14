@@ -120,6 +120,8 @@ Measured differences — add a row when you find one, and say where you measured
 | `grep` | GNU grep 3.11 | BSD grep 2.6.0-FreeBSD |
 | `/dev/stdin` | a symlink to `/proc/self/fd/0` | a symlink to `fd/0`; there is no `/proc` |
 | the pipeline exit-status lesson | identical | identical |
+| `tr` with a class in string2 | GNU coreutils 9.4: only `[:upper:]` opposite `[:lower:]`; any other class is an error, status 1 | BSD `tr`: any class, and a short string2 repeats its last character |
+| the `tr` class sets, `-d`, `-c`, `-s`, and an unquoted `[:lower:]` in bash, zsh and fish | identical | identical |
 
 Measured 2026-09-13.
 

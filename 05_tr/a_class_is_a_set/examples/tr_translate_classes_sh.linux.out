@@ -1,0 +1,23 @@
+$ echo 'Room 42b, Floor 3' | tr '[:digit:]' '#'
+Room ##b, Floor #
+
+$ echo 'Room 42b, Floor 3' | tr '[:upper:]' 'a-z'
+room 42b, floor 3
+
+$ echo 'Room 42b, Floor 3' | tr '[:lower:]' '[:upper:]'
+ROOM 42B, FLOOR 3
+
+$ echo 'Room 42b, Floor 3' | tr '[:digit:]' '[:xdigit:]'; echo "status $?"
+tr: when translating, the only character classes that may appear in
+string2 are 'upper' and 'lower'
+status 1
+
+$ echo 'Room 42b, Floor 3' | tr '[:alpha:]' '[:digit:]'; echo "status $?"
+tr: when translating, the only character classes that may appear in
+string2 are 'upper' and 'lower'
+status 1
+
+$ echo 'Room 42b, Floor 3' | tr 'a-z' '[:upper:]'; echo "status $?"
+tr: misaligned [:upper:] and/or [:lower:] construct
+status 1
+

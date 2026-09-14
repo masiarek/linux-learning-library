@@ -1,0 +1,13 @@
+class      bytes  members, of the 128 ASCII bytes
+[:alnum:]    62   [0-9A-Za-z]
+[:alpha:]    52   [A-Za-z]
+[:blank:]     2   [\t ]
+[:cntrl:]    33   [\000-\037\177]
+[:digit:]    10   [0-9]
+[:graph:]    94   [!"#$%&'()*+,-./0-9:;<=>?@A-Z[\\]^_`a-z{|}~]
+[:lower:]    26   [a-z]
+[:print:]    95   [ !"#$%&'()*+,-./0-9:;<=>?@A-Z[\\]^_`a-z{|}~]
+[:punct:]    32   [!"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~]
+[:space:]     6   [\t-\r ]
+[:upper:]    26   [A-Z]
+[:xdigit:]   22   [0-9A-Fa-f]

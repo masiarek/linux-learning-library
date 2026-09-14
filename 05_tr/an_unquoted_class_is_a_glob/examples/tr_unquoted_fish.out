@@ -1,0 +1,14 @@
+$ echo hello | tr [:lower:] [:upper:]
+HELLO
+
+$ touch e
+
+$ echo [:lower:] [:upper:]
+[:lower:] [:upper:]
+
+$ echo hello | tr [:lower:] [:upper:]
+HELLO
+
+$ echo hello | tr '[:lower:]' '[:upper:]'
+HELLO
+

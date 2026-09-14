@@ -1,0 +1,39 @@
+$ cat note.txt
+Meet in room 101
+at 9:30.  Bring   two pens!
+
+$ tr -d '[:digit:]' < note.txt
+Meet in room 
+at :.  Bring   two pens!
+
+$ tr -d '[:punct:]' < note.txt
+Meet in room 101
+at 930  Bring   two pens
+
+$ tr -dc '[:digit:]' < note.txt
+101930
+$ tr -dc '[:digit:]\n' < note.txt
+101
+930
+
+$ tr -d '[:cntrl:]' < note.txt
+Meet in room 101at 9:30.  Bring   two pens!
+$ tr -s '[:blank:]' < note.txt
+Meet in room 101
+at 9:30. Bring two pens!
+
+$ tr -s '[:alpha:]' < note.txt
+Met in rom 101
+at 9:30.  Bring   two pens!
+
+$ tr -s '[:space:]' '\n' < note.txt
+Meet
+in
+room
+101
+at
+9:30.
+Bring
+two
+pens!
+
