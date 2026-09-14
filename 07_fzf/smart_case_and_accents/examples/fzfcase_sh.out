@@ -1,0 +1,91 @@
+$ cat words.txt
+Café
+cafe
+CAFÉ
+café
+żółć
+Żółć
+zolc
+Łódź
+lodz
+ŁÓDŹ
+
+$ fzf -f cafe < words.txt
+Café
+cafe
+CAFÉ
+café
+
+$ fzf -f Cafe < words.txt
+Café
+
+$ fzf -f CAFE < words.txt
+CAFÉ
+
+$ fzf -f Cafe -i < words.txt
+Café
+cafe
+CAFÉ
+café
+
+$ fzf -f cafe +i < words.txt
+cafe
+café
+
+$ fzf -f café < words.txt
+Café
+CAFÉ
+café
+
+$ fzf -f cafe --literal < words.txt
+cafe
+
+$ fzf -f zolc < words.txt
+żółć
+Żółć
+zolc
+
+$ fzf -f żółć < words.txt
+żółć
+Żółć
+
+$ fzf -f Zolc < words.txt; echo "status $?"
+status 1
+
+$ fzf -f lodz < words.txt
+Łódź
+lodz
+ŁÓDŹ
+
+$ fzf -f łódź < words.txt
+Łódź
+ŁÓDŹ
+
+$ fzf -f Łódź < words.txt
+Łódź
+
+$ fzf -f Lodz < words.txt; echo "status $?"
+status 1
+
+$ fzf -f lodź < words.txt; echo "status $?"
+status 1
+
+$ fzf -f lodz --literal < words.txt; echo "status $?"
+lodz
+status 0
+
+$ LC_ALL=C.UTF-8 fzf -f lodz < words.txt
+Łódź
+lodz
+ŁÓDŹ
+
+$ printf 'caf\303\251 is NFC\ncafe\314\201 is NFD\n' > forms.txt; fzf -f cafe < forms.txt
+café is NFC
+café is NFD
+
+$ fzf -f café < forms.txt
+café is NFC
+
+$ q=ŁÓDŹ; echo "length ${#q}, lowered $(printf '%s' "$q" | tr '[:upper:]' '[:lower:]')"
+length 7, lowered ŁÓdŹ
+

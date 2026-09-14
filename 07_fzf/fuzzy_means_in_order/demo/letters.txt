@@ -1,0 +1,7 @@
+xaxbxcx
+a_b_c
+cab
+a b c
+bac
+acb
+abc

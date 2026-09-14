@@ -1,0 +1,29 @@
+$ fzf -f '.go$ !test' < files.txt
+core/app.go
+src/core.go
+
+$ fzf -f ".go\$ !test" < files.txt
+core/app.go
+src/core.go
+
+$ fzf -f '\'wild' < files.txt
+music/wild-horses.mp3
+music/sbtrkt-wildfire.mp3
+music/sbtrkt-wildfire-rmx.mp3
+
+$ fzf -f ^core < files.txt
+core/app.go
+core/app.py
+core/app.rb
+core/app_test.go
+
+$ fzf -f ".go$" < files.txt
+fish: Expected a variable name after this $.
+fzf -f ".go$" < files.txt
+           ^
+(exit status 127)
+
+$ printf '%s\n' 'fzf -f ".go\$ !test" < files.txt' | interactive_fish 2>/dev/null
+core/app.go
+src/core.go
+

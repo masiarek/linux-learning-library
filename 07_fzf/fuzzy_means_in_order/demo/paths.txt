@@ -1,0 +1,5 @@
+My Documents/report.txt
+docs/report.txt
+src/doc_parser.go
+old docs/report final.txt
+notes/reports/doc.md

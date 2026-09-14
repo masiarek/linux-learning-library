@@ -1,0 +1,16 @@
+$ fzf -f lodz < words.txt
+Łódź
+lodz
+ŁÓDŹ
+
+$ set q ŁÓDŹ; echo "length "(string length -- $q)", lowered "(string lower -- $q)
+length 4, lowered łódź
+
+$ fzf -f (string lower -- ŁÓDŹ) < words.txt
+Łódź
+ŁÓDŹ
+
+$ fzf -f ŁÓDŹ -i < words.txt
+Łódź
+ŁÓDŹ
+

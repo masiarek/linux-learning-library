@@ -147,8 +147,16 @@ Measured differences — add a row when you find one, and say where you measured
 | the starting `PROMPT` of `zsh -i`, empty HOME | `%m%# ` | `%n@%m %1~ %# `, from `/etc/zshrc` |
 | an interactive `bash` without `BASH_SILENCE_DEPRECATION_WARNING` | no notice | a notice that the default shell is now zsh |
 | the user startup files bash, zsh and fish read; the prompt escapes `\u \h \W \w \d \t` | identical | identical |
+| `fzf --version` | `0.67.0 (2ab923f3)`, the release binary | `0.67.0 (Homebrew)` — so no example prints it |
+| `fc -lnr -2147483648` in `bash -O lithist -i` | works, bash 5.2 | works, `/bin/bash` 3.2 |
+| the fzf chapter, every ranking and filter in bash, zsh and fish | identical | identical |
 
 Measured 2026-09-13.
+
+**The runner is not the image.** `ubuntu-latest` carries packages and `/etc` files the `linux-lib-ubuntu` image does not, and two of them have changed an answer key — both found by CI, not by Docker:
+
+- **Ubuntu's `command-not-found` package** takes over fish's unknown-command message: `[[ -s hosts.txt ]]: command not found` instead of `fish: Unknown command: '[[ -s hosts.txt ]]'`. A child fish that must show fish's own words gets `-C 'functions -q fish_command_not_found; function fish_command_not_found; __fish_default_command_not_found_handler $argv; end'`.
+- **`/etc/zsh/zshrc` runs `compinit`**, which prints `not interactive and can't open terminal` and `compinit: initialization aborted` in an interactive zsh that reads a pipe. Start zsh with `-f`, or `-d` when `~/.zshrc` must still be read.
 
 ## Links
 

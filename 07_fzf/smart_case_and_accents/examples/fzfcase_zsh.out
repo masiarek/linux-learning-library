@@ -1,0 +1,15 @@
+$ fzf -f lodz < words.txt
+Łódź
+lodz
+ŁÓDŹ
+
+$ q=ŁÓDŹ; print -r -- "length ${#q}, lowered ${(L)q}"
+length 7, lowered ŁÓdŹ
+
+$ LC_ALL=C.UTF-8 zsh -fc 'q=ŁÓDŹ; print -r -- "length ${#q}, lowered ${(L)q}"'
+length 4, lowered łódź
+
+$ fzf -f ŁÓDŹ -i < words.txt
+Łódź
+ŁÓDŹ
+

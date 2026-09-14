@@ -45,8 +45,11 @@ say "printf 'echo only this reached stdout\n' | PS1='[%n@%m %1~]%# ' zsh -f -i 2
 # Make it permanent: the line goes into ~/.zshrc, and a new zsh reads it.
 print -r -- 'PROMPT="[%D{%a %b %d} %D{%H:%M:%S} %n@%m %~]%# "' > ~/.zshrc
 say 'cat ~/.zshrc'
-print -r -- '$ zsh'
-session '' 'cd projects/linux-library'
+# -d skips the system-wide startup files (/etc/zshrc, /etc/zsh/zshrc) and still
+# reads ~/.zshrc. On GitHub's Ubuntu runner /etc/zsh/zshrc runs compinit, which
+# aborts with "not interactive and can't open terminal" when zsh reads a pipe.
+print -r -- '$ zsh -d'
+session -d 'cd projects/linux-library'
 
 cd /
 rm -rf $work

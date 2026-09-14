@@ -25,6 +25,6 @@ only this reached stdout
 $ cat ~/.zshrc
 PROMPT="[%D{%a %b %d} %D{%H:%M:%S} %n@%m %~]%# "
 
-$ zsh
+$ zsh -d
 [Www Mmm dd HH:MM:SS USER@HOST ~]% cd projects/linux-library
 [Www Mmm dd HH:MM:SS USER@HOST ~/projects/linux-library]% exit

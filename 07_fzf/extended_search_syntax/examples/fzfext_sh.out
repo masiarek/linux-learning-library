@@ -1,0 +1,82 @@
+$ fzf -f wldf < files.txt
+music/sbtrkt-wildfire.mp3
+music/sbtrkt-wildfire-rmx.mp3
+
+$ fzf -f "'wldf" < files.txt; echo "status $?"
+status 1
+
+$ fzf -f "'wild" < files.txt
+music/wild-horses.mp3
+music/sbtrkt-wildfire.mp3
+music/sbtrkt-wildfire-rmx.mp3
+
+$ fzf -f '^core' < files.txt
+core/app.go
+core/app.py
+core/app.rb
+core/app_test.go
+
+$ fzf -f '.go$' < files.txt
+core/app.go
+src/core.go
+core/app_test.go
+
+$ fzf -f '.go$ !test' < files.txt
+core/app.go
+src/core.go
+
+$ fzf -f 'core go' < files.txt
+core/app.go
+core/app_test.go
+src/core.go
+
+$ fzf -f 'to do' < files.txt
+notes/to do.txt
+notes/todo.txt
+
+$ fzf -f 'to\ do' < files.txt
+notes/to do.txt
+
+$ fzf -f '^core go$ | rb$ | py$' < files.txt
+core/app.go
+core/app.py
+core/app.rb
+core/app_test.go
+
+$ fzf -f 'py$|rb$' < files.txt; echo "status $?"
+status 1
+
+$ fzf -f "'foo'" < files.txt
+foo bar.txt
+foo_bar.txt
+
+$ fzf -f "'foo" < files.txt
+foo_bar.txt
+foo bar.txt
+xfooy.txt
+
+$ fzf -f "'wild ^music .mp3$ sbtrkt !rmx" < files.txt
+music/sbtrkt-wildfire.mp3
+
+$ fzf -f wld --exact < files.txt; echo "status $?"
+status 1
+
+$ fzf -f "'wld" --exact < files.txt
+music/wild-horses.mp3
+music/sbtrkt-wildfire.mp3
+music/sbtrkt-wildfire-rmx.mp3
+
+$ fzf -f '^core' +x < files.txt; echo "status $?"
+status 1
+
+$ fzf -f core go < files.txt; echo "status $?"
+unknown option: go
+status 2
+
+$ printf '%s\n' 'fzf -f ".go$ !test" < files.txt' | HISTFILE= bash --norc --noprofile -i 2>&1 | grep -o 'event not found'
+event not found
+
+$ printf '%s\n' "fzf -f '.go$ !test' < files.txt" | HISTFILE= bash --norc --noprofile -i 2>/dev/null
+core/app.go
+src/core.go
+

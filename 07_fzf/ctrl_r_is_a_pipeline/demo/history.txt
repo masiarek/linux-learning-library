@@ -1,0 +1,6 @@
+make test
+vim notes.txt
+git status
+make test
+git push
+git status

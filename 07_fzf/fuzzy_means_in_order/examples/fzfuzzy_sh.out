@@ -1,0 +1,104 @@
+$ cat letters.txt
+xaxbxcx
+a_b_c
+cab
+a b c
+bac
+acb
+abc
+
+$ fzf --filter abc < letters.txt
+abc
+a b c
+a_b_c
+xaxbxcx
+
+$ fzf --filter abc --exact < letters.txt
+abc
+
+$ cat bonus.txt
+fooxbar
+fooxBar
+foo.bar
+foo_bar
+foo-bar
+foo:bar
+foo/bar
+foo bar
+
+$ fzf --filter fb < bonus.txt
+foo bar
+foo:bar
+foo/bar
+foo.bar
+foo_bar
+foo-bar
+fooxBar
+fooxbar
+
+$ sort -r bonus.txt | fzf --filter fb
+foo bar
+foo:bar
+foo/bar
+foo_bar
+foo.bar
+foo-bar
+fooxBar
+fooxbar
+
+$ fzf --filter bar < bar.txt
+bar
+barbecue
+bxxaxxr
+xbarx
+
+$ fzf --filter bar --tiebreak=index < bar.txt
+barbecue
+bar
+bxxaxxr
+xbarx
+
+$ fzf --filter bar --tiebreak=index,length < bar.txt; echo "status $?"
+index should be the last criterion
+status 2
+
+$ fzf --filter doc < paths.txt
+docs/report.txt
+My Documents/report.txt
+old docs/report final.txt
+src/doc_parser.go
+notes/reports/doc.md
+
+$ fzf --filter doc --scheme=path < paths.txt
+src/doc_parser.go
+notes/reports/doc.md
+docs/report.txt
+My Documents/report.txt
+old docs/report final.txt
+
+$ fzf --filter fb --scheme=path < bonus.txt
+foo/bar
+foo.bar
+foo_bar
+foo-bar
+foo:bar
+foo bar
+fooxBar
+fooxbar
+
+$ fzf --filter fb --scheme=history < bonus.txt
+foo.bar
+foo_bar
+foo-bar
+foo:bar
+foo/bar
+foo bar
+fooxBar
+fooxbar
+
+$ fzf --filter "a*c" < letters.txt; echo "status $?"
+status 1
+
+$ fzf --filter a*c < letters.txt; echo "status $?"
+status 1
+

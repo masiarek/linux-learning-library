@@ -172,7 +172,7 @@ status 127
 - **`$status`, not `$?`.** `$?` is a parse error in fish, measured in [the pipeline lesson](../../01_Pipelines/a_pipeline_reports_its_last_command/README.md#in-zsh-and-fish).
 - **`if grep -q ...; ...; end`** has no `then` and no `fi`. `and`, `or` and `not` test the previous command's status, and `switch $status` with `case "*"` is the three-way answer.
 - **`set n (grep -c zzz hosts.txt)` kept grep's status**: `count 0, status 1`.
-- **There is no `[[ ]]`.** fish looked for a command named `[[ -s hosts.txt ]]` and printed `Unknown command`. On its own that is status 127. Inside `if`, the failed condition just skipped the body, and the child fish exited 0: a bash test pasted into a fish script prints an error and carries on as if the answer were no. `test`, as in the `test (grep -c darkfi hosts.txt) -gt 1` line, works in fish.
+- **There is no `[[ ]]`.** fish looked for a command named `[[ -s hosts.txt ]]` and printed `Unknown command`. On its own that is status 127. Inside `if`, the failed condition just skipped the body, and the child fish exited 0: a bash test pasted into a fish script prints an error and carries on as if the answer were no. `test`, as in the `test (grep -c darkfi hosts.txt) -gt 1` line, works in fish. On an Ubuntu machine with the `command-not-found` package installed, GitHub's runners among them, fish hands an unknown name to that package's helper instead, and the first line reads `[[ -s hosts.txt ]]: command not found`. The example pins fish's own handler so both machines show fish's words.
 
 | | bash | zsh | fish |
 |---|---|---|---|

@@ -1,0 +1,23 @@
+$ fzf --filter rdme < files.txt; echo "status $status"
+README.md
+docs/README.md
+status 0
+
+$ fzf --filter zzz < files.txt; or echo "no match, status $status"
+no match, status 1
+
+$ FZF_DEFAULT_OPTS=--exact fzf --filter mngo < files.txt; echo "status $status"
+status 1
+
+$ set -gx FZF_DEFAULT_OPTS --exact; fzf --filter mngo < files.txt; echo "status $status"; set -e FZF_DEFAULT_OPTS
+status 1
+
+$ set q "main go"; fzf --filter $q < files.txt; echo "status $status"
+src/main.go
+src/main_test.go
+status 0
+
+$ set q main go; fzf --filter $q < files.txt; echo "status $status"
+unknown option: go
+status 2
+

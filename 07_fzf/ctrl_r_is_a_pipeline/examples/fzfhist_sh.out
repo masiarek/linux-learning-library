@@ -1,0 +1,111 @@
+$ fzf --bash | sed -n '/^if command -v perl/,/^else/p'
+if command -v perl > /dev/null; then
+  __fzf_history__() {
+    local output script
+    script='BEGIN { getc; $/ = "\n\t"; $HISTCOUNT = $ENV{last_hist} + 1 } s/^[ *]//; s/\n/\n\t/gm; print $HISTCOUNT - $. . "\t$_" if !$seen{$_}++'
+    output=$(
+      set +o pipefail
+      builtin fc -lnr -2147483648 |
+        last_hist=$(HISTTIMEFORMAT='' builtin history 1) command perl -n -l0 -e "$script" |
+        FZF_DEFAULT_OPTS=$(__fzf_defaults "" "-n2..,.. --scheme=history --bind=ctrl-r:toggle-sort,alt-r:toggle-raw --wrap-sign '"$'\t'"↳ ' --highlight-line ${FZF_CTRL_R_OPTS-} +m --read0") \
+        FZF_DEFAULT_OPTS_FILE='' $(__fzfcmd) --query "$READLINE_LINE"
+    ) || return
+    READLINE_LINE=$(command perl -pe 's/^\d*\t//' <<< "$output")
+    if [[ -z $READLINE_POINT ]]; then
+      echo "$READLINE_LINE"
+    else
+      READLINE_POINT=0x7fffffff
+    fi
+  }
+else # awk - fallback for POSIX systems
+
+$ fzf --bash | grep -n -F -e 'BASH_VERSINFO' -e '"\C-r"'
+131:if ((BASH_VERSINFO[0] < 4)); then
+144:    bind -m emacs-standard '"\C-r": "\C-e \C-u\C-y\ey\C-u`__fzf_history__`\e\C-e\er"'
+145:    bind -m vi-command '"\C-r": "\C-z\C-r\C-z"'
+146:    bind -m vi-insert '"\C-r": "\C-z\C-r\C-z"'
+161:    bind -m emacs-standard -x '"\C-r": __fzf_history__'
+162:    bind -m vi-command -x '"\C-r": __fzf_history__'
+163:    bind -m vi-insert -x '"\C-r": __fzf_history__'
+
+$ cat history.txt
+make test
+vim notes.txt
+git status
+make test
+git push
+git status
+
+$ history
+    1  make test
+    2  vim notes.txt
+    3  git status
+    4  make test
+    5  git push
+    6  git status
+    7  for f in *.txt
+do wc -l < "$f"
+done > /dev/null
+
+$ fc -lnr -2147483648
+\t for f in *.txt
+do wc -l < "$f"
+done > /dev/null
+\t git status
+\t git push
+\t make test
+\t git status
+\t vim notes.txt
+\t make test
+
+# the same, in a bash started without -O lithist
+$ fc -lnr -2147483648
+\t for f in *.txt; do wc -l < "$f"; done > /dev/null
+\t git status
+\t git push
+\t make test
+\t git status
+\t vim notes.txt
+\t make test
+
+$ fc -lnr -2147483648 | last_hist=$(HISTTIMEFORMAT='' builtin history 1) perl -n -l0 -e "$script"
+7\tfor f in *.txt
+\tdo wc -l < "$f"
+\tdone > /dev/null\0
+6\tgit status\0
+5\tgit push\0
+4\tmake test\0
+2\tvim notes.txt\0
+1\tmake test
+\t\0
+
+$ fc -lnr -2147483648 | last_hist=$(HISTTIMEFORMAT='' builtin history 1) perl -n -l0 -e "$script" | fzf --read0 --print0 --scheme=history -n2..,.. --filter git
+6\tgit status\0
+5\tgit push\0
+
+$ fc -lnr -2147483648 | last_hist=$(HISTTIMEFORMAT='' builtin history 1) perl -n -l0 -e "$script" | fzf --read0 --print0 -n2..,.. --filter git
+5\tgit push\0
+6\tgit status\0
+
+$ fc -lnr -2147483648 | last_hist=$(HISTTIMEFORMAT='' builtin history 1) perl -n -l0 -e "$script" | fzf --read0 --print0 --scheme=history -n2..,.. --filter make
+4\tmake test\0
+1\tmake test
+\t\0
+
+$ fc -lnr -2147483648 | last_hist=$(HISTTIMEFORMAT='' builtin history 1) perl -n -l0 -e "$script" | fzf --read0 --print0 --scheme=history -n2..,.. --filter '^git'
+6\tgit status\0
+5\tgit push\0
+
+$ fc -lnr -2147483648 | last_hist=$(HISTTIMEFORMAT='' builtin history 1) perl -n -l0 -e "$script" | fzf --read0 --print0 --scheme=history -n.. --filter '^git'; echo "status $?"
+status 1
+
+$ fc -lnr -2147483648 | last_hist=$(HISTTIMEFORMAT='' builtin history 1) perl -n -l0 -e "$script" | fzf --read0 --scheme=history -n2..,.. --filter wc
+7\tfor f in *.txt
+\tdo wc -l < "$f"
+\tdone > /dev/null
+
+$ output=$(fc -lnr -2147483648 | last_hist=$(HISTTIMEFORMAT='' builtin history 1) perl -n -l0 -e "$script" | fzf --read0 --scheme=history -n2..,.. --filter wc); perl -pe 's/^\d*\t//' <<< "$output"
+for f in *.txt
+do wc -l < "$f"
+done > /dev/null
+

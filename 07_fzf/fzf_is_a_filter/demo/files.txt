@@ -1,0 +1,7 @@
+src/main.go
+src/main_test.go
+docs/README.md
+core/app.py
+core/app.rb
+Makefile
+README.md

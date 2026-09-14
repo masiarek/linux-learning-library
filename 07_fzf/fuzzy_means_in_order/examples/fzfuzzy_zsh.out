@@ -1,0 +1,36 @@
+$ for s in default path history; do echo "-- $s"; fzf --filter fb --scheme=$s < bonus.txt; done
+-- default
+foo bar
+foo:bar
+foo/bar
+foo.bar
+foo_bar
+foo-bar
+fooxBar
+fooxbar
+-- path
+foo/bar
+foo.bar
+foo_bar
+foo-bar
+foo:bar
+foo bar
+fooxBar
+fooxbar
+-- history
+foo.bar
+foo_bar
+foo-bar
+foo:bar
+foo/bar
+foo bar
+fooxBar
+fooxbar
+
+$ fzf --filter "a*c" < letters.txt; echo "status $?"
+status 1
+
+$ fzf --filter a*c < letters.txt; echo "status $?"
+(eval):1: no matches found: a*c
+status 1
+

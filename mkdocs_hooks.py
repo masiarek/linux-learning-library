@@ -110,6 +110,16 @@ NAV_ORDER: dict[str, list[str]] = {
         "a_class_is_a_set",
         "an_unquoted_class_is_a_glob",
     ],
+    # The filter first, then how it matches, what a query can say, what case
+    # and accents do to it, and last the Ctrl-R pipeline built from all of it.
+    "07_fzf": [
+        "README.md",
+        "fzf_is_a_filter",
+        "fuzzy_means_in_order",
+        "extended_search_syntax",
+        "smart_case_and_accents",
+        "ctrl_r_is_a_pipeline",
+    ],
     # The page the book prompted, then the file that has to hold it.
     "08_Prompt": [
         "README.md",

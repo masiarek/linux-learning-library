@@ -1,0 +1,42 @@
+$ fzf --fish | sed -n '/if type -q perl/,/^    else/p'
+    if type -q perl
+      set -a FZF_DEFAULT_OPTS '--tac'
+      set FZF_DEFAULT_COMMAND 'builtin history -z --reverse | command perl -0 -pe \'s/^/$.\t/g; s/\n/\n\t/gm\''
+    else
+
+$ builtin history
+for f in *.txt
+wc -l < $f
+end
+git status
+git push
+make test
+vim notes.txt
+
+$ builtin history -z --reverse | show
+vim notes.txt\0
+make test\0
+git push\0
+git status\0
+for f in *.txt
+wc -l < $f
+end\0
+
+$ eval $FZF_DEFAULT_COMMAND | show
+1\tvim notes.txt\0
+2\tmake test\0
+3\tgit push\0
+4\tgit status\0
+5\tfor f in *.txt
+\twc -l < $f
+\tend\0
+
+$ eval $FZF_DEFAULT_COMMAND | fzf --read0 --print0 --tac --scheme=history --nth=2..,.. --filter git | show
+4\tgit status\0
+3\tgit push\0
+
+$ eval $FZF_DEFAULT_COMMAND | fzf --read0 --print0 --tac --scheme=history --nth=2..,.. --accept-nth=2.. --filter wc | show
+5\tfor f in *.txt
+\twc -l < $f
+\tend\0
+

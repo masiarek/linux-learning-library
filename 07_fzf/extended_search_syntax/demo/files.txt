@@ -1,0 +1,14 @@
+core/app.go
+core/app.py
+core/app.rb
+core/app_test.go
+src/core.go
+src/score.py
+music/sbtrkt-wildfire.mp3
+music/sbtrkt-wildfire-rmx.mp3
+music/wild-horses.mp3
+notes/to do.txt
+notes/todo.txt
+foo_bar.txt
+foo bar.txt
+xfooy.txt

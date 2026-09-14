@@ -166,7 +166,7 @@ only this reached stdout
 $ cat ~/.zshrc
 PROMPT="[%D{%a %b %d} %D{%H:%M:%S} %n@%m %~]%# "
 
-$ zsh
+$ zsh -d
 [Www Mmm dd HH:MM:SS USER@HOST ~]% cd projects/linux-library
 [Www Mmm dd HH:MM:SS USER@HOST ~/projects/linux-library]% exit
 ```
@@ -178,7 +178,7 @@ $ zsh
 - **The date and time** are `%D{…}` with `strftime` letters inside: `%D{%a %b %d}` for `\d`, `%D{%H:%M:%S}` for `\t`.
 - **`print -P` tries a prompt** without starting a shell. It works in the zsh a Mac ships, where bash's `${PS1@P}` does not.
 - **The prompt goes to stderr** in zsh as well.
-- **`~/.zshrc` keeps it.** A new zsh read the file and started with the prompt. A login zsh reads `~/.zshrc` too, so in zsh the book's advice works on a Mac once `.bashrc` is read as `.zshrc`.
+- **`~/.zshrc` keeps it.** A new zsh read the file and started with the prompt. The `-d` only skips the system-wide startup files, which have nothing to do with this prompt: on GitHub's Ubuntu runner `/etc/zsh/zshrc` runs `compinit`, and that aborts with "not interactive and can't open terminal" when zsh reads its commands from a pipe. A login zsh reads `~/.zshrc` too, so in zsh the book's advice works on a Mac once `.bashrc` is read as `.zshrc`.
 
 **fish** has no `PS1`. Before each command line it calls the function `fish_prompt` and shows what it printed, so the script calls `fish_prompt` directly instead of typing into a fish. It runs in a fresh `fish --no-config` with a throwaway `HOME`, because `funcsave` writes into your configuration:
 

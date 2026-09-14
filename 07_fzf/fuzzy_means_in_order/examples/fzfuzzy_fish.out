@@ -1,0 +1,37 @@
+$ for s in default path history; echo "-- $s"; fzf --filter fb --scheme=$s < bonus.txt; end
+-- default
+foo bar
+foo:bar
+foo/bar
+foo.bar
+foo_bar
+foo-bar
+fooxBar
+fooxbar
+-- path
+foo/bar
+foo.bar
+foo_bar
+foo-bar
+foo:bar
+foo bar
+fooxBar
+fooxbar
+-- history
+foo.bar
+foo_bar
+foo-bar
+foo:bar
+foo/bar
+foo bar
+fooxBar
+fooxbar
+
+$ fzf --filter "a*c" < letters.txt; echo "status $status"
+status 1
+
+$ fzf --filter a*c < letters.txt
+fish: No matches for wildcard 'a*c'. See `help language#wildcards-globbing`.
+fzf --filter a*c < letters.txt
+             ^~^
+(exit status 124)
