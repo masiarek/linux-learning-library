@@ -1,0 +1,19 @@
+$ false | true; echo "status $?"
+status 0
+
+$ true | false; echo "status $?"
+status 1
+
+$ false | true | true; echo "PIPESTATUS ${PIPESTATUS[*]}"
+PIPESTATUS 1 0 0
+
+$ printf "alma\ndarkfi\n" | grep nosuchword | sort; echo "status $?"
+status 0
+
+$ set -o pipefail; printf "alma\ndarkfi\n" | grep nosuchword | sort; echo "status $?"; set +o pipefail
+status 1
+
+$ set -o pipefail; yes | head -n 1; echo "status $? PIPESTATUS ${PIPESTATUS[*]}"; set +o pipefail
+y
+status 141 PIPESTATUS 141 0
+

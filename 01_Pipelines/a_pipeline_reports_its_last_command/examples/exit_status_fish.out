@@ -1,0 +1,30 @@
+$ false | true; echo "status $status"
+status 0
+
+$ false | true | true; echo "pipestatus $pipestatus"
+pipestatus 1 0 0
+
+$ true | false; echo "status $status, pipestatus $pipestatus"
+status 1, pipestatus 0 1
+
+$ printf "alma\ndarkfi\n" | grep nosuchword | sort; echo "pipestatus $pipestatus"
+pipestatus 0 1 0
+
+$ yes | head -n 1; echo "pipestatus $pipestatus"
+y
+pipestatus 141 0
+
+$ false; echo $?
+fish: $? is not the exit status. In fish, please use $status.
+false; echo $?
+             ^
+(exit status 127)
+
+$ set -o pipefail
+Fish does not have shell options. See `help fish_for_bash_users`.
+set: -o: unknown option
+(exit status 2)
+
+$ printf "alma\ndarkfi\n" | grep nosuchword | sort; set -l stages $pipestatus; if string match -qv 0 -- $stages; echo "a stage failed: $stages"; end
+a stage failed: 0 1 0
+

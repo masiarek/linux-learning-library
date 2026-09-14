@@ -1,0 +1,17 @@
+# MkDocs build output — generated, never committed.
+site/
+
+# Python (the tools and the docs toolchain)
+.venv
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
+
+# JetBrains IDEs — per-machine project config.
+.idea/
+
+# What `perl -i.bak` leaves behind when a one-liner from a page is tried in a
+# demo/ folder instead of a scratch copy.
+*.bak

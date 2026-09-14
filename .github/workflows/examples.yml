@@ -1,0 +1,78 @@
+# Every example must run and print exactly what its recorded answer key says — and
+# every lesson page's generated output block must match that key.
+#
+#   examples/*.sh     bash — Ubuntu's 5.2 on Linux, and the 3.2 that ships in
+#                     /bin/bash on macOS, because that is what a Mac user has
+#   examples/*.zsh    zsh 5.9 — apt on Ubuntu, the system zsh on macOS
+#   examples/*.fish   fish, pinned to one release on both
+#
+# It runs on BOTH Ubuntu and macOS, and that is the point of the library: GNU
+# grep and BSD grep, /proc and no /proc, bash 5.2 and bash 3.2. A key is either
+# shared (<stem>.out, both machines print it) or split (<stem>.linux.out and
+# <stem>.macos.out), and each runner checks its own half.
+#
+# fzf and fish come from the projects' own release files at one version on both
+# machines, so a new fzf ranking or a new fish error message cannot look like a
+# platform difference. Bump FZF_VERSION / FISH_VERSION here and in
+# tools/linux_image/Dockerfile together.
+
+name: examples
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+env:
+  FZF_VERSION: 0.67.0
+  FISH_VERSION: 4.3.2
+
+jobs:
+  verify:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install zsh, fzf and fish (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends zsh
+          mkdir -p "$HOME/.local/bin"
+          curl -fsSL "https://github.com/junegunn/fzf/releases/download/v${FZF_VERSION}/fzf-${FZF_VERSION}-linux_amd64.tar.gz" \
+            | tar -xz -C "$HOME/.local/bin" fzf
+          curl -fsSL "https://github.com/fish-shell/fish-shell/releases/download/${FISH_VERSION}/fish-${FISH_VERSION}-linux-x86_64.tar.xz" \
+            | tar -xJ -C "$HOME/.local/bin"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Install fzf and fish (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          case "$(uname -m)" in arm64) arch=arm64 ;; *) arch=amd64 ;; esac
+          mkdir -p "$HOME/.local/bin"
+          curl -fsSL "https://github.com/junegunn/fzf/releases/download/v${FZF_VERSION}/fzf-${FZF_VERSION}-darwin_${arch}.tar.gz" \
+            | tar -xz -C "$HOME/.local/bin" fzf
+          curl -fsSLo "$RUNNER_TEMP/fish.pkg" "https://github.com/fish-shell/fish-shell/releases/download/${FISH_VERSION}/fish-${FISH_VERSION}.pkg"
+          sudo installer -pkg "$RUNNER_TEMP/fish.pkg" -target /
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          echo "/usr/local/bin" >> "$GITHUB_PATH"
+
+      - name: Show toolchain
+        run: |
+          uname -sm
+          bash --version | head -1
+          zsh --version
+          fish --version
+          fzf --version
+          /usr/bin/grep --version 2>/dev/null | head -1 || grep --version | head -1
+
+      - name: Run every example and check it against its answer key
+        run: python3 tools/run_examples.py --check
+
+      - name: Check that every external link is marked as external
+        run: python3 tools/check_link_style.py

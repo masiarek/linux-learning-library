@@ -1,0 +1,15 @@
+$ false | true; echo "status $?"
+status 0
+
+$ false | true | true; echo "pipestatus $pipestatus"
+pipestatus 1 0 0
+
+$ false | true; echo "first stage: ${pipestatus[1]}"
+first stage: 1
+
+$ false | true; echo "bash spelling: [${PIPESTATUS[0]}]"
+bash spelling: []
+
+$ setopt pipefail; printf "alma\ndarkfi\n" | grep nosuchword | sort; echo "status $?"; unsetopt pipefail
+status 1
+
