@@ -1,0 +1,56 @@
+$ grep --version | head -n 1
+grep (BSD grep, GNU compatible) 2.6.0-FreeBSD
+
+$ grep -P "\d+" hosts.txt; echo "status $?"
+grep: invalid option -- P
+usage: grep [-abcdDEFGHhIiJLlMmnOopqRSsUVvwXxZz] [-A num] [-B num] [-C[num]]
+	[-e pattern] [-f file] [--binary-files=value] [--color=when]
+	[--context[=num]] [--directories=action] [--label] [--line-buffered]
+	[--null] [pattern] [file ...]
+status 2
+
+$ printf "5\nd\n" | grep "\d"
+5
+
+$ printf "A\nx41\n" | grep "\x41"
+A
+
+$ grep "[[:<:]]box[[:>:]]" hosts.txt; echo "status $?"
+fedora box
+ubuntu 24 box
+status 0
+
+$ grep "box$\|^alma" hosts.txt
+alma 9 build
+
+$ grep -cE "alma|" hosts.txt; echo "status $?"
+grep: empty (sub)expression
+status 2
+
+$ printf "x\nax\n" | grep -E "a{,2}x"; echo "status $?"
+status 1
+
+$ grep "[" hosts.txt; echo "status $?"
+grep: brackets ([ ]) not balanced
+status 2
+
+$ grep -r darkfi | sort
+./extra/more.txt:darkfi in extra
+./hosts.txt:darkfi node
+./logs/web.log:darkfi crashed
+
+$ grep -R darkfi logs | sort
+logs/web.log:darkfi crashed
+
+$ grep -r darkfi logs/hosts_link.txt; echo "status $?"
+status 1
+
+$ grep -lZ darkfi hosts.txt logs/web.log | tr "\0" "|"; echo
+hosts.txt
+logs/web.log
+
+
+$ grep -q darkfi hosts.txt nosuch.txt; echo "status $?"
+grep: nosuch.txt: No such file or directory
+status 0
+

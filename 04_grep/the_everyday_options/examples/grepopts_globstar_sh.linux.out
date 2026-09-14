@@ -1,0 +1,7 @@
+$ echo **/*.log
+db/db.log
+
+$ shopt -s globstar; echo "status $?"; echo **/*.log
+status 0
+db/db.log web.log
+

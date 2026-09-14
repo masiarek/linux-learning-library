@@ -85,14 +85,36 @@ NAV_ORDER: dict[str, list[str]] = {
         "08_Prompt",
         "09_Resources",
     ],
+    # The status the pipe reports, the stream it does not carry, the variables
+    # that do not come back, then what each end can tell about the other.
     "01_Pipelines": [
         "README.md",
         "a_pipeline_reports_its_last_command",
+        "stderr_does_not_go_down_the_pipe",
+        "each_stage_runs_in_a_subshell",
+        "a_program_knows_it_is_piped",
+        "head_closes_the_pipe_early",
+    ],
+    # Counting with the book's pipeline, what grep loses reading a pipe, the
+    # options, the status it leaves behind, then what changes between GNU and BSD.
+    "04_grep": [
+        "README.md",
+        "ls_grep_wc_counts_lines",
+        "cat_into_grep_is_one_process_too_many",
+        "the_everyday_options",
+        "grep_exit_status_0_1_2",
+        "gnu_grep_and_bsd_grep",
     ],
     "05_tr": [
         "README.md",
         "a_class_is_a_set",
         "an_unquoted_class_is_a_glob",
+    ],
+    # The page the book prompted, then the file that has to hold it.
+    "08_Prompt": [
+        "README.md",
+        "ps1_belongs_to_bash",
+        "which_startup_file_runs",
     ],
 }
 
@@ -250,8 +272,41 @@ def _fenced_tabs(markdown: str) -> int:
     return total
 
 
+def _fence_count(markdown: str) -> int:
+    """Closed fences that start at the left margin -- each renders one <pre>."""
+    count = 0
+    fence = None
+    for line in markdown.split("\n"):
+        if fence is None:
+            m = FENCE_OPEN.match(line)
+            if m:
+                fence = m.group()
+        elif re.fullmatch(rf"{fence[0]}{{{len(fence)},}}\s*", line):
+            count += 1
+            fence = None
+    return count
+
+
 def on_page_content(html, page, config, files):
-    """Warn when a page's HTML holds fewer TABs than its fences did."""
+    """Warn when a page's HTML holds fewer code blocks, or TABs, than its fences.
+
+    The block count is this library's addition (2026-09-13). Prose holding
+    `</dev/null` -- in backticks, even -- is read by Python-Markdown as the
+    start of an HTML tag, and everything after it vanished from a page while
+    the build stayed green. Only the TAB check below happened to notice.
+    """
+    fences = _fence_count(page.markdown)
+    blocks = html.count("<pre")
+    if blocks < fences:
+        log.warning(
+            "Code blocks lost: %s has %d fences in its Markdown and %d <pre> "
+            "blocks in its HTML. Text outside a fence that looks like an HTML "
+            "tag, such as `</dev/null`, swallows the rest of the page; write "
+            "`< /dev/null`.",
+            page.file.src_uri,
+            fences,
+            blocks,
+        )
     want = _fenced_tabs(page.markdown)
     got = html.count("\t")
     if got < want:

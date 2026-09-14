@@ -1,0 +1,12 @@
+$ bash -i -c 'echo "$PS1"'
+${debian_chroot:+($debian_chroot)}\u@\h:\w\$ 
+
+$ bash -l -i -c 'echo "$PS1"'
+${debian_chroot:+($debian_chroot)}\u@\h:\w\$ 
+
+$ zsh -i -c 'print -r -- "$PS1"'
+%m%# 
+
+$ zsh -f -i -c 'print -r -- "$PS1"'
+%m%# 
+

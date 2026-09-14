@@ -1,0 +1,2 @@
+restart the darkfi node after the update
+alma9 backup finished

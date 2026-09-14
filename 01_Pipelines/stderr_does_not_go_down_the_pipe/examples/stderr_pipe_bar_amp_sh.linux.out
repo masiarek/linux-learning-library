@@ -1,0 +1,16 @@
+$ echo "bash ${BASH_VERSINFO[0]}"
+bash 5
+
+$ bash -c 'cat nosuch distros |& sed "s/^/piped: /"'
+piped: cat: nosuch: No such file or directory
+piped: alma
+piped: darkfi
+(exit status 0)
+
+$ bash -c 'f() { cat nosuch distros |& sed "s/^/piped: /"; }; declare -f f'
+f () 
+{ 
+    cat nosuch distros 2>&1 | sed "s/^/piped: /"
+}
+(exit status 0)
+

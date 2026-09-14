@@ -1,0 +1,22 @@
+$ export PS1="[\u@\h \W]\$ "
+[USER@HOST ~]$ echo "$PS1"
+[\u@\h \W]$ 
+[USER@HOST ~]$ cd projects/linux-library
+[USER@HOST linux-library]$ cd /usr/bin
+[USER@HOST bin]$ cd /usr
+[USER@HOST usr]$ exit
+
+$ export PS1="[\d \t \u@\h \w]\$ "
+[Www Mmm dd HH:MM:SS USER@HOST ~]$ cd projects/linux-library
+[Www Mmm dd HH:MM:SS USER@HOST ~/projects/linux-library]$ cd /usr/bin
+[Www Mmm dd HH:MM:SS USER@HOST /usr/bin]$ exit
+
+$ printf 'echo only this reached stdout\n' | PS1='[\u@\h \W]\$ ' bash --norc --noediting -i 2>/dev/null
+only this reached stdout
+
+$ cat ~/.bashrc
+export PS1="[\d \t \u@\h \w]\$ "
+
+$ bash
+[Www Mmm dd HH:MM:SS USER@HOST ~]$ cd projects/linux-library
+[Www Mmm dd HH:MM:SS USER@HOST ~/projects/linux-library]$ exit

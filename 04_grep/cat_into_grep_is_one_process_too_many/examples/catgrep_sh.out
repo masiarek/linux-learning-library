@@ -1,0 +1,90 @@
+$ cat hosts.txt | grep darkfi
+darkfi   10.0.0.20   node
+darkfi   10.0.0.21   wallet
+
+$ grep darkfi hosts.txt
+darkfi   10.0.0.20   node
+darkfi   10.0.0.21   wallet
+
+$ grep darkfi < hosts.txt
+darkfi   10.0.0.20   node
+darkfi   10.0.0.21   wallet
+
+$ grep -H darkfi < hosts.txt
+(standard input):darkfi   10.0.0.20   node
+(standard input):darkfi   10.0.0.21   wallet
+
+$ < hosts.txt grep darkfi
+darkfi   10.0.0.20   node
+darkfi   10.0.0.21   wallet
+
+$ < notes.txt; echo "status $?"
+status 0
+
+$ cat hosts.txt notes.txt | grep darkfi
+darkfi   10.0.0.20   node
+darkfi   10.0.0.21   wallet
+restart the darkfi node after the update
+
+$ grep darkfi hosts.txt notes.txt
+hosts.txt:darkfi   10.0.0.20   node
+hosts.txt:darkfi   10.0.0.21   wallet
+notes.txt:restart the darkfi node after the update
+
+$ grep -h darkfi hosts.txt notes.txt
+darkfi   10.0.0.20   node
+darkfi   10.0.0.21   wallet
+restart the darkfi node after the update
+
+$ cat hosts.txt notes.txt | grep -c darkfi
+3
+
+$ grep -c darkfi hosts.txt notes.txt
+hosts.txt:2
+notes.txt:1
+
+$ cat hosts.txt notes.txt | grep -l darkfi
+(standard input)
+
+$ grep -l darkfi hosts.txt notes.txt
+hosts.txt
+notes.txt
+
+$ cat hosts.txt notes.txt | grep -n darkfi
+2:darkfi   10.0.0.20   node
+4:darkfi   10.0.0.21   wallet
+5:restart the darkfi node after the update
+
+$ grep -n darkfi hosts.txt notes.txt
+hosts.txt:2:darkfi   10.0.0.20   node
+hosts.txt:4:darkfi   10.0.0.21   wallet
+notes.txt:1:restart the darkfi node after the update
+
+$ cat nosuch.txt | grep darkfi; echo "status $?"
+cat: nosuch.txt: No such file or directory
+status 1
+
+$ grep darkfi nosuch.txt; echo "status $?"
+grep: nosuch.txt: No such file or directory
+status 2
+
+$ grep darkfi < nosuch.txt; echo "status $?"
+catgrep_sh.sh: line 6: nosuch.txt: No such file or directory
+status 1
+
+$ less hosts.txt | head -n 1
+alma9    10.0.0.10   build server
+
+$ cat hosts.txt | less | head -n 1
+alma9    10.0.0.10   build server
+
+$ cat draft.txt notes.txt | grep darkfi
+darkfi seed phraserestart the darkfi node after the update
+
+$ cat draft.txt notes.txt | grep -c darkfi
+1
+
+$ grep -c darkfi draft.txt notes.txt
+draft.txt:1
+notes.txt:1
+

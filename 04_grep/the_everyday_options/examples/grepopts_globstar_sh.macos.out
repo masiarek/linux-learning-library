@@ -1,0 +1,8 @@
+$ echo **/*.log
+db/db.log
+
+$ shopt -s globstar; echo "status $?"; echo **/*.log
+grepopts_globstar_sh.sh: line 6: shopt: globstar: invalid shell option name
+status 1
+db/db.log
+

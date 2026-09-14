@@ -1,0 +1,56 @@
+$ grep --version | head -n 1
+grep (GNU grep) 3.11
+
+$ grep -P "\d+" hosts.txt; echo "status $?"
+alma 9 build
+ubuntu 24 box
+status 0
+
+$ printf "5\nd\n" | grep "\d"
+d
+
+$ printf "A\nx41\n" | grep "\x41"
+x41
+
+$ grep "[[:<:]]box[[:>:]]" hosts.txt; echo "status $?"
+grep: Invalid character class name
+status 2
+
+$ grep "box$\|^alma" hosts.txt
+alma 9 build
+fedora box
+ubuntu 24 box
+
+$ grep -cE "alma|" hosts.txt; echo "status $?"
+4
+status 0
+
+$ printf "x\nax\n" | grep -E "a{,2}x"; echo "status $?"
+x
+ax
+status 0
+
+$ grep "[" hosts.txt; echo "status $?"
+grep: Invalid regular expression
+status 2
+
+$ grep -r darkfi | sort
+extra/more.txt:darkfi in extra
+hosts.txt:darkfi node
+logs/web.log:darkfi crashed
+
+$ grep -R darkfi logs | sort
+logs/extra_link/more.txt:darkfi in extra
+logs/hosts_link.txt:darkfi node
+logs/web.log:darkfi crashed
+
+$ grep -r darkfi logs/hosts_link.txt; echo "status $?"
+darkfi node
+status 0
+
+$ grep -lZ darkfi hosts.txt logs/web.log | tr "\0" "|"; echo
+hosts.txt|logs/web.log|
+
+$ grep -q darkfi hosts.txt nosuch.txt; echo "status $?"
+status 0
+

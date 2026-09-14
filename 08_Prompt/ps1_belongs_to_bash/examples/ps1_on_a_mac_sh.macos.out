@@ -1,0 +1,27 @@
+$ bash -c 'PS1="[\u@\h \W]\$ "; echo "${PS1@P}"'
+bash: ${PS1@P}: bad substitution
+(exit status 1)
+
+$ cat ~/.bashrc
+export PS1="[\d \t \u@\h \w]\$ "
+
+$ bash -l
+HOST:~ USER$ echo "$PS1"
+\h:\W \u\$ 
+HOST:~ USER$ logout
+
+$ cat ~/.bash_profile
+[ -r ~/.bashrc ] && . ~/.bashrc
+
+$ bash -l
+[Www Mmm dd HH:MM:SS USER@HOST ~]$ cd projects/linux-library
+[Www Mmm dd HH:MM:SS USER@HOST ~/projects/linux-library]$ logout
+
+$ bash
+
+The default interactive shell is now zsh.
+To update your account to use zsh, please run `chsh -s /bin/zsh`.
+For more details, please visit https://support.apple.com/kb/HT208050.
+$ echo "$BASH_VERSINFO"
+3
+$ exit

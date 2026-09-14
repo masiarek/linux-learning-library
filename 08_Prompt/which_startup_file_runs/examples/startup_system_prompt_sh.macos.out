@@ -1,0 +1,12 @@
+$ bash -i -c 'echo "$PS1"'
+\s-\v\$ 
+
+$ bash -l -i -c 'echo "$PS1"'
+\h:\W \u\$ 
+
+$ zsh -i -c 'print -r -- "$PS1"'
+%n@%m %1~ %# 
+
+$ zsh -f -i -c 'print -r -- "$PS1"'
+%m%# 
+

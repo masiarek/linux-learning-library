@@ -1,0 +1,46 @@
+$ grep -q darkfi hosts.txt; echo "status $status"
+status 0
+
+$ grep -q zzz hosts.txt; echo "status $status"
+status 1
+
+$ grep -q darkfi nosuch.txt 2>/dev/null; echo "status $status"
+status 2
+
+$ if grep -q darkfi hosts.txt; echo "found"; else; echo "not found"; end
+found
+
+$ grep -q darkfi hosts.txt; and echo "found"
+found
+
+$ grep -q zzz hosts.txt; or echo "not found"
+not found
+
+$ if not grep -q zzz hosts.txt; echo "no zzz"; end
+no zzz
+
+$ grep -q darkfi nosuch.txt 2>/dev/null; switch $status; case 0; echo "found"; case 1; echo "not found"; case "*"; echo "grep failed"; end
+grep failed
+
+$ set n (grep -c zzz hosts.txt); echo "count $n, status $status"
+count 0, status 1
+
+$ if test (grep -c darkfi hosts.txt) -gt 1; echo "more than one"; end
+more than one
+
+$ seq 1 1000000 | grep -q 1; echo "pipestatus $pipestatus"
+pipestatus 141 0
+
+$ if [[ -s hosts.txt ]]; echo "not empty"; end
+fish: Unknown command: '[[ -s hosts.txt ]]'
+fish: 
+if [[ -s hosts.txt ]]; echo "not empty"; end
+   ^~~~~~~~~~~~~~~~~^
+(exit status 0)
+
+$ [[ -s hosts.txt ]]; echo "status $status"
+fish: Unknown command: '[[ -s hosts.txt ]]'
+fish: 
+[[ -s hosts.txt ]]; echo "status $status"
+^~~~~~~~~~~~~~~~~^
+status 127

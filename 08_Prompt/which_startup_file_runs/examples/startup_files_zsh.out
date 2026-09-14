@@ -1,0 +1,22 @@
+$ cat ~/.zshrc
+echo '  ~/.zshrc'
+
+$ zsh -c true
+  ~/.zshenv
+
+$ zsh -l -c true
+  ~/.zshenv
+  ~/.zprofile
+
+$ zsh -i -c true
+  ~/.zshenv
+  ~/.zshrc
+
+$ zsh -l -i -c true
+  ~/.zshenv
+  ~/.zprofile
+  ~/.zshrc
+
+$ zsh -f -l -i -c true
+  (none)
+

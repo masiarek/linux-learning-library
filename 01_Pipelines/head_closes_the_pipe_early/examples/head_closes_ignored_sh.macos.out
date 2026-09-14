@@ -1,0 +1,14 @@
+$ trap "" PIPE; yes 2>err | head -n 1; echo "PIPESTATUS ${PIPESTATUS[*]}"; cat err; trap - PIPE
+y
+PIPESTATUS 1 0
+yes: stdout: Broken pipe
+
+$ yes 2>err | head -n 1; echo "PIPESTATUS ${PIPESTATUS[*]}"; cat err
+y
+PIPESTATUS 141 0
+
+$ trap '' PIPE; bash -c 'trap - PIPE; yes 2>err | head -n 1; echo "PIPESTATUS ${PIPESTATUS[*]}"; cat err'; trap - PIPE
+y
+PIPESTATUS 1 0
+yes: stdout: Broken pipe
+

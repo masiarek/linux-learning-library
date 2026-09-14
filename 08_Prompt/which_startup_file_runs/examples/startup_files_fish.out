@@ -1,0 +1,28 @@
+$ cat ~/.config/fish/config.fish
+echo '  ~/.config/fish/config.fish'
+status is-login; and echo '    status is-login'
+status is-interactive; and echo '    status is-interactive'
+
+$ fish -c true
+  ~/.config/fish/config.fish
+
+$ fish -l -c true
+  ~/.config/fish/config.fish
+    status is-login
+
+$ fish -i -c true
+  ~/.config/fish/config.fish
+    status is-interactive
+
+$ fish -l -i -c true
+  ~/.config/fish/config.fish
+    status is-login
+    status is-interactive
+
+$ fish -c true
+  ~/.config/fish/conf.d/prompt.fish
+  ~/.config/fish/config.fish
+
+$ fish --no-config -l -i -c true
+  (none)
+

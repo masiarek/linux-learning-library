@@ -1,0 +1,65 @@
+$ grep INFO web.log
+INFO darkfi node started
+
+$ grep -i info web.log
+INFO darkfi node started
+info alma9 update applied
+
+$ grep -v INFO web.log
+WARN disk almost full
+ERROR darkfi-wallet crashed
+info alma9 update applied
+
+$ grep -iv info web.log
+WARN disk almost full
+ERROR darkfi-wallet crashed
+
+$ grep -w darkfi web.log
+INFO darkfi node started
+ERROR darkfi-wallet crashed
+
+$ grep -w dark web.log; echo "status $?"
+status 1
+
+$ grep -n ERROR web.log
+3:ERROR darkfi-wallet crashed
+
+$ grep -o "darkfi[-a-z]*" web.log
+darkfi
+darkfi-wallet
+
+$ grep -c ERROR web.log db/db.log
+web.log:1
+db/db.log:1
+
+$ grep -l ERROR web.log db/db.log
+web.log
+db/db.log
+
+$ grep -h ERROR web.log db/db.log
+ERROR darkfi-wallet crashed
+ERROR connection refused
+
+$ grep -r ERROR . | sort
+./db/db.log:ERROR connection refused
+./web.log:ERROR darkfi-wallet crashed
+
+$ grep -rl darkfi . | sort
+./web.log
+
+$ grep -E "ERROR|WARN" web.log
+WARN disk almost full
+ERROR darkfi-wallet crashed
+
+$ grep -e -wallet web.log
+ERROR darkfi-wallet crashed
+
+$ grep -- -wallet web.log
+ERROR darkfi-wallet crashed
+
+$ grep -wallet web.log; echo "status $?"
+status 1
+
+$ grep -w -a -l -l -e t web.log; echo "status $?"
+status 1
+

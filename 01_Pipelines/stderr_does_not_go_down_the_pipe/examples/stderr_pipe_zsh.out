@@ -1,0 +1,36 @@
+$ printf "alma\ndarkfi\n" > distros
+
+$ cat nosuch distros | sed "s/^/piped: /"
+cat: nosuch: No such file or directory
+piped: alma
+piped: darkfi
+
+$ cat nosuch distros |& sed "s/^/piped: /"
+piped: cat: nosuch: No such file or directory
+piped: alma
+piped: darkfi
+
+$ cat nosuch distros 2>&1 | sed "s/^/piped: /"
+piped: cat: nosuch: No such file or directory
+piped: alma
+piped: darkfi
+
+$ cat nosuch distros 2>&1 >/dev/null | sed "s/^/piped: /"
+piped: cat: nosuch: No such file or directory
+piped: alma
+piped: darkfi
+
+$ setopt no_multios; cat nosuch distros 2>&1 >/dev/null | sed "s/^/piped: /"; setopt multios
+piped: cat: nosuch: No such file or directory
+
+$ f() { cat nosuch distros |& sed "s/^/piped: /" }; functions f
+f () {
+	cat nosuch distros 2>&1 | sed "s/^/piped: /"
+}
+
+$ g() { cat nosuch distros &| sed "s/^/piped: /" }; functions g
+g () {
+	cat nosuch distros &|
+	sed "s/^/piped: /"
+}
+

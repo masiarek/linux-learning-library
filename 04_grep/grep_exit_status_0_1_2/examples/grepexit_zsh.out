@@ -1,0 +1,21 @@
+$ grep -q darkfi hosts.txt; echo "status $?"
+status 0
+
+$ grep -q zzz hosts.txt; echo "status $?"
+status 1
+
+$ grep -q darkfi nosuch.txt 2>/dev/null; echo "status $?"
+status 2
+
+$ if grep -q darkfi hosts.txt; then echo "found"; fi
+found
+
+$ grep -q darkfi nosuch.txt 2>/dev/null; case $? in (0) echo "found" ;; (1) echo "not found" ;; (*) echo "grep failed" ;; esac
+grep failed
+
+$ zsh -fc "setopt errexit; grep -q zzz hosts.txt; echo reached"; echo "status $?"
+status 1
+
+$ seq 1 1000000 | grep -q 1; echo "pipestatus $pipestatus"
+pipestatus 141 0
+

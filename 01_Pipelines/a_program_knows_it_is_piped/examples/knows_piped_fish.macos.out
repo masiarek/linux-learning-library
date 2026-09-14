@@ -1,0 +1,20 @@
+$ touch alma darkfi fedora; mkdir isos
+
+$ type -t ls
+function
+
+$ ls
+alma
+darkfi
+fedora
+isos
+
+$ isatty stdout; and echo "stdout is a terminal"; or echo "stdout is not a terminal"
+stdout is not a terminal
+
+$ script -q /dev/null fish --no-config -c ls </dev/null | cat -v
+^D^H^Halma	darkfi	fedora	isos/^M
+
+$ script -q /dev/null fish --no-config -c 'command ls' </dev/null | cat -v
+^D^H^Halma	darkfi	fedora	isos^M
+

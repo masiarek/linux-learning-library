@@ -1,0 +1,34 @@
+$ cat ~/.bashrc
+echo '  ~/.bashrc'
+
+$ bash -c true
+  (none)
+
+$ bash -l -c true
+  ~/.bash_profile
+
+$ bash -i -c true
+  ~/.bashrc
+
+$ bash -l -i -c true
+  ~/.bash_profile
+
+$ rm ~/.bash_profile
+
+$ bash -l -i -c true
+  ~/.profile
+
+$ cat ~/.bash_profile
+echo '  ~/.bash_profile'
+[ -r ~/.bashrc ] && . ~/.bashrc
+
+$ bash -l -i -c true
+  ~/.bash_profile
+  ~/.bashrc
+
+$ bash --norc -i -c true
+  (none)
+
+$ bash --noprofile -l -c true
+  (none)
+

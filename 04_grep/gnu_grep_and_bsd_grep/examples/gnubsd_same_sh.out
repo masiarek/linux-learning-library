@@ -1,0 +1,56 @@
+$ grep -E "[[:digit:]]+" hosts.txt
+alma 9 build
+ubuntu 24 box
+
+$ grep "[0-9]\{2\}" hosts.txt
+ubuntu 24 box
+
+$ grep -E "[0-9]{2}" hosts.txt
+ubuntu 24 box
+
+$ grep -o "\w\+ box" hosts.txt
+fedora box
+24 box
+
+$ grep -c "\s" hosts.txt
+4
+
+$ grep -o "\bbox\b" hosts.txt
+box
+box
+
+$ grep "\<box\>" hosts.txt
+fedora box
+ubuntu 24 box
+
+$ grep "alma\|ubuntu" hosts.txt
+alma 9 build
+ubuntu 24 box
+
+$ grep "fed\?ora" hosts.txt
+fedora box
+
+$ grep -e "box$" -e "^alma" hosts.txt
+alma 9 build
+fedora box
+ubuntu 24 box
+
+$ echo aaa | grep -o "^a"
+a
+
+$ grep -r --include="*.log" darkfi logs
+logs/web.log:darkfi crashed
+
+$ grep -l --null darkfi logs/web.log logs/notes.txt | tr "\0" "|"; echo
+logs/web.log|logs/notes.txt|
+
+$ egrep "alma|ubuntu" hosts.txt
+alma 9 build
+ubuntu 24 box
+
+$ fgrep "a.b" hosts.txt; echo "status $?"
+status 1
+
+$ printf "5\nd\n" | grep \d
+d
+

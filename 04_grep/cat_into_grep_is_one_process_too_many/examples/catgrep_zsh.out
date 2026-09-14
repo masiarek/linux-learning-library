@@ -1,0 +1,23 @@
+$ cat hosts.txt notes.txt | grep -c darkfi
+3
+
+$ grep -c darkfi hosts.txt notes.txt
+hosts.txt:2
+notes.txt:1
+
+$ < hosts.txt grep darkfi
+darkfi   10.0.0.20   node
+darkfi   10.0.0.21   wallet
+
+$ < notes.txt
+restart the darkfi node after the update
+alma9 backup finished
+
+$ grep darkfi < nosuch.txt; echo "status $?"
+(eval):1: no such file or directory: nosuch.txt
+status 1
+
+$ grep darkfi nosuch.txt; echo "status $?"
+grep: nosuch.txt: No such file or directory
+status 2
+

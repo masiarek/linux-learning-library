@@ -1,0 +1,14 @@
+$ touch alma darkfi fedora; mkdir isos
+
+$ whence -w ls
+ls: command
+
+$ ls | less
+alma
+darkfi
+fedora
+isos
+
+$ [[ -t 1 ]] && echo "stdout is a terminal" || echo "stdout is not a terminal"
+stdout is not a terminal
+

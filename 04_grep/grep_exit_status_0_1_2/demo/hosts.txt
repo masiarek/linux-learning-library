@@ -1,0 +1,4 @@
+alma9    10.0.0.10   build server
+darkfi   10.0.0.20   node
+fedora   10.0.0.30   desktop
+darkfi   10.0.0.21   wallet

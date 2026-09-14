@@ -1,0 +1,25 @@
+$ cat hosts.txt notes.txt | grep -c darkfi
+3
+
+$ grep -c darkfi hosts.txt notes.txt
+hosts.txt:2
+notes.txt:1
+
+$ grep darkfi < hosts.txt
+darkfi   10.0.0.20   node
+darkfi   10.0.0.21   wallet
+
+$ grep darkfi nosuch.txt; echo "status $status"
+grep: nosuch.txt: No such file or directory
+status 2
+
+$ grep darkfi < nosuch.txt; echo "status $status"
+warning: An error occurred while redirecting file 'nosuch.txt'
+warning: Path 'nosuch.txt' does not exist
+status 1
+
+$ < hosts.txt grep darkfi
+fish: Expected a string, but found a redirection
+< hosts.txt grep darkfi
+^~~~~~~~~~^
+(exit status 127)

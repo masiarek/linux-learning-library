@@ -108,6 +108,8 @@ and **unset**: the `HIST*` family and `SAVEHIST`, `PROMPT_COMMAND`, `PS0`–`PS4
 
 CI runs every example on `ubuntu-latest` and `macos-latest`. bash, zsh and `grep` are each machine's own; fzf and fish are installed from the projects' release files at one version on both ([`examples.yml`](.github/workflows/examples.yml)), so a new ranking or a new error message cannot pass for a platform difference. The Linux column can be reproduced on a Mac with Docker: `docker build -t linux-lib-ubuntu tools/linux_image`, then `tools/linux_image/run.sh`.
 
+**Bound every probe, and cap every container.** `run.sh` passes `--ulimit fsize=104857600`, so no file a container writes can pass 100 MB; pass the same flag to any `docker run` of your own. On 2026-09-13 an unbounded `yes | tee -p log | head -n 1` (GNU `tee -p` outlives the closed pipe) grew `log` until Docker's disk image filled the Mac's disk and Docker Desktop crashed. Use `seq 1 N` or `head -c N` as a producer, give every fifo read a writer that is guaranteed to arrive, and `wait` for every background job.
+
 Measured differences — add a row when you find one, and say where you measured it:
 
 | | Linux | macOS |
@@ -122,12 +124,36 @@ Measured differences — add a row when you find one, and say where you measured
 | the pipeline exit-status lesson | identical | identical |
 | `tr` with a class in string2 | GNU coreutils 9.4: only `[:upper:]` opposite `[:lower:]`; any other class is an error, status 1 | BSD `tr`: any class, and a short string2 repeats its last character |
 | the `tr` class sets, `-d`, `-c`, `-s`, and an unquoted `[:lower:]` in bash, zsh and fish | identical | identical |
+| `\|&` in bash | bash 5.2 stores it as `2>&1 \|` | bash 3.2: a syntax error, status 2, and nothing runs |
+| `shopt -s lastpipe` | runs the last stage in the shell, while job control is off | `invalid shell option name` |
+| `script`, to run a command on a terminal | `script -qc CMD /dev/null` (util-linux) | `script -q /dev/null CMD`; with stdin at `/dev/null` its output starts with `^D^H^H` |
+| `ls -C`, between columns | spaces | TABs |
+| `yes` with SIGPIPE ignored | `yes: standard output: Broken pipe`, status 1 | `yes: stdout: Broken pipe`, status 1 |
+| a missing file | `cat: nosuch: No such file or directory`; `ls: cannot access 'nosuch': …`, status 2 | the same `cat` message; `ls: nosuch: …`, status 1 — so examples use `cat` |
+| the rest of the Pipelines chapter in bash, zsh and fish | identical | identical |
+| `grep` beyond POSIX | GNU grep 3.11: `"\d"` is the letter `d`, `"\x41"` the text `x41`; `-P` works; `[[:<:]]` is an error, status 2 | BSD grep 2.6.0: `"\d"` is a digit, `"\x41"` is `A`; `-P` is an invalid option, status 2; `[[:<:]]` is a word edge |
+| corners of `grep`'s grammar | `$` at the end of a basic-expression branch is an anchor; an empty `-E` branch matches every line; `{,2}` is 0 to 2 | that `$` is a character; an empty branch is `empty (sub)expression`, status 2; `{,2}` is not an interval |
+| a pattern `grep` cannot compile, `[` | `Invalid regular expression`, status 2 | `brackets ([ ]) not balanced`, status 2 |
+| `grep -r` with no directory | searches `.`, names like `hosts.txt` | searches `.`, names like `./hosts.txt` |
+| `grep -R` into a directory with symlinks; `grep -r` on a symlink named on the command line | follows them | follows neither; the named symlink is status 1 |
+| `grep -Z` | `--null`: a NUL after each name | not `--null`: a newline after each name |
+| `grep -q` with a missing file after the match | silent, status 0 | the missing-file message, status 0 |
+| `wc -l` | a bare `3` | `       3`, padded; `[ ... -eq 3 ]`, zsh's `[[ ]]` and fish's `test` accept both |
+| `shopt -s globstar` | bash 5.2: status 0, and `**/*.log` matches at every depth | bash 3.2: `invalid shell option name`, status 1 |
+| zsh's `$READNULLCMD`, run by a bare `< file` | `pager` | `more` |
+| the rest of the grep chapter in bash, zsh and fish | identical | identical |
+| `${PS1@P}`, a prompt expanded without drawing it | bash 5.2 expands it | bash 3.2: `bad substitution`, status 1 |
+| the starting `PS1` of `bash -i` / `bash -l -i`, empty HOME | `${debian_chroot:+($debian_chroot)}\u@\h:\w\$ ` for both, from `/etc/bash.bashrc` | `\s-\v\$ ` / `\h:\W \u\$ `, the second from `/etc/bashrc` |
+| the starting `PROMPT` of `zsh -i`, empty HOME | `%m%# ` | `%n@%m %1~ %# `, from `/etc/zshrc` |
+| an interactive `bash` without `BASH_SILENCE_DEPRECATION_WARNING` | no notice | a notice that the default shell is now zsh |
+| the user startup files bash, zsh and fish read; the prompt escapes `\u \h \W \w \d \t` | identical | identical |
 
 Measured 2026-09-13.
 
 ## Links
 
 - Link a folder by naming its `README.md` — `[label](some_folder/README.md)`, never `[label](some_folder/)`.
+- **Outside a fence, never write `<` straight before `/` or a letter** — not even in backticks. Python-Markdown reads `</dev/null` as the start of an HTML tag and drops everything after it; on 2026-09-13 that silently cut a page off after its third code block. Write `< /dev/null` with a space. `mkdocs_hooks.py` fails the strict build when a page has fewer `<pre>` blocks than fences.
 - **A link that leaves the library ends its label with ` ↗`**; an internal link never does. `python3 tools/check_link_style.py --fix` adds and removes them; CI runs it without `--fix`.
 
 ## Nav order

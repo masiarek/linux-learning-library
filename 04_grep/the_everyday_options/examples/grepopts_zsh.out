@@ -1,0 +1,14 @@
+$ grep -c ERROR web.log db/db.log
+web.log:1
+db/db.log:1
+
+$ echo **/*.log
+db/db.log web.log
+
+$ grep -c ERROR **/*.log
+db/db.log:1
+web.log:1
+
+$ grep -e -wallet **/*.log
+web.log:ERROR darkfi-wallet crashed
+

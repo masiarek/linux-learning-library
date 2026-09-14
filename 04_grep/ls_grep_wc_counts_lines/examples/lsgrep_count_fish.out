@@ -1,0 +1,34 @@
+$ ls | grep -c alma
+3
+
+$ test (ls | grep alma | wc -l) -eq 3; and echo "equal to 3"
+equal to 3
+
+$ string trim -- (ls | grep alma | wc -l)
+3
+
+$ echo grep alma*
+grep alma9_install.txt alma9_updates.txt alma_mirror.txt
+
+$ ls | grep alma*; echo "status $status"
+status 1
+
+$ cd ../elsewhere
+
+$ ls ../files | grep alma*; echo "status $status"
+fish: No matches for wildcard 'alma*'. See `help language#wildcards-globbing`.
+ls ../files | grep alma*; echo "status $status"
+                   ^~~~^
+status 124
+
+$ ls ../files | grep "alma*"
+alma9_install.txt
+alma9_updates.txt
+alma_mirror.txt
+almond.txt
+
+$ ls ../files | grep "^alma"
+alma9_install.txt
+alma9_updates.txt
+alma_mirror.txt
+

@@ -1,0 +1,9 @@
+$ bash -c 'v=before; echo alma | read v; echo "v is $v"'
+v is before
+
+$ bash -c 'shopt -s lastpipe; v=before; echo alma | read v; echo "v is $v"'
+v is alma
+
+$ bash -c 'set -m; shopt -s lastpipe; v=before; echo alma | read v; echo "v is $v"'
+v is before
+

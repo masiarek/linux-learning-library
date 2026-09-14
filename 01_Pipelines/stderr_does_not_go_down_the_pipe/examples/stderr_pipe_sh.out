@@ -1,0 +1,27 @@
+$ printf "alma\ndarkfi\n" > distros
+
+$ cat nosuch distros | sed "s/^/piped: /"
+cat: nosuch: No such file or directory
+piped: alma
+piped: darkfi
+
+$ cat nosuch distros 2>&1 | sed "s/^/piped: /"
+piped: cat: nosuch: No such file or directory
+piped: alma
+piped: darkfi
+
+$ cat nosuch distros | sed "s/^/piped: /" 2>&1
+cat: nosuch: No such file or directory
+piped: alma
+piped: darkfi
+
+$ cat nosuch distros 2>&1 >/dev/null | sed "s/^/piped: /"
+piped: cat: nosuch: No such file or directory
+
+$ cat nosuch distros | grep -c "No such"
+cat: nosuch: No such file or directory
+0
+
+$ cat nosuch distros 2>&1 | grep -c "No such"
+1
+

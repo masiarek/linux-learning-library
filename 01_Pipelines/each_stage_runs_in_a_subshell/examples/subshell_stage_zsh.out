@@ -1,0 +1,11 @@
+$ v=before; echo alma | read v; echo "v is $v"
+v is alma
+
+$ n=0; printf "alma\ndarkfi\nfedora\n" | while read -r line; do n=$((n + 1)); done; echo "counted $n"
+counted 3
+
+$ v=before; { v=alma; } | cat; echo "v is $v"
+v is before
+
+$ zsh -fc 'echo alma | exit 3; echo "still running"'
+(exit status 3)

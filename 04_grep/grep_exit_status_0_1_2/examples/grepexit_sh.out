@@ -1,0 +1,54 @@
+$ grep darkfi hosts.txt; echo "status $?"
+darkfi   10.0.0.20   node
+darkfi   10.0.0.21   wallet
+status 0
+
+$ grep zzz hosts.txt; echo "status $?"
+status 1
+
+$ grep darkfi nosuch.txt; echo "status $?"
+grep: nosuch.txt: No such file or directory
+status 2
+
+$ grep "[" hosts.txt 2>/dev/null; echo "status $?"
+status 2
+
+$ grep -q darkfi hosts.txt; echo "status $?"
+status 0
+
+$ grep -c zzz hosts.txt; echo "status $?"
+0
+status 1
+
+$ grep -s darkfi nosuch.txt; echo "status $?"
+status 2
+
+$ grep -s darkfi hosts.txt nosuch.txt; echo "status $?"
+hosts.txt:darkfi   10.0.0.20   node
+hosts.txt:darkfi   10.0.0.21   wallet
+status 2
+
+$ grep -qs darkfi hosts.txt nosuch.txt; echo "status $?"
+status 0
+
+$ if grep -q darkfi hosts.txt; then echo "found"; else echo "not found"; fi
+found
+
+$ if grep -q darkfi nosuch.txt 2>/dev/null; then echo "found"; else echo "not found"; fi
+not found
+
+$ grep -q darkfi nosuch.txt 2>/dev/null; case $? in 0) echo "found" ;; 1) echo "not found" ;; *) echo "grep failed" ;; esac
+grep failed
+
+$ if ! grep -q zzz hosts.txt; then echo "no zzz"; fi
+no zzz
+
+$ bash -c "set -e; grep -q zzz hosts.txt; echo reached"; echo "status $?"
+status 1
+
+$ seq 1 1000000 | grep -q 1; echo "PIPESTATUS ${PIPESTATUS[*]}"
+PIPESTATUS 141 0
+
+$ set -o pipefail; seq 1 1000000 | grep -q 1; echo "status $?"; set +o pipefail
+status 141
+

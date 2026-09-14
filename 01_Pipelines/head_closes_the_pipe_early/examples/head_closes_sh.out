@@ -1,0 +1,20 @@
+$ yes | head -n 2; echo "PIPESTATUS ${PIPESTATUS[*]}"
+y
+y
+PIPESTATUS 141 0
+
+$ echo "141 is 128 + $((141 - 128)), and signal 13 is $(kill -l 13)"
+141 is 128 + 13, and signal 13 is PIPE
+
+$ seq 30000 | head -n 1; echo "PIPESTATUS ${PIPESTATUS[*]}"
+1
+PIPESTATUS 141 0
+
+$ seq 3 | head -n 1; echo "PIPESTATUS ${PIPESTATUS[*]}"
+1
+PIPESTATUS 0 0
+
+$ last=none; for i in $(seq 30000); do echo "$i"; last=$i; done | head -n 1; echo "PIPESTATUS ${PIPESTATUS[*]}, last is $last"
+1
+PIPESTATUS 141 0, last is none
+

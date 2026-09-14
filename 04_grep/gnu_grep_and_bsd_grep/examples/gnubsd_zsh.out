@@ -1,0 +1,12 @@
+$ print -r -- \d "\d"
+d \d
+
+$ printf "5\nd\n" | grep \d
+d
+
+$ [[ "ubuntu 24" =~ "[[:digit:]]+" ]] && echo "$MATCH"
+24
+
+$ [[ "ubuntu 24" =~ "[0-9]+" ]] && echo "$MATCH"
+24
+

@@ -1,0 +1,56 @@
+$ ls
+alma9_install.txt
+alma9_updates.txt
+alma_mirror.txt
+almond.txt
+darkfi_notes.txt
+latest
+
+$ ls | grep alma
+alma9_install.txt
+alma9_updates.txt
+alma_mirror.txt
+
+$ ls | grep alma | wc -l | tr -d " "
+3
+
+$ ls | grep -c alma
+3
+
+$ ls -l | grep -c alma
+4
+
+$ ls -l | grep alma | sed "s/.* 2024 //"
+alma9_install.txt
+alma9_updates.txt
+alma_mirror.txt
+latest -> alma9_updates.txt
+
+$ ls -l | wc -l | tr -d " "
+7
+
+$ ls -l | head -n 1 | cut -c 1-5
+total
+
+$ echo grep alma*
+grep alma9_install.txt alma9_updates.txt alma_mirror.txt
+
+$ ls | grep alma*; echo "status $?"
+status 1
+
+$ cd ../elsewhere
+
+$ echo grep alma*
+grep alma*
+
+$ ls ../files | grep alma*
+alma9_install.txt
+alma9_updates.txt
+alma_mirror.txt
+almond.txt
+
+$ ls ../files | grep "^alma"
+alma9_install.txt
+alma9_updates.txt
+alma_mirror.txt
+

@@ -1,0 +1,23 @@
+$ bash -c 'PS1="[\u@\h \W]\$ "; echo "${PS1@P}"'
+[USER@HOST ~]$ 
+(exit status 0)
+
+$ cat ~/.bashrc
+export PS1="[\d \t \u@\h \w]\$ "
+
+$ bash -l
+USER@HOST:~$ echo "$PS1"
+${debian_chroot:+($debian_chroot)}\u@\h:\w\$ 
+USER@HOST:~$ logout
+
+$ cat ~/.bash_profile
+[ -r ~/.bashrc ] && . ~/.bashrc
+
+$ bash -l
+[Www Mmm dd HH:MM:SS USER@HOST ~]$ cd projects/linux-library
+[Www Mmm dd HH:MM:SS USER@HOST ~/projects/linux-library]$ logout
+
+$ bash
+$ echo "$BASH_VERSINFO"
+5
+$ exit

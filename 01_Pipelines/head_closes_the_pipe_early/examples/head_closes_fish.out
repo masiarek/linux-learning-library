@@ -1,0 +1,16 @@
+$ yes | head -n 1; echo "pipestatus $pipestatus"
+y
+pipestatus 141 0
+
+$ set last none; for i in (seq 30000); echo $i; set last $i; end | head -n 1; echo "pipestatus $pipestatus, last is $last"
+1
+pipestatus 1 0, last is 30000
+
+$ set last none; for i in (seq 30000); echo $i; or break; set last $i; end | head -n 1; if test $last -lt 30000; echo "the loop stopped early"; end
+1
+the loop stopped early
+
+$ trap "" PIPE; yes | head -n 1; echo "pipestatus $pipestatus"; trap - PIPE
+y
+pipestatus 141 0
+

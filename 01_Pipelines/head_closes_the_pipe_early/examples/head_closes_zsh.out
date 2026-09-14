@@ -1,0 +1,12 @@
+$ yes | head -n 1; echo "pipestatus $pipestatus"
+y
+pipestatus 141 0
+
+$ last=none; for i in $(seq 30000); do echo $i; last=$i; done | head -n 1; echo "pipestatus $pipestatus, last is $last"
+1
+pipestatus 141 0, last is none
+
+$ trap "" PIPE; yes 2>/dev/null | head -n 1; echo "pipestatus $pipestatus"; trap - PIPE
+y
+pipestatus 1 0
+

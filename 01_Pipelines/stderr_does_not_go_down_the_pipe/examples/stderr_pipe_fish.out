@@ -1,0 +1,25 @@
+$ printf "alma\ndarkfi\n" > distros
+
+$ cat nosuch distros | sed "s/^/piped: /"
+cat: nosuch: No such file or directory
+piped: alma
+piped: darkfi
+
+$ cat nosuch distros &| sed "s/^/piped: /"
+piped: cat: nosuch: No such file or directory
+piped: alma
+piped: darkfi
+
+$ cat nosuch distros 2>&1 | sed "s/^/piped: /"
+piped: cat: nosuch: No such file or directory
+piped: alma
+piped: darkfi
+
+$ cat nosuch distros 2>&1 >/dev/null | sed "s/^/piped: /"
+piped: cat: nosuch: No such file or directory
+
+$ cat nosuch distros |& sed "s/^/piped: /"
+fish: |& is not valid. In fish, use &| to pipe both stdout and stderr.
+cat nosuch distros |& sed "s/^/piped: /"
+                   ^^
+(exit status 127)

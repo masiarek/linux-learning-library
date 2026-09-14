@@ -1,0 +1,21 @@
+$ script -q /dev/null ls </dev/null | cat -v
+^D^H^Halma	darkfi	fedora	isos^M
+
+$ script -q /dev/null sh -c 'ls | cat' </dev/null | cat -v
+^D^H^Halma^M
+darkfi^M
+fedora^M
+isos^M
+
+$ script -q /dev/null ls -1 </dev/null | cat -v
+^D^H^Halma^M
+darkfi^M
+fedora^M
+isos^M
+
+$ script -q /dev/null sh -c '[ -t 1 ] && echo terminal || echo not a terminal' </dev/null | cat -v
+^D^H^Hterminal^M
+
+$ ls -C
+alma	darkfi	fedora	isos
+

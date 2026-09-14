@@ -1,0 +1,30 @@
+% export PS1="[\u@\h \W]\$ "
+[\u@\h \W]$ cd projects/linux-library
+[\u@\h \W]$ cd /usr/bin
+[\u@\h \W]$ exit
+
+% PROMPT="[%n@%m %1~]%# "
+[USER@HOST ~]% cd projects/linux-library
+[USER@HOST linux-library]% cd /usr/bin
+[USER@HOST bin]% cd /usr
+[USER@HOST /usr]% print -r -- "$PS1"
+[%n@%m %1~]%# 
+[USER@HOST /usr]% exit
+
+% PROMPT="[%D{%a %b %d} %D{%H:%M:%S} %n@%m %~]%# "
+[Www Mmm dd HH:MM:SS USER@HOST ~]% cd projects/linux-library
+[Www Mmm dd HH:MM:SS USER@HOST ~/projects/linux-library]% cd /usr/bin
+[Www Mmm dd HH:MM:SS USER@HOST /usr/bin]% exit
+
+$ print -rP -- '[%n@%m %1~]%# '
+[USER@HOST ~]% 
+
+$ printf 'echo only this reached stdout\n' | PS1='[%n@%m %1~]%# ' zsh -f -i 2>/dev/null
+only this reached stdout
+
+$ cat ~/.zshrc
+PROMPT="[%D{%a %b %d} %D{%H:%M:%S} %n@%m %~]%# "
+
+$ zsh
+[Www Mmm dd HH:MM:SS USER@HOST ~]% cd projects/linux-library
+[Www Mmm dd HH:MM:SS USER@HOST ~/projects/linux-library]% exit

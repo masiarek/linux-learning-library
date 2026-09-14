@@ -1,0 +1,52 @@
+$ functions fish_prompt | head -n 2
+# Defined in embedded:functions/fish_prompt.fish @ line 4
+function fish_prompt --description 'Write out the prompt'
+
+$ fish_prompt; echo
+USER@HOST ~> 
+
+$ export PS1="[\u@\h \W]\$ "; fish_prompt; echo
+USER@HOST ~> 
+
+$ echo $PS1
+[\u@\h \W]$ 
+
+$ cd projects/linux-library; fish_prompt; echo
+USER@HOST ~/p/linux-library> 
+
+$ function fish_prompt
+    echo -n "[$USER@"(prompt_hostname)" "(path basename (prompt_pwd -d 0))"]\$ "
+end
+
+$ for dir in ~ ~/projects/linux-library /usr/bin /usr; cd $dir; fish_prompt; echo; end
+[USER@HOST ~]$ 
+[USER@HOST linux-library]$ 
+[USER@HOST bin]$ 
+[USER@HOST usr]$ 
+
+$ fish_is_root_user; and echo "#"; or echo "\$"
+$
+
+$ function fish_prompt
+    echo -n "["(date "+%a %b %d %H:%M:%S")" $USER@"(prompt_hostname)" "(prompt_pwd -d 0)"]\$ "
+end
+
+$ for dir in ~ ~/projects/linux-library /usr/bin; cd $dir; fish_prompt; echo; end
+[Www Mmm dd HH:MM:SS USER@HOST ~]$ 
+[Www Mmm dd HH:MM:SS USER@HOST ~/projects/linux-library]$ 
+[Www Mmm dd HH:MM:SS USER@HOST /usr/bin]$ 
+
+$ funcsave fish_prompt
+funcsave: wrote ~/.config/fish/functions/fish_prompt.fish
+
+$ cat ~/.config/fish/functions/fish_prompt.fish
+function fish_prompt
+    echo -n "["(date "+%a %b %d %H:%M:%S")" $USER@"(prompt_hostname)" "(prompt_pwd -d 0)"]\$ "
+end
+
+$ fish -c fish_prompt; echo
+[Www Mmm dd HH:MM:SS USER@HOST ~]$ 
+
+$ fish --no-config -c fish_prompt; echo
+USER@HOST ~> 
+

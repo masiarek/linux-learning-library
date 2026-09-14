@@ -1,0 +1,13 @@
+$ echo "bash ${BASH_VERSINFO[0]}"
+bash 3
+
+$ bash -c 'cat nosuch distros |& sed "s/^/piped: /"'
+bash: -c: line 0: syntax error near unexpected token `&'
+bash: -c: line 0: `cat nosuch distros |& sed "s/^/piped: /"'
+(exit status 2)
+
+$ bash -c 'f() { cat nosuch distros |& sed "s/^/piped: /"; }; declare -f f'
+bash: -c: line 0: syntax error near unexpected token `&'
+bash: -c: line 0: `f() { cat nosuch distros |& sed "s/^/piped: /"; }; declare -f f'
+(exit status 2)
+

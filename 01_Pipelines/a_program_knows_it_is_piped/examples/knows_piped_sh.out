@@ -1,0 +1,17 @@
+$ touch alma darkfi fedora; mkdir isos
+
+$ ls
+alma
+darkfi
+fedora
+isos
+
+$ ls | less
+alma
+darkfi
+fedora
+isos
+
+$ if [ -t 1 ]; then echo "stdout is a terminal"; else echo "stdout is not a terminal"; fi
+stdout is not a terminal
+

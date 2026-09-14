@@ -1,0 +1,20 @@
+$ echo \d "\d"
+d \d
+
+$ printf "5\nd\n" | grep \d
+d
+
+$ string match -r "\d+" "ubuntu 24"
+24
+
+$ string match -re "\d" < hosts.txt
+alma 9 build
+ubuntu 24 box
+
+$ string match -rq "\d" -- "fedora box"; or echo "no digit"
+no digit
+
+$ perl -ne "print if /\d/" hosts.txt
+alma 9 build
+ubuntu 24 box
+

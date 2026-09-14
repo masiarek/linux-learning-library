@@ -1,0 +1,15 @@
+$ ls | grep alma | wc -l
+       3
+
+$ printf "[%s]\n" "$(ls | grep alma | wc -l)"
+[       3]
+
+$ [ "$(ls | grep alma | wc -l)" -eq 3 ] && echo "equal to 3"
+equal to 3
+
+$ ls | grep alma | wc -l | tr -d " "
+3
+
+$ ls | grep -c alma
+3
+
