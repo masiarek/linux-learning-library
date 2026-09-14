@@ -1,0 +1,20 @@
+$ PS1= PS2= HISTFILE=$PWD/hist bash --norc -i <<'EOF' 2>&1 | grep -v -e 'job control' -e 'process group' -e '^exit$'
+echo "wow!ok"
+echo "wow!"
+echo 'wow!ok'
+echo wow\!ok
+set +H
+echo "wow!ok"
+EOF
+echo "wow!ok"
+bash: !ok: event not found
+echo "wow!"
+wow!
+echo 'wow!ok'
+wow!ok
+echo wow\!ok
+wow!ok
+set +H
+echo "wow!ok"
+wow!ok
+

@@ -1,0 +1,78 @@
+## Nothing set. B exits first, then A
+A% echo from-A
+from-A
+B% echo from-B
+from-B
+(B exits)
+(A exits)
+$ cat hist
+echo old
+echo from-B
+echo from-A
+
+## unsetopt appendhistory (zsh +o appendhistory)
+A% echo from-A
+from-A
+B% echo from-B
+from-B
+(B exits)
+(A exits)
+$ cat hist
+echo old
+echo from-A
+
+## setopt incappendhistory (zsh -o incappendhistory)
+A% echo from-A
+from-A
+B% echo from-B
+from-B
+A% echo again-A
+again-A
+(both still open)
+$ cat hist
+echo old
+echo from-A
+echo from-B
+echo again-A
+
+A% fc -ln 1
+echo old
+echo from-A
+echo again-A
+(B exits)
+(A exits)
+$ cat hist
+echo old
+echo from-A
+echo from-B
+echo again-A
+fc -ln 1
+
+## setopt sharehistory (zsh -o sharehistory)
+A% echo from-A
+from-A
+B% echo from-B
+from-B
+A% echo again-A
+again-A
+(both still open)
+$ cat hist
+echo old
+: <epoch>:0;echo from-A
+: <epoch>:0;echo from-B
+: <epoch>:0;echo again-A
+
+A% fc -ln 1
+echo old
+echo from-A
+echo from-B
+echo again-A
+(B exits)
+(A exits)
+$ cat hist
+echo old
+echo from-A
+echo from-B
+echo again-A
+fc -ln 1
+

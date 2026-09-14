@@ -1,0 +1,30 @@
+$ cat add.fish
+set -e fish_private_mode; set -e fish_history
+history append "echo zażółć gęślą jaźń"
+history append "echo two
+echo lines"
+history append "echo back\\slash"
+
+$ fish --no-config add.fish
+
+$ string replace -r "when: \d+" "when: <epoch>" < ~/.local/share/fish/fish_history
+- cmd: echo zażółć gęślą jaźń
+  when: <epoch>
+- cmd: echo two\necho lines
+  when: <epoch>
+- cmd: echo back\\slash
+  when: <epoch>
+
+$ head -n 1 ~/.local/share/fish/fish_history | perl -ne 'printf "%*v02x\n", " ", $_'
+2d 20 63 6d 64 3a 20 65 63 68 6f 20 7a 61 c5 bc c3 b3 c5 82 c4 87 20 67 c4 99 c5 9b 6c c4 85 20 6a 61 c5 ba c5 84 0a
+
+$ cat data/fish/fish_history
+- cmd: echo one
+  when: 1700000000
+- cmd: echo two
+  when: 1700000060
+
+$ XDG_DATA_HOME=$PWD/data fish --no-config -c 'set -e fish_private_mode; set -e fish_history; history --show-time="%F %T  "'
+2023-11-14 22:14:20  echo two
+2023-11-14 22:13:20  echo one
+

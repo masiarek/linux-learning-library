@@ -1,0 +1,50 @@
+$ HISTFILE=$PWD/missing bash --norc -i 2>/dev/null <<'EOF'
+echo one
+history -a
+cat missing 2>&1
+EOF
+one
+cat: missing: No such file or directory
+
+$ : > empty
+
+$ HISTFILE=$PWD/empty bash --norc -i 2>/dev/null <<'EOF'
+echo one
+history -a
+cat empty
+EOF
+one
+
+$ echo 'echo old' > oneline
+
+$ HISTFILE=$PWD/oneline bash --norc -i 2>/dev/null <<'EOF'
+echo one
+history -a
+cat oneline
+EOF
+one
+echo old
+echo one
+history -a
+
+$ printf 'echo old1\necho old2\n' > cleared
+
+$ HISTFILE=$PWD/cleared bash --norc -i 2>/dev/null <<'EOF'
+history -c
+echo after
+EOF
+after
+
+$ cat cleared
+echo after
+
+$ printf 'echo old1\necho old2\n' > unlimited
+
+$ HISTFILE=$PWD/unlimited HISTSIZE=-1 bash --norc -i 2>/dev/null <<'EOF'
+echo new
+history
+EOF
+new
+
+$ cat unlimited
+

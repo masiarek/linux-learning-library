@@ -1,0 +1,38 @@
+$ HISTFILE=$PWD/hist bash --norc --noediting -i >/dev/null 2>/dev/null <<'EOF'
+echo zażółć gęślą jaźń
+EOF
+
+$ cat hist
+echo zażółć gęślą jaźń
+
+$ perl -ne 'printf "%*v02x\n", " ", $_' hist
+65 63 68 6f 20 7a 61 c5 bc c3 b3 c5 82 c4 87 20 67 c4 99 c5 9b 6c c4 85 20 6a 61 c5 ba c5 84 0a
+
+$ printf '#1700000000\necho one\n#1700000060\necho two\n' > stamped
+
+$ HISTFILE=$PWD/stamped bash --norc -i 2>/dev/null <<'EOF'
+history | head -n 2
+HISTTIMEFORMAT='%F %T ' history | head -n 2
+EOF
+    1  echo one
+    2  echo two
+    1  2023-11-14 22:13:20 echo one
+    2  2023-11-14 22:14:20 echo two
+
+$ HISTFILE=$PWD/stamped bash --norc -i >/dev/null 2>/dev/null <<'EOF'
+HISTTIMEFORMAT='%F %T '
+echo three
+EOF
+
+$ sed 's/^#[0-9][0-9]*$/#<epoch>/' stamped
+#<epoch>
+echo one
+#<epoch>
+echo two
+history | head -n 2
+HISTTIMEFORMAT='%F %T ' history | head -n 2
+#<epoch>
+HISTTIMEFORMAT='%F %T '
+#<epoch>
+echo three
+

@@ -1,0 +1,36 @@
+$ PS1= PS2= HISTFILE=$PWD/hist bash --norc -i <<'EOF' 2>&1 | grep -v -e 'job control' -e 'process group' -e '^exit$'
+echo alpha beta gamma
+echo !$
+!!
+echo !-3:2 !-3:$
+^beta^delta
+!echo:p
+history -p '!!' '!-2:1'
+EOF
+echo alpha beta gamma
+alpha beta gamma
+echo !$
+echo gamma
+gamma
+!!
+echo gamma
+gamma
+echo !-3:2 !-3:$
+echo beta gamma
+beta gamma
+^beta^delta
+echo delta gamma
+delta gamma
+!echo:p
+echo delta gamma
+history -p '!!' '!-2:1'
+echo delta gamma
+delta
+
+$ bash -c 'echo "in a script: wow!ok !!"'
+in a script: wow!ok !!
+
+$ bash -c 'set -o history; history -s "echo last words"; history -p "!!" "!$"'
+echo last words
+words
+

@@ -1,0 +1,22 @@
+$ python3 $at_a_terminal "echo a" " echo secret" "echo b" "echo b" "echo c"
+
+$ string replace -r "when: \d+" "when: <epoch>" < ~/.local/share/fish/fish_history
+- cmd: echo a
+  when: <epoch>
+- cmd: echo b
+  when: <epoch>
+- cmd: echo c
+  when: <epoch>
+
+$ python3 $at_a_terminal 'function fish_should_add_to_history; string match -qv -- "cd *" $argv; end' "cd /tmp" "echo kept" " echo spaced"
+
+$ string replace -r "when: \d+" "when: <epoch>" < ~/.local/share/fish/fish_history | string replace -r -- "^- cmd: +" "- cmd: "
+- cmd: function fish_should_add_to_history; string match -qv -- "cd *" $argv; end
+  when: <epoch>
+- cmd: echo kept
+  when: <epoch>
+- cmd: echo spaced
+  when: <epoch>
+- cmd: exit
+  when: <epoch>
+

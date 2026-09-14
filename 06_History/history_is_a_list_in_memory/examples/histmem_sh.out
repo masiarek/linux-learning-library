@@ -1,0 +1,93 @@
+$ HOME=$PWD bash --norc -i 2>/dev/null <<'EOF'
+echo "HISTFILE=~/${HISTFILE##*/} HISTSIZE=$HISTSIZE HISTFILESIZE=$HISTFILESIZE"
+EOF
+HISTFILE=~/.bash_history HISTSIZE=500 HISTFILESIZE=500
+
+$ HISTFILE=$PWD/hist bash --norc -i 2>/dev/null <<'EOF'
+echo one
+echo two
+history
+test -e hist && echo "hist exists" || echo "no hist file yet"
+EOF
+one
+two
+    1  echo one
+    2  echo two
+    3  history
+no hist file yet
+
+$ cat hist
+echo one
+echo two
+history
+test -e hist && echo "hist exists" || echo "no hist file yet"
+
+$ HISTFILE=$PWD/hist bash --norc -i 2>/dev/null <<'EOF'
+history
+EOF
+    1  echo one
+    2  echo two
+    3  history
+    4  test -e hist && echo "hist exists" || echo "no hist file yet"
+    5  history
+
+$ HISTFILE=$PWD/hist bash --norc -i 2>/dev/null <<'EOF'
+history -c
+history -r
+history -r
+history
+EOF
+    1  history -r
+    2  echo one
+    3  echo two
+    4  history
+    5  test -e hist && echo "hist exists" || echo "no hist file yet"
+    6  history
+    7  history -r
+    8  echo one
+    9  echo two
+   10  history
+   11  test -e hist && echo "hist exists" || echo "no hist file yet"
+   12  history
+   13  history
+
+$ printf 'echo old%s\n' 1 2 3 4 5 > big
+
+$ HISTFILE=$PWD/big HISTSIZE=3 bash --norc -i 2>/dev/null <<'EOF'
+echo "HISTSIZE=$HISTSIZE HISTFILESIZE=$HISTFILESIZE"
+cat big
+history
+EOF
+HISTSIZE=3 HISTFILESIZE=3
+echo old3
+echo old4
+echo old5
+    4  echo "HISTSIZE=$HISTSIZE HISTFILESIZE=$HISTFILESIZE"
+    5  cat big
+    6  history
+
+$ printf 'echo old%s\n' 1 2 > small
+
+$ HISTFILE=$PWD/small HISTSIZE=2 HISTFILESIZE=100 bash --norc -i 2>/dev/null <<'EOF'
+echo a
+EOF
+a
+
+$ cat small
+echo old1
+echo old2
+echo a
+
+$ HISTFILE=$PWD/small HISTSIZE=2 HISTFILESIZE=100 bash --norc -i 2>/dev/null <<'EOF'
+echo b
+echo c
+echo d
+EOF
+b
+c
+d
+
+$ cat small
+echo c
+echo d
+

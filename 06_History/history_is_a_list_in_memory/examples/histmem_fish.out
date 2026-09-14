@@ -1,0 +1,33 @@
+$ fish --no-config -c 'echo "fish_private_mode=[$fish_private_mode] fish_history=[$fish_history]"'
+fish_private_mode=[1] fish_history=[]
+
+$ printf "%s\n" "echo one" | fish --no-config -C "set -e fish_private_mode; set -e fish_history" -i
+one
+
+$ test -e ~/.local/share/fish/fish_history; and echo "fish_history exists"; or echo "no fish_history file"
+no fish_history file
+
+$ python3 $at_a_terminal "echo one" "cp ~/.local/share/fish/fish_history while-running"
+
+$ string replace -r "when: \d+" "when: <epoch>" < while-running
+- cmd: echo one
+  when: <epoch>
+- cmd: cp ~/.local/share/fish/fish_history while-running
+  when: <epoch>
+  paths:
+    - ~/.local/share/fish/fish_history
+
+$ string replace -r "when: \d+" "when: <epoch>" < ~/.local/share/fish/fish_history
+- cmd: echo one
+  when: <epoch>
+- cmd: cp ~/.local/share/fish/fish_history while-running
+  when: <epoch>
+  paths:
+    - ~/.local/share/fish/fish_history
+
+$ fish --no-config -c 'set -e fish_private_mode; set -g fish_history work; history append "echo at work"'
+
+$ ls ~/.local/share/fish
+fish_history
+work_history
+

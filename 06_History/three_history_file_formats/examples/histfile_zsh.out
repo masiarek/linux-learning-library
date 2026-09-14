@@ -1,0 +1,38 @@
+$ zsh -d -i >/dev/null 2>/dev/null <<'EOF'
+echo zażółć gęślą jaźń
+EOF
+
+$ printf '%s\n' 'echo zażółć gęślą jaźń' | perl -ne 'printf "%*v02x\n", " ", $_'
+65 63 68 6f 20 7a 61 c5 bc c3 b3 c5 82 c4 87 20 67 c4 99 c5 9b 6c c4 85 20 6a 61 c5 ba c5 84 0a
+
+$ perl -ne 'printf "%*v02x\n", " ", $_' hist
+65 63 68 6f 20 7a 61 c5 bc c3 b3 c5 82 c4 83 a7 20 67 c4 83 b9 c5 83 bb 6c c4 83 a5 20 6a 61 c5 ba c5 83 a4 0a
+
+$ grep -c 'zażó' hist; grep -c 'jaźń' hist
+1
+0
+
+$ zsh -d -i 2>/dev/null <<'EOF'
+LC_ALL=C.UTF-8 fc -ln 1 1
+EOF
+echo zażółć gęślą jaźń
+
+$ zsh -d -i -o extendedhistory >/dev/null 2>/dev/null <<'EOF'
+echo one
+EOF
+
+$ sed 's/^: [0-9]*:/: <epoch>:/' hist
+: <epoch>:0;echo one
+
+$ printf ': 1700000000:5;sleep 5\n: 1700000060:0;echo two\necho plain\n' > hist
+
+$ zsh -d -i 2>/dev/null <<'EOF'
+fc -l -t '%F %T' -D 1 2
+fc -ln 1 3
+EOF
+    1  2023-11-14 22:13:20  0:05  sleep 5
+    2  2023-11-14 22:14:20  0:00  echo two
+sleep 5
+echo two
+echo plain
+

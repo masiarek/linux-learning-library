@@ -154,6 +154,14 @@ Measured differences — add a row when you find one, and say where you measured
 | `echo x > /dev/stderr` while descriptors 1 and 2 share a file | reopens the file and truncates it; under an outer `>>` the line is lost too | duplicates descriptor 2; nothing is truncated |
 | `&>>` in bash | appends, bash 5.2 | a syntax error, bash 3.2 |
 | the tee chapter, and the rest of the Redirection chapter | identical | identical |
+| `history -a` in a session that started with no or an empty `HISTFILE` | appends, bash 5.2 | writes nothing, bash 3.2 |
+| `history -c`, then exit | the old lines kept, the new ones appended | the file holds only the lines after the clear |
+| `HISTSIZE=-1` | unlimited | keeps nothing, and empties the file at exit |
+| an interactive `echo "wow!"` | prints `wow!` | `event not found` |
+| zsh with no user startup file | no `HISTFILE`, `HISTSIZE` 30, `SAVEHIST` 0 | `~/.zsh_history`, 2000 and 1000, from `/etc/zshrc` |
+| `/etc/skel/.bashrc` | `ignoreboth`, `histappend`, 1000 and 2000 | there is no `/etc/skel` |
+| bash's line editor, C locale, typed non-ASCII bytes | kept | dropped by 3.2 — history examples use `--noediting` |
+| two terminals on one file, `HISTCONTROL`, the three file formats, `!` designators, and all of fish's history | identical | identical |
 
 Measured 2026-09-13.
 
@@ -161,6 +169,7 @@ Measured 2026-09-13.
 
 - **Ubuntu's `command-not-found` package** takes over fish's unknown-command message: `[[ -s hosts.txt ]]: command not found` instead of `fish: Unknown command: '[[ -s hosts.txt ]]'`. A child fish that must show fish's own words gets `-C 'functions -q fish_command_not_found; function fish_command_not_found; __fish_default_command_not_found_handler $argv; end'`.
 - **`/etc/zsh/zshrc` runs `compinit`**, which prints `not interactive and can't open terminal` and `compinit: initialization aborted` in an interactive zsh that reads a pipe. Start zsh with `-f`, or `-d` when `~/.zshrc` must still be read.
+- **fish saves only what it reads from a terminal.** A command piped into `fish -i` runs but is not saved, so the history lessons type into fish through a pseudo-terminal ([`fish_at_a_terminal.py`](06_History/history_is_a_list_in_memory/examples/fish_at_a_terminal.py)). That is the one place examples depend on timing: the helper sleeps nowhere, but it types every line ahead of fish, reads and discards what fish draws until fish exits, and gives up after 60 seconds. Its fish examples passed repeated runs on both machines; a flake there is the first thing to suspect on a slow runner.
 
 ## Links
 

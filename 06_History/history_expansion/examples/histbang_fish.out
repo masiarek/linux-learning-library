@@ -1,0 +1,30 @@
+$ !!
+fish: Unknown command: !!
+fish: 
+!!
+^^
+(exit status 127)
+
+$ echo !$
+fish: Expected a variable name after this $.
+echo !$
+      ^
+(exit status 127)
+
+$ echo "wow!ok" !! !-2
+wow!ok !! !-2
+
+$ python3 $at_a_terminal 'function last_history_item; echo $history[1]; end' "abbr --add !! --position anywhere --function last_history_item" "echo ran >> log" "!!"
+
+$ cat log
+ran
+ran
+
+$ string replace -r "when: \d+" "when: <epoch>" < ~/.local/share/fish/fish_history
+- cmd: function last_history_item; echo $history[1]; end
+  when: <epoch>
+- cmd: abbr --add !! --position anywhere --function last_history_item
+  when: <epoch>
+- cmd: echo ran >> log
+  when: <epoch>
+

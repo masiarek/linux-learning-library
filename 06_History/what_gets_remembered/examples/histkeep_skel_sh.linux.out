@@ -1,0 +1,8 @@
+$ grep -n -e HIST -e histappend /etc/skel/.bashrc; echo "exit status $?"
+13:HISTCONTROL=ignoreboth
+16:shopt -s histappend
+18:# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+19:HISTSIZE=1000
+20:HISTFILESIZE=2000
+exit status 0
+

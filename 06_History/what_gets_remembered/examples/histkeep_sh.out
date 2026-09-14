@@ -1,0 +1,57 @@
+$ cat typed
+echo a
+ echo secret
+echo b
+echo b
+echo a
+
+$ HISTCONTROL= HISTFILE=$PWD/hist bash --norc -i <typed >/dev/null 2>/dev/null; cat hist
+echo a
+ echo secret
+echo b
+echo b
+echo a
+
+$ HISTCONTROL=ignorespace HISTFILE=$PWD/hist bash --norc -i <typed >/dev/null 2>/dev/null; cat hist
+echo a
+echo b
+echo b
+echo a
+
+$ HISTCONTROL=ignoredups HISTFILE=$PWD/hist bash --norc -i <typed >/dev/null 2>/dev/null; cat hist
+echo a
+ echo secret
+echo b
+echo a
+
+$ HISTCONTROL=ignoreboth HISTFILE=$PWD/hist bash --norc -i <typed >/dev/null 2>/dev/null; cat hist
+echo a
+echo b
+echo a
+
+$ HISTCONTROL=erasedups HISTFILE=$PWD/hist bash --norc -i <typed >/dev/null 2>/dev/null; cat hist
+ echo secret
+echo b
+echo a
+
+$ HISTCONTROL=ignorespace HISTFILE=$PWD/hist bash --norc -i 2>/dev/null <<'EOF'
+ echo secret
+history
+EOF
+secret
+    1  history
+
+$ cat typed
+cd /tmp
+echo a
+echo a
+ echo secret
+ls
+ls -d /
+echo b
+
+$ HISTIGNORE='&:ls:cd *:[ ]*' HISTFILE=$PWD/hist bash --norc -i <typed >/dev/null 2>/dev/null; cat hist
+echo a
+ls -d /
+echo b
+

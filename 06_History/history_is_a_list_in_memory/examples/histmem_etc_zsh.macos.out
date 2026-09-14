@@ -1,0 +1,8 @@
+$ HOME=$PWD env -u ZDOTDIR -u TERM_PROGRAM -u TERM_SESSION_ID zsh -i 2>/dev/null <<'EOF'
+echo "HISTFILE=[${HISTFILE#$HOME/}] HISTSIZE=$HISTSIZE SAVEHIST=$SAVEHIST"
+EOF
+HISTFILE=[.zsh_history] HISTSIZE=2000 SAVEHIST=1000
+
+$ test -e .zsh_history && echo ".zsh_history was saved" || echo "no .zsh_history"
+.zsh_history was saved
+

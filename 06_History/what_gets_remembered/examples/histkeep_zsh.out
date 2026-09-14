@@ -1,0 +1,40 @@
+$ cat typed
+echo a
+ echo secret
+echo b
+echo b
+echo a
+
+$ zsh -d -i <typed >/dev/null 2>/dev/null; cat hist
+echo a
+ echo secret
+echo b
+echo b
+echo a
+
+$ zsh -d -i -o histignorespace <typed >/dev/null 2>/dev/null; cat hist
+echo a
+echo b
+echo b
+echo a
+
+$ zsh -d -i -o histignoredups <typed >/dev/null 2>/dev/null; cat hist
+echo a
+ echo secret
+echo b
+echo a
+
+$ zsh -d -i -o histignorealldups <typed >/dev/null 2>/dev/null; cat hist
+ echo secret
+echo b
+echo a
+
+$ cat typed
+zshaddhistory() { [[ $1 != "cd "* ]] }
+cd /tmp
+echo kept
+
+$ zsh -d -i <typed >/dev/null 2>/dev/null; cat hist
+zshaddhistory() { [[ $1 != "cd "* ]] }
+echo kept
+

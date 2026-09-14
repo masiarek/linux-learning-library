@@ -128,6 +128,16 @@ NAV_ORDER: dict[str, list[str]] = {
         "a_class_is_a_set",
         "an_unquoted_class_is_a_glob",
     ],
+    # The list in memory, two shells sharing its file, what is left out of it,
+    # the `!` that reads it back, then the bytes each shell writes.
+    "06_History": [
+        "README.md",
+        "history_is_a_list_in_memory",
+        "two_terminals_one_history_file",
+        "what_gets_remembered",
+        "history_expansion",
+        "three_history_file_formats",
+    ],
     # The filter first, then how it matches, what a query can say, what case
     # and accents do to it, and last the Ctrl-R pipeline built from all of it.
     "07_fzf": [

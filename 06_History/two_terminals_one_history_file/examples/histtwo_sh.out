@@ -1,0 +1,72 @@
+## Nothing set. B exits first, then A
+A$ echo from-A
+from-A
+B$ echo from-B
+from-B
+(B exits)
+(A exits)
+$ cat hist
+echo old
+echo from-B
+echo from-A
+
+## HISTSIZE=3 HISTFILESIZE=100, and A runs four commands
+A$ echo a1
+a1
+A$ echo a2
+a2
+A$ echo a3
+a3
+A$ echo a4
+a4
+B$ echo from-B
+from-B
+(B exits)
+(A exits)
+$ cat hist
+echo a2
+echo a3
+echo a4
+
+## The same, with histappend (bash -O histappend)
+A$ echo a1
+a1
+A$ echo a2
+a2
+A$ echo a3
+a3
+A$ echo a4
+a4
+B$ echo from-B
+from-B
+(B exits)
+(A exits)
+$ cat hist
+echo old
+echo from-B
+echo a2
+echo a3
+echo a4
+
+## PROMPT_COMMAND='history -a; echo'
+A$ echo from-A
+from-A
+B$ echo from-B
+from-B
+A$ echo again-A
+again-A
+(both still open)
+$ cat hist
+echo old
+echo from-A
+echo from-B
+echo again-A
+
+B$ history -n; history
+    1  echo old
+    2  echo from-B
+    3  history -n; history
+    4  echo from-B
+    5  echo again-A
+(B exits)
+(A exits)

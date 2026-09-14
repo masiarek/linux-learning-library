@@ -1,0 +1,53 @@
+$ zsh -f -i 2>/dev/null <<'EOF'
+echo "HISTFILE=[$HISTFILE] HISTSIZE=$HISTSIZE SAVEHIST=$SAVEHIST"
+EOF
+HISTFILE=[] HISTSIZE=30 SAVEHIST=0
+
+$ echo 'echo old' > hist
+
+$ HISTFILE=$PWD/hist HISTSIZE=100 SAVEHIST=100 zsh -f -i 2>/dev/null <<'EOF'
+echo new
+fc -l 1
+EOF
+new
+    1  echo new
+
+$ cat hist
+echo old
+
+$ HISTFILE=$PWD/hist HISTSIZE=100 SAVEHIST=100 ZDOTDIR=$PWD zsh -d -i 2>/dev/null <<'EOF'
+echo new
+fc -l 1
+cat hist
+EOF
+new
+    1  echo old
+    2  echo new
+echo old
+
+$ cat hist
+echo old
+echo new
+fc -l 1
+cat hist
+
+$ HISTFILE=$PWD/hist HISTSIZE=100 SAVEHIST=2 ZDOTDIR=$PWD zsh -d -i 2>/dev/null <<'EOF'
+echo last
+EOF
+last
+
+$ cat hist
+cat hist
+echo last
+
+$ HISTFILE=$PWD/now HISTSIZE=100 SAVEHIST=100 zsh -f -i 2>/dev/null <<'EOF'
+echo written
+fc -W
+cat now
+history -c 2>&1
+EOF
+written
+echo written
+fc -W
+history: bad option: -c
+

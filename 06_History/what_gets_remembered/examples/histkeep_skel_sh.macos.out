@@ -1,0 +1,4 @@
+$ grep -n -e HIST -e histappend /etc/skel/.bashrc; echo "exit status $?"
+grep: /etc/skel/.bashrc: No such file or directory
+exit status 2
+

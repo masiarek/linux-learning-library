@@ -1,0 +1,14 @@
+$ python3 fish_at_a_terminal.py "echo from-A" "python3 fish_at_a_terminal.py 'echo from-B'" "echo again-A"
+
+$ string replace -r "when: \d+" "when: <epoch>" < ~/.local/share/fish/fish_history
+- cmd: echo from-A
+  when: <epoch>
+- cmd: python3 fish_at_a_terminal.py 'echo from-B'
+  when: <epoch>
+  paths:
+    - fish_at_a_terminal.py
+- cmd: echo from-B
+  when: <epoch>
+- cmd: echo again-A
+  when: <epoch>
+

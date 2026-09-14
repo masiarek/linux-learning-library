@@ -1,0 +1,40 @@
+$ PS1= PS2= zsh -f -i +o promptsp +o promptcr <<'EOF' 2>&1
+setopt verbose
+echo alpha beta gamma
+echo !$
+!!
+echo !-3:2 !-3:$
+^beta^delta
+!echo:p
+echo "wow!ok"
+echo 'wow!ok'
+setopt nobanghist
+echo "wow!ok"
+EOF
+echo alpha beta gamma
+alpha beta gamma
+echo !$
+echo gamma
+gamma
+!!
+echo gamma
+gamma
+echo !-3:2 !-3:$
+echo beta gamma
+beta gamma
+^beta^delta
+echo delta gamma
+delta gamma
+!echo:p
+echo delta gamma
+echo "wow!ok"
+zsh: event not found: ok
+echo 'wow!ok'
+wow!ok
+setopt nobanghist
+echo "wow!ok"
+wow!ok
+
+$ zsh -f -c 'echo "in a script: wow!ok !!"'
+in a script: wow!ok !!
+
