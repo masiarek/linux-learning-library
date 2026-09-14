@@ -1,0 +1,15 @@
+$ stat -f "%Sp  %HT  %N" regular adir alink apipe asock /dev/null
+-rw-r--r--  Regular File  regular
+drwxr-xr-x  Directory  adir
+lrwxr-xr-x  Symbolic Link  alink
+prw-r--r--  Fifo File  apipe
+srwxr-xr-x  Socket  asock
+crw-rw-rw-  Character Device  /dev/null
+
+$ stat -f "%Sp  %HT  %N" /dev/disk0 /dev/rdisk0
+brw-r-----  Block Device  /dev/disk0
+crw-r-----  Character Device  /dev/rdisk0
+
+$ if [ "$(stat -f %r /dev/disk0)" = "$(stat -f %r /dev/rdisk0)" ]; then echo "one device number"; else echo "two device numbers"; fi
+one device number
+

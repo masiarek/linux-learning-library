@@ -1,0 +1,28 @@
+$ for op in -e -f -d -L -p -S -b -c; set -l hits; for f in * /dev/null; test $op $f; and set -a hits $f; end; echo "test $op: $hits"; end
+test -e: adir alink apipe asock regular tonull /dev/null
+test -f: alink regular
+test -d: adir
+test -L: alink dangling tonull
+test -p: apipe
+test -S: asock
+test -b: 
+test -c: tonull /dev/null
+
+$ for t in file dir link fifo socket char block; echo "path filter -t $t:" (path filter -t $t * /dev/null); end
+path filter -t file: alink regular
+path filter -t dir: adir
+path filter -t link: alink tonull
+path filter -t fifo: apipe
+path filter -t socket: asock
+path filter -t char: tonull /dev/null
+path filter -t block:
+
+$ test -L dangling; echo "test -L dangling: $status"
+test -L dangling: 0
+
+$ path is -t link dangling; echo "path is -t link dangling: $status"
+path is -t link dangling: 1
+
+$ for f in *; test -L $f; and not test -e $f; and echo "broken: $f"; end
+broken: dangling
+

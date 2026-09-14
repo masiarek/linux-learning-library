@@ -1,0 +1,44 @@
+$ for f in regular adir alink tonull dangling apipe asock /dev/null; do echo "$(ls -ld "$f" | cut -c1) $f"; done
+- regular
+d adir
+l alink
+l tonull
+l dangling
+p apipe
+s asock
+c /dev/null
+
+$ ls -F
+adir/
+alink@
+apipe|
+asock=
+dangling@
+regular
+tonull@
+
+$ for f in regular adir alink tonull dangling apipe asock /dev/null; do t=; for op in -e -f -d -L -p -S -b -c; do [ $op "$f" ] && t="$t $op"; done; printf "%-10s%s\n" "$f" "$t"; done
+regular    -e -f
+adir       -e -d
+alink      -e -f -L
+tonull     -e -L -c
+dangling   -L
+apipe      -e -p
+asock      -e -S
+/dev/null  -e -c
+
+$ for t in f d l p s b c; do printf "%s:" $t; find regular adir alink tonull dangling apipe asock /dev/null -prune -type $t | sed "s/^/ /" | tr -d "\n"; echo; done
+f: regular
+d: adir
+l: alink tonull dangling
+p: apipe
+s: asock
+b:
+c: /dev/null
+
+$ for t in f d l c; do printf "%s:" $t; find -L regular adir alink tonull dangling apipe asock /dev/null -prune -type $t | sed "s/^/ /" | tr -d "\n"; echo; done
+f: regular alink
+d: adir
+l: dangling
+c: tonull /dev/null
+

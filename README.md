@@ -20,6 +20,7 @@ Most Linux books are written on one machine, in one shell. The commands in them 
 | 06 | [History](06_History/README.md) | Where each shell keeps what you typed, when it writes it, and how to find it again |
 | 07 | [fzf](07_fzf/README.md) | A fuzzy filter for any list, and the Ctrl-R history search built on it |
 | 08 | [The prompt](08_Prompt/README.md) | `PS1` in bash, `PROMPT` in zsh, and a function in fish |
+| 10 | [Files](10_Files/README.md) | The letter `ls -l` prints before the permissions: seven file types, what opening each one does, and the names `test`, `find`, zsh and fish give them |
 | 09 | [Resources](09_Resources/README.md) | The manuals behind each chapter, and the sibling libraries |
 
 ## Running the examples

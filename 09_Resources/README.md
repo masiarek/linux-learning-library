@@ -20,7 +20,7 @@
 
 ## Books
 
-- **The Ultimate Linux Shell Scripting Guide**, Donald A. Tevault (Packt, 2024). The book whose pages prompted chapters 01, 02, 03, 04 and 08. It is written on Fedora in bash, and this library checks what changes on a Mac and in fish. Its chapter 7, "Using od", is covered by the encodings library's [od page ↗](https://masiarek.github.io/encodings-learning-library/11_Tools/od/index.html#reading-a-textbooks-od-session).
+- **The Ultimate Linux Shell Scripting Guide**, Donald A. Tevault (Packt, 2024). The book whose pages prompted chapters 01, 02, 03, 04, 08 and 10; chapter 10 starts from its Table 2.1, *File type designators*. It is written on Fedora in bash, and this library checks what changes on a Mac and in fish. Its chapter 7, "Using od", is covered by the encodings library's [od page ↗](https://masiarek.github.io/encodings-learning-library/11_Tools/od/index.html#reading-a-textbooks-od-session).
 - [**The Linux Command Line** ↗](https://linuxcommand.org/tlcl.php), William Shotts, free online. Redirection, pipelines and the prompt, from the beginning.
 - **Efficient Linux at the Command Line**, Daniel J. Barrett (O'Reilly, 2022). Pipelines as a way of thinking, plus a good chapter on history.
 

@@ -1,0 +1,33 @@
+$ echo *(.)
+regular
+
+$ echo *(/)
+adir
+
+$ echo *(@)
+alink dangling tonull
+
+$ echo *(p)
+apipe
+
+$ echo *(=)
+asock
+
+$ echo /dev/null(%c)
+/dev/null
+
+$ echo *(N%b)
+
+
+$ echo *(-.)
+alink regular
+
+$ echo *(-%c)
+tonull
+
+$ echo *(-@)
+dangling
+
+$ [[ -S asock && -p apipe && -h dangling && ! -e dangling ]] && echo "[[ ]] takes the same letters as bash"
+[[ ]] takes the same letters as bash
+

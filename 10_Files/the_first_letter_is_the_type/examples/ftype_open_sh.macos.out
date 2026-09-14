@@ -1,0 +1,27 @@
+$ cat adir; echo "status $?"
+cat: adir: Is a directory
+status 1
+
+$ cat dangling; echo "status $?"
+cat: dangling: No such file or directory
+status 1
+
+$ cat tonull | wc -c | tr -d " "
+0
+
+$ ( echo "through the pipe" > apipe ) & cat apipe; wait
+through the pipe
+
+$ ls -ld apipe asock | awk "{print substr(\$1, 1, 10), \$5, \$NF}"
+prw-r--r-- 0 apipe
+srwxr-xr-x 0 asock
+
+$ bash -c ": < asock"; echo "status $?"
+bash: asock: Operation not supported on socket
+status 1
+
+$ cat asock; echo "status $?"
+cat: ai_family not supported: Operation not supported on socket
+cat: asock: Invalid argument
+status 1
+

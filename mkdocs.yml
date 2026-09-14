@@ -13,7 +13,7 @@
 # static files, byte for byte, so links to them keep working.
 
 site_name: Linux — Learning Library
-site_description: The Linux shell, measured — pipelines, redirection, tee, grep, tr, history, fzf and the prompt — and what changes on a Mac, in zsh and in fish. One idea per page, every claim backed by a script that runs and is checked against its recorded output in CI on Linux and macOS.
+site_description: The Linux shell, measured — pipelines, redirection, tee, grep, tr, history, fzf, the prompt and file types — and what changes on a Mac, in zsh and in fish. One idea per page, every claim backed by a script that runs and is checked against its recorded output in CI on Linux and macOS.
 site_url: https://masiarek.github.io/linux-learning-library/
 repo_url: https://github.com/masiarek/linux-learning-library
 repo_name: masiarek/linux-learning-library

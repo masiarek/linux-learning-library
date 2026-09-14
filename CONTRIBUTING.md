@@ -162,8 +162,13 @@ Measured differences — add a row when you find one, and say where you measured
 | `/etc/skel/.bashrc` | `ignoreboth`, `histappend`, 1000 and 2000 | there is no `/etc/skel` |
 | bash's line editor, C locale, typed non-ASCII bytes | kept | dropped by 3.2 — history examples use `--noediting` |
 | two terminals on one file, `HISTCONTROL`, the three file formats, `!` designators, and all of fish's history | identical | identical |
+| `stat`, naming a file's type | GNU coreutils 9.4: `stat -c %F`, `regular empty file`, `symbolic link`, `fifo`, `socket`, `character special file` | BSD: `stat -f %HT`, `Regular File`, `Symbolic Link`, `Fifo File`, `Socket`, `Character Device` |
+| a symlink's own mode | `lrwxrwxrwx`, always | `lrwxr-xr-x`, the umask applied |
+| opening a socket file | `No such device or address`, status 1 | `Operation not supported on socket`, status 1; `cat` adds `ai_family not supported` |
+| a disk's device files | no `/dev/rdisk0`; the image has no block device in `/dev` at all | `/dev/disk0` is `b` and `/dev/rdisk0` is `c`, with one device number |
+| the type letters of `ls -l`, `ls -F`, `test` and `find -type`, zsh's glob qualifiers and fish's `path filter` | identical | identical |
 
-Measured 2026-09-13.
+Measured 2026-09-13; the file-type rows 2026-09-14.
 
 **The runner is not the image.** `ubuntu-latest` carries packages and `/etc` files the `linux-lib-ubuntu` image does not, and two of them have changed an answer key — both found by CI, not by Docker:
 

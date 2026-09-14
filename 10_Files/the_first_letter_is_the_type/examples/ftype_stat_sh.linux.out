@@ -1,0 +1,11 @@
+$ stat -c "%A  %F  %n" regular adir alink apipe asock /dev/null
+-rw-r--r--  regular empty file  regular
+drwxr-xr-x  directory  adir
+lrwxrwxrwx  symbolic link  alink
+prw-r--r--  fifo  apipe
+srwxr-xr-x  socket  asock
+crw-rw-rw-  character special file  /dev/null
+
+$ if [ -e /dev/rdisk0 ]; then echo "/dev/rdisk0 exists"; else echo "no /dev/rdisk0"; fi
+no /dev/rdisk0
+
