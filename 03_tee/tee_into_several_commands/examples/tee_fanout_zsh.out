@@ -1,0 +1,25 @@
+$ echo hello > a.txt > b.txt; echo "a.txt: [$(cat a.txt)]"; echo "b.txt: [$(cat b.txt)]"
+a.txt: [hello]
+b.txt: [hello]
+
+$ echo hello > copy.txt | tr a-z A-Z; echo "copy.txt: [$(cat copy.txt)]"
+HELLO
+copy.txt: [hello]
+
+$ echo hello | tee > /dev/null | tr a-z A-Z
+HELLO
+
+$ setopt nomultios; echo hello > c.txt > d.txt; echo "c.txt: [$(cat c.txt)]"; echo "d.txt: [$(cat d.txt)]"; setopt multios
+c.txt: []
+d.txt: [hello]
+
+$ { echo hello | tee >(tr a-z A-Z) >(sed "s/^/copy: /") > /dev/null } | sort
+HELLO
+copy: hello
+
+$ diff <(printf "a\nb\n") <(printf "a\nc\n")
+2c2
+< b
+---
+> c
+

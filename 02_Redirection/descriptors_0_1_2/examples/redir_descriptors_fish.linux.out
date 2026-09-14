@@ -1,0 +1,26 @@
+$ for f in /dev/stdin /dev/stdout /dev/stderr; echo "$f -> "(readlink $f); end
+/dev/stdin -> /proc/self/fd/0
+/dev/stdout -> /proc/self/fd/1
+/dev/stderr -> /proc/self/fd/2
+
+$ begin; echo "to fd 3" >&3; end 3> three.txt; cat three.txt
+to fd 3
+
+$ begin; echo first; echo err >&2; echo last; end > log.txt 2>&1; cat -v log.txt
+first
+err
+last
+
+$ begin; echo first; echo err > /dev/stderr; echo last; end > log.txt 2>&1
+
+$ cat -v log.txt
+first
+last
+
+$ cat -v fish_stderr.txt
+err
+
+$ sh -c "echo first; echo err > /dev/stderr; echo last" > log.txt 2>&1; cat -v log.txt
+err
+^@^@last
+

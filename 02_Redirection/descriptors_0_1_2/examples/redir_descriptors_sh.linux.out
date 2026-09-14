@@ -1,0 +1,38 @@
+$ for f in /dev/stdin /dev/stdout /dev/stderr; do echo "$f -> $(readlink "$f")"; done
+/dev/stdin -> /proc/self/fd/0
+/dev/stdout -> /proc/self/fd/1
+/dev/stderr -> /proc/self/fd/2
+
+$ if [ -L /dev/fd ]; then echo "/dev/fd -> $(readlink /dev/fd)"; else echo "/dev/fd is a directory"; fi
+/dev/fd -> /proc/self/fd
+
+$ if [ -d /proc/self/fd ]; then echo "/proc/self/fd exists"; else echo "there is no /proc"; fi
+/proc/self/fd exists
+
+$ { echo "to fd 1"; echo "to fd 2" > /dev/stderr; } > out.txt 2> err.txt; echo "out.txt: $(cat out.txt)"; echo "err.txt: $(cat err.txt)"
+out.txt: to fd 1
+err.txt: to fd 2
+
+$ echo "read through /dev/stdin" | cat /dev/stdin
+read through /dev/stdin
+
+$ { echo "to fd 3" >&3; } 3> three.txt; cat three.txt
+to fd 3
+
+$ { echo first; echo err > /dev/stderr; echo last; } > log.txt 2>&1; cat -v log.txt
+err
+^@^@last
+
+$ { echo first; echo err >> /dev/stderr; echo last; } > log.txt 2>&1; cat -v log.txt
+first
+last
+
+$ { echo first; echo err >&2; echo last; } > log.txt 2>&1; cat -v log.txt
+first
+err
+last
+
+$ sh -c "echo first; echo err > /dev/stderr; echo last" > log.txt 2>&1; cat -v log.txt
+err
+^@^@last
+

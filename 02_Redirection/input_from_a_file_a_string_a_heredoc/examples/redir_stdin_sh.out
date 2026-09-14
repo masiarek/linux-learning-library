@@ -1,0 +1,42 @@
+$ printf "alma\ndarkfi\n" > names.txt
+
+$ grep -H alma names.txt
+names.txt:alma
+
+$ grep -H alma < names.txt
+(standard input):alma
+
+$ cat nosuch
+cat: nosuch: No such file or directory
+
+$ cat < nosuch
+redir_stdin_sh.sh: line 6: nosuch: No such file or directory
+
+$ tr a-z A-Z < names.txt
+ALMA
+DARKFI
+
+$ while read -r name; do echo "name: $name"; done < names.txt
+name: alma
+name: darkfi
+
+$ echo aaa > a.txt; echo bbb > b.txt; cat < a.txt < b.txt
+bbb
+
+$ tr a-z A-Z <<< "one line"
+ONE LINE
+
+$ cat <<< hi | wc -c | tr -d " "
+3
+
+$ name=world
+cat <<EOF
+hello $name
+EOF
+hello world
+
+$ cat <<"EOF"
+hello $name
+EOF
+hello $name
+

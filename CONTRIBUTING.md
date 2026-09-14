@@ -150,6 +150,10 @@ Measured differences — add a row when you find one, and say where you measured
 | `fzf --version` | `0.67.0 (2ab923f3)`, the release binary | `0.67.0 (Homebrew)` — so no example prints it |
 | `fc -lnr -2147483648` in `bash -O lithist -i` | works, bash 5.2 | works, `/bin/bash` 3.2 |
 | the fzf chapter, every ranking and filter in bash, zsh and fish | identical | identical |
+| `/dev/fd` | a symlink to `/proc/self/fd` | a directory |
+| `echo x > /dev/stderr` while descriptors 1 and 2 share a file | reopens the file and truncates it; under an outer `>>` the line is lost too | duplicates descriptor 2; nothing is truncated |
+| `&>>` in bash | appends, bash 5.2 | a syntax error, bash 3.2 |
+| the tee chapter, and the rest of the Redirection chapter | identical | identical |
 
 Measured 2026-09-13.
 

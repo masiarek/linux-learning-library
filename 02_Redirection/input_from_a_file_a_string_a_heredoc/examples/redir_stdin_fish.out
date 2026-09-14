@@ -1,0 +1,49 @@
+$ printf "alma\ndarkfi\n" > names.txt
+
+$ grep -H alma < names.txt
+(standard input):alma
+
+$ while read -l name; echo "name: $name"; end < names.txt
+name: alma
+name: darkfi
+
+$ echo aaa > a.txt; echo bbb > b.txt; cat < a.txt < b.txt
+bbb
+
+$ cat < nosuch; echo "status $status"
+warning: An error occurred while redirecting file 'nosuch'
+warning: Path 'nosuch' does not exist
+status 1
+
+$ tr a-z A-Z <<< "one line"
+fish: Expected a string, but found a redirection
+tr a-z A-Z <<< "one line"
+            ^
+(exit status 127)
+
+$ cat <<EOF
+hello
+EOF
+fish: Expected a string, but found a redirection
+cat <<EOF
+     ^
+(exit status 127)
+
+$ echo "one line" | tr a-z A-Z
+ONE LINE
+
+$ echo hi | wc -c | tr -d " "
+3
+
+$ set name world; printf "%s\n" "hello $name" "second line" | cat
+hello world
+second line
+
+$ set name world; echo "hello $name
+second line" | cat
+hello world
+second line
+
+$ set name world; echo 'hello $name' | cat
+hello $name
+

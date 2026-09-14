@@ -1,0 +1,36 @@
+$ echo one > exists
+
+$ cat exists nosuch > out.txt; echo "status $status"; echo "--- out.txt:"; cat out.txt
+cat: nosuch: No such file or directory
+status 1
+--- out.txt:
+one
+
+$ cat exists nosuch 2> /dev/null
+one
+
+$ cat exists nosuch > both.txt 2>&1; echo "--- both.txt:"; cat both.txt
+--- both.txt:
+one
+cat: nosuch: No such file or directory
+
+$ cat exists nosuch 2>&1 > both.txt; echo "--- both.txt:"; cat both.txt
+cat: nosuch: No such file or directory
+--- both.txt:
+one
+
+$ cat exists nosuch &> both.txt; echo "--- both.txt:"; cat both.txt
+--- both.txt:
+one
+cat: nosuch: No such file or directory
+
+$ cat exists nosuch &>> both.txt; echo "--- both.txt:"; cat both.txt
+--- both.txt:
+one
+cat: nosuch: No such file or directory
+one
+cat: nosuch: No such file or directory
+
+$ echo hi ^/dev/null
+hi ^/dev/null
+

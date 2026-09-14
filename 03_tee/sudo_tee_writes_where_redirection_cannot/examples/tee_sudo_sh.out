@@ -1,0 +1,25 @@
+$ mkdir locked; chmod 555 locked
+
+$ echo "new line" > locked/notes.txt; echo "status $?"
+tee_sudo_sh.sh: line 6: locked/notes.txt: Permission denied
+status 1
+
+$ echo "new line" | tee locked/notes.txt; echo "PIPESTATUS ${PIPESTATUS[*]}"
+tee: locked/notes.txt: Permission denied
+new line
+PIPESTATUS 0 1
+
+$ rm -f ran; sh -c "touch ran; echo new line" > locked/notes.txt; if [ -e ran ]; then echo "the command ran"; else echo "the command never ran"; fi
+tee_sudo_sh.sh: line 6: locked/notes.txt: Permission denied
+the command never ran
+
+$ rm -f ran; sh -c "touch ran; echo new line" | tee locked/notes.txt > /dev/null; if [ -e ran ]; then echo "the command ran"; else echo "the command never ran"; fi
+tee: locked/notes.txt: Permission denied
+the command ran
+
+$ chmod 755 locked
+
+$ echo "new line" | tee locked/notes.txt > /dev/null; echo "another line" | tee -a locked/notes.txt > /dev/null; cat locked/notes.txt
+new line
+another line
+

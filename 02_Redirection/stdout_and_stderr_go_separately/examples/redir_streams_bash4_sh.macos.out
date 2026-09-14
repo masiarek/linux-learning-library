@@ -1,0 +1,11 @@
+$ cat exists nosuch &>> both.txt
+bash: -c: line 0: syntax error near unexpected token `>'
+bash: -c: line 0: `cat exists nosuch &>> both.txt'
+(exit status 2)
+
+$ cat both.txt
+one
+cat: nosuch: No such file or directory
+
+$ cat exists nosuch >> both.txt 2>&1; wc -l < both.txt
+4

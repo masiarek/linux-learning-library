@@ -1,0 +1,33 @@
+$ printf "alma\ndarkfi\nnano\n" | tee names.txt | wc -l | tr -d " "
+3
+
+$ echo "third run" | tee -a run.log > /dev/null; echo "fourth run" | tee -a run.log > /dev/null; cat run.log
+third run
+fourth run
+
+$ function build; echo compiling; echo "warning: x is unused" >&2; echo done; end
+
+$ build | tee build.log > /dev/null; echo "--- build.log:"; cat build.log
+warning: x is unused
+--- build.log:
+compiling
+done
+
+$ build 2>&1 | tee build.log; echo "--- build.log:"; cat build.log
+compiling
+warning: x is unused
+done
+--- build.log:
+compiling
+warning: x is unused
+done
+
+$ build &| tee build.log; echo "--- build.log:"; cat build.log
+compiling
+warning: x is unused
+done
+--- build.log:
+compiling
+warning: x is unused
+done
+

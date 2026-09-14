@@ -95,6 +95,24 @@ NAV_ORDER: dict[str, list[str]] = {
         "a_program_knows_it_is_piped",
         "head_closes_the_pipe_early",
     ],
+    # The three descriptors, the two output streams, the truncation that comes
+    # before the command, then the input side.
+    "02_Redirection": [
+        "README.md",
+        "descriptors_0_1_2",
+        "stdout_and_stderr_go_separately",
+        "redirection_truncates_first",
+        "input_from_a_file_a_string_a_heredoc",
+    ],
+    # How to use it, the sudo case it is famous for, several destinations at
+    # once, and what it does to the pipeline's status.
+    "03_tee": [
+        "README.md",
+        "tee_saves_and_passes_on",
+        "sudo_tee_writes_where_redirection_cannot",
+        "tee_into_several_commands",
+        "tee_and_the_exit_status",
+    ],
     # Counting with the book's pipeline, what grep loses reading a pipe, the
     # options, the status it leaves behind, then what changes between GNU and BSD.
     "04_grep": [

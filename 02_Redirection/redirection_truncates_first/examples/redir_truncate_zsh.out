@@ -1,0 +1,27 @@
+$ printf "banana\napple\ncherry\n" > fruit.txt; sort fruit.txt > fruit.txt; echo "fruit.txt is now $(wc -c < fruit.txt | tr -d " ") bytes"
+fruit.txt is now 0 bytes
+
+$ printf "banana\napple\ncherry\n" > fruit.txt; setopt noclobber
+
+$ sort fruit.txt > fruit.txt; echo "status $?"; cat fruit.txt
+(eval):1: file exists: fruit.txt
+status 1
+banana
+apple
+cherry
+
+$ echo grape >| fruit.txt; cat fruit.txt
+grape
+
+$ echo kiwi >! fruit.txt; cat fruit.txt
+kiwi
+
+$ echo fig >> new.txt; echo "status $?"
+(eval):1: no such file or directory: new.txt
+status 1
+
+$ echo fig >>| new.txt; cat new.txt
+fig
+
+$ unsetopt noclobber
+

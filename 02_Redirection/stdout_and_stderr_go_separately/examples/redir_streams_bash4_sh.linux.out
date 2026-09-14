@@ -1,0 +1,11 @@
+$ cat exists nosuch &>> both.txt
+(exit status 1)
+
+$ cat both.txt
+one
+cat: nosuch: No such file or directory
+one
+cat: nosuch: No such file or directory
+
+$ cat exists nosuch >> both.txt 2>&1; wc -l < both.txt
+6

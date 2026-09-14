@@ -1,0 +1,22 @@
+$ printf "alma\ndarkfi\n" > names.txt
+
+$ cat < nosuch
+(eval):1: no such file or directory: nosuch
+
+$ while read -r name; do echo "name: $name"; done < names.txt
+name: alma
+name: darkfi
+
+$ echo aaa > a.txt; echo bbb > b.txt; cat < a.txt < b.txt
+aaa
+bbb
+
+$ tr a-z A-Z <<< "one line"
+ONE LINE
+
+$ name=world
+cat <<EOF
+hello $name
+EOF
+hello world
+

@@ -1,0 +1,30 @@
+$ printf "banana\napple\ncherry\n" > fruit.txt; sort fruit.txt > fruit.txt; echo "fruit.txt is now "(wc -c < fruit.txt | tr -d " ")" bytes"
+fruit.txt is now 0 bytes
+
+$ printf "banana\napple\ncherry\n" > fruit.txt; sort fruit.txt >? fruit.txt; echo "status $status"; cat fruit.txt
+warning: The file 'fruit.txt' already exists
+status 1
+banana
+apple
+cherry
+
+$ echo fig >? new.txt; cat new.txt
+fig
+
+$ sort -o fruit.txt fruit.txt; cat fruit.txt
+apple
+banana
+cherry
+
+$ echo grape >| fruit.txt
+fish: Unknown command: fruit.txt
+fish: 
+echo grape >| fruit.txt
+              ^~~~~~~~^
+(exit status 127)
+
+$ cat fruit.txt
+apple
+banana
+cherry
+

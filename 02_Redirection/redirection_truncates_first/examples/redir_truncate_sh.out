@@ -1,0 +1,47 @@
+$ printf "banana\napple\ncherry\n" > fruit.txt; cat fruit.txt
+banana
+apple
+cherry
+
+$ sort fruit.txt > fruit.txt; echo "fruit.txt is now $(wc -c < fruit.txt | tr -d " ") bytes"
+fruit.txt is now 0 bytes
+
+$ printf "banana\napple\ncherry\n" > fruit.txt; nosuchcommand > fruit.txt; echo "fruit.txt is now $(wc -c < fruit.txt | tr -d " ") bytes"
+redir_truncate_sh.sh: line 6: nosuchcommand: command not found
+fruit.txt is now 0 bytes
+
+$ printf "banana\napple\ncherry\n" > fruit.txt; sort -o fruit.txt fruit.txt; cat fruit.txt
+apple
+banana
+cherry
+
+$ printf "banana\napple\ncherry\n" > fruit.txt; sort fruit.txt > sorted.tmp && mv sorted.tmp fruit.txt; cat fruit.txt
+apple
+banana
+cherry
+
+$ set -o noclobber
+
+$ sort fruit.txt > fruit.txt; echo "status $?, fruit.txt is $(wc -c < fruit.txt | tr -d " ") bytes"
+redir_truncate_sh.sh: line 6: fruit.txt: cannot overwrite existing file
+status 1, fruit.txt is 20 bytes
+
+$ echo date >> fruit.txt; tail -n 1 fruit.txt
+date
+
+$ echo fig > new.txt; echo plum >> new2.txt; cat new.txt new2.txt
+fig
+plum
+
+$ echo grape >| fruit.txt; cat fruit.txt
+grape
+
+$ echo discard > /dev/null; echo "status $?"
+status 0
+
+$ set +o noclobber
+
+$ echo kiwi >! fruit.txt; echo "fruit.txt: $(cat fruit.txt)"; echo "the file named !: $(cat !)"
+fruit.txt: grape
+the file named !: kiwi fruit.txt
+

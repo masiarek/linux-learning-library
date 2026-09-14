@@ -1,0 +1,17 @@
+$ false | tee log.txt; echo "status $?, pipestatus $pipestatus"
+status 0, pipestatus 1 0
+
+$ build() { echo compiling; echo "error: x is undefined" >&2; return 2 }
+
+$ build |& tee build.log; echo "status $?, pipestatus $pipestatus"
+compiling
+error: x is undefined
+status 0, pipestatus 2 0
+
+$ setopt pipefail; if build |& tee build.log > /dev/null; then echo "build succeeded?"; else echo "build failed"; fi; unsetopt pipefail
+build failed
+
+$ seq 1 1000000 | tee all.txt | head -n 1; echo "pipestatus $pipestatus"
+1
+pipestatus 141 141 0
+

@@ -1,0 +1,52 @@
+$ printf "alma\ndarkfi\nnano\n" | tee names.txt | wc -l | tr -d " "
+3
+
+$ cat names.txt
+alma
+darkfi
+nano
+
+$ echo "first run" | tee run.log
+first run
+
+$ echo "second run" | tee run.log; echo "--- run.log:"; cat run.log
+second run
+--- run.log:
+second run
+
+$ echo "third run" | tee -a run.log > /dev/null; echo "--- run.log:"; cat run.log
+--- run.log:
+second run
+third run
+
+$ echo hello | tee a.txt b.txt c.txt; grep . a.txt b.txt c.txt
+hello
+a.txt:hello
+b.txt:hello
+c.txt:hello
+
+$ printf "b\na\nb\n" | sort | tee after_sort.txt | uniq; echo "--- after_sort.txt:"; cat after_sort.txt
+a
+b
+--- after_sort.txt:
+a
+b
+b
+
+$ build() { echo compiling; echo "warning: x is unused" >&2; echo done; }
+
+$ build | tee build.log > /dev/null; echo "--- build.log:"; cat build.log
+warning: x is unused
+--- build.log:
+compiling
+done
+
+$ build 2>&1 | tee build.log; echo "--- build.log:"; cat build.log
+compiling
+warning: x is unused
+done
+--- build.log:
+compiling
+warning: x is unused
+done
+

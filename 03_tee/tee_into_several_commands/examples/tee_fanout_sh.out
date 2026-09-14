@@ -1,0 +1,23 @@
+$ echo >(true) <(true)
+/dev/fd/63 /dev/fd/62
+
+$ echo hello | tee >(tr a-z A-Z) >(sed "s/^/copy: /") > /dev/null | sort
+HELLO
+copy: hello
+
+$ seq 1 5 | tee >(wc -l | sed "s/^ */lines: /") >(tail -n 1 | sed "s/^/last: /") > /dev/null | sort
+last: 5
+lines: 5
+
+$ diff <(printf "a\nb\n") <(printf "a\nc\n")
+2c2
+< b
+---
+> c
+
+$ echo hello > a.txt > b.txt; echo "a.txt: [$(cat a.txt)]"; echo "b.txt: [$(cat b.txt)]"
+a.txt: []
+b.txt: [hello]
+
+$ echo hello | tee > /dev/null | tr a-z A-Z
+

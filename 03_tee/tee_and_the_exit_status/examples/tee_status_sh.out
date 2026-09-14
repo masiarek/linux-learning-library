@@ -1,0 +1,32 @@
+$ false | tee log.txt; echo "status $?"
+status 0
+
+$ build() { echo compiling; echo "error: x is undefined" >&2; return 2; }
+
+$ build 2>&1 | tee build.log; echo "status $?, PIPESTATUS ${PIPESTATUS[*]}"
+compiling
+error: x is undefined
+status 0, PIPESTATUS 2 0
+
+$ if build 2>&1 | tee build.log > /dev/null; then echo "build succeeded?"; else echo "build failed"; fi
+build succeeded?
+
+$ set -o pipefail; if build 2>&1 | tee build.log > /dev/null; then echo "build succeeded?"; else echo "build failed"; fi; set +o pipefail
+build failed
+
+$ mkdir locked; chmod 555 locked
+
+$ echo data | tee locked/log.txt; echo "status $?"
+tee: locked/log.txt: Permission denied
+data
+status 1
+
+$ chmod 755 locked
+
+$ seq 1 1000000 | tee all.txt | head -n 1; echo "PIPESTATUS ${PIPESTATUS[*]}"
+1
+PIPESTATUS 141 141 0
+
+$ if [ "$(wc -l < all.txt)" -lt 1000000 ]; then echo "all.txt stopped early"; fi
+all.txt stopped early
+
