@@ -150,6 +150,7 @@ pipestatus 141 0
 ## If you are coming from another library
 
 - **Python.** [stdin, stdout and pipes ↗](https://masiarek.github.io/python-learning-library/01_Text_and_Bytes/stdin_stdout_and_pipes/index.html) is the same event from inside the writer: a `print()` into a closed pipe raises `BrokenPipeError` rather than ending the process. That page is still an outline, with the measurement noted.
+- **Concurrency.** [Who waits when main returns? ↗](https://masiarek.github.io/concurrency-learning-library/01_Threads/who_waits_when_main_returns/index.html) reads an exit status the same way from the other side: a C++ `std::thread` destroyed without being joined aborts the process, and the shell reports 134, which is 128 + 6, `SIGABRT`.
 
 ## See also
 

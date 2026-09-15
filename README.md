@@ -49,6 +49,8 @@ Same house style, same answer-key contract. Pages here link the page in these th
 - [**Python** ↗](https://masiarek.github.io/python-learning-library/) covers `sys.stdin`, `sys.stdout` and what a Python program in the middle of a pipeline sees.
 - [**Perl** ↗](https://masiarek.github.io/perl-learning-library/) covers the one-liner, which fzf's own Ctrl-R binding uses to prepare your history.
 - [**Ruby text** ↗](https://masiarek.github.io/ruby-text-learning-library/) and [**Rust** ↗](https://masiarek.github.io/rust-learning-library/): Rust's [fuzzy finding page ↗](https://masiarek.github.io/rust-learning-library/11_Unix/fuzzy_finding/index.html) covers setting up fzf's key bindings.
+- [**Concurrency** ↗](https://masiarek.github.io/concurrency-learning-library/) covers threads and processes in six languages; its lessons read an exit status such as 134 the way [head closes the pipe early](01_Pipelines/head_closes_the_pipe_early/README.md) reads 141.
+- [**Go** ↗](https://masiarek.github.io/go-learning-library/) covers goroutines and channels; its [pipeline of stages ↗](https://masiarek.github.io/go-learning-library/06_Patterns/a_pipeline_of_stages/index.html) is a shell pipeline built inside one process.
 
 ## The one rule
 
