@@ -1,0 +1,40 @@
+$ echo *
+notes.txt src x
+
+$ echo .*
+.env
+
+$ echo *(D)
+.env notes.txt src x
+
+$ setopt GLOB_DOTS; echo *; unsetopt GLOB_DOTS
+.env notes.txt src x
+
+$ cd run
+
+$ command -v hello || echo "not on PATH, status $?"
+not on PATH, status 1
+
+$ ./hello
+hello from ./hello
+
+$ . vars.sh; echo "status $?"
+(eval):.:1: no such file or directory: vars.sh
+status 127
+
+$ source vars.sh; echo "from=$from"
+from=./vars.sh
+
+$ path=($PWD/bin $path); . vars.sh; echo "from=$from"
+from=bin/vars.sh
+
+$ source vars.sh; echo "from=$from"
+from=./vars.sh
+
+$ f=archive.tar.gz; echo "${f%.*}  ${f%%.*}  ${f##*.}"; echo "${f:r}  ${f:e}"
+archive.tar  archive  gz
+archive.tar  gz
+
+$ echo {01..03}
+01 02 03
+

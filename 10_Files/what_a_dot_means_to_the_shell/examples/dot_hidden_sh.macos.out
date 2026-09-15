@@ -1,0 +1,32 @@
+$ ls
+notes.txt
+src
+x
+
+$ echo *
+notes.txt src x
+
+$ echo *.txt
+notes.txt
+
+$ echo .*
+. .. .env .txt
+
+$ shopt globskipdots; echo "status $?"
+dot_hidden_sh.sh: line 9: shopt: globskipdots: invalid shell option name
+status 1
+
+$ cat .env
+token=abc
+
+$ find . -type f | sort
+./.env
+./.txt
+./notes.txt
+./src/.hidden
+./src/y
+./x
+
+$ shopt -s dotglob; echo * src/*; shopt -u dotglob
+.env .txt notes.txt src x src/.hidden src/y
+

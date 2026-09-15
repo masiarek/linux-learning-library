@@ -47,5 +47,5 @@ The last command checks your machine's output against the recorded answer key an
 | [06 — History](../06_History/README.md) | What the shell remembers, where, and when it writes it down |
 | [07 — fzf](../07_fzf/README.md) | Fuzzy filtering, and Ctrl-R |
 | [08 — The prompt](../08_Prompt/README.md) | `PS1`, `PROMPT` and `fish_prompt` |
-| [10 — Files](../10_Files/README.md) | The type letter in `ls -l`, and what opening each type does |
+| [10 — Files](../10_Files/README.md) | The type letter in `ls -l`, what opening each type does, and the three things a dot can be |
 | [09 — Resources](../09_Resources/README.md) | Manuals, books, sibling libraries |

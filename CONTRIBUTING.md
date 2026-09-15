@@ -167,8 +167,13 @@ Measured differences — add a row when you find one, and say where you measured
 | opening a socket file | `No such device or address`, status 1 | `Operation not supported on socket`, status 1; `cat` adds `ai_family not supported` |
 | a disk's device files | no `/dev/rdisk0`; the image has no block device in `/dev` at all | `/dev/disk0` is `b` and `/dev/rdisk0` is `c`, with one device number |
 | the type letters of `ls -l`, `ls -F`, `test` and `find -type`, zsh's glob qualifiers and fish's `path filter` | identical | identical |
+| `.*` in bash | bash 5.2: `.env .txt`; `shopt globskipdots` is on | bash 3.2: `. .. .env .txt`; `globskipdots` is an invalid shell option name |
+| `. vars.sh`, not on `$PATH`, in `bash --posix` | `.: vars.sh: file not found`, status 1 | reads `./vars.sh`, status 0 |
+| `{01..03}` in bash | `01 02 03` | `1 2 3` |
+| `cp -R src/ dest`, `dest` an existing directory | GNU cp: `dest/src` | BSD cp: what is in `src`, as `src/.` gives on both |
+| `.` and `..` in `ls -a`, hidden names and `*`, `dotglob`, `./prog`, `.` and `source` in bash, and every dot in zsh and fish | identical | identical |
 
-Measured 2026-09-13; the file-type rows 2026-09-14.
+Measured 2026-09-13; the file-type and dot rows 2026-09-14.
 
 **The runner is not the image.** `ubuntu-latest` carries packages and `/etc` files the `linux-lib-ubuntu` image does not, and two of them have changed an answer key — both found by CI, not by Docker:
 

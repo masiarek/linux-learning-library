@@ -1,0 +1,9 @@
+$ f=archive.tar.gz; echo "${f%.*}  ${f%%.*}  ${f##*.}"
+archive.tar  archive  gz
+
+$ echo {1..5}
+1 2 3 4 5
+
+$ echo {01..03}
+1 2 3
+

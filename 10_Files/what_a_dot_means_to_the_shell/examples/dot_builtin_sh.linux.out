@@ -1,0 +1,31 @@
+$ hello 2>/dev/null; echo "status $?"
+status 127
+
+$ command -v hello || echo "not on PATH, status $?"
+not on PATH, status 1
+
+$ ./hello
+hello from ./hello
+
+$ bash setup.sh; echo "from=${from-unset}, in ${PWD##*/}"
+from=unset, in top
+
+$ . ./setup.sh; echo "from=$from, in ${PWD##*/}"; cd ..
+from=setup.sh, in sub
+
+$ . vars.sh; echo "from=$from"
+from=./vars.sh
+
+$ bash --posix -c '. vars.sh; echo "from=$from"'; echo "status $?"
+bash: line 1: .: vars.sh: file not found
+status 1
+
+$ PATH="$PWD/bin:$PATH"; . vars.sh; echo "from=$from"
+from=bin/vars.sh
+
+$ . ./vars.sh; echo "from=$from"
+from=./vars.sh
+
+$ source vars.sh; echo "from=$from"
+from=bin/vars.sh
+

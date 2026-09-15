@@ -1,0 +1,25 @@
+$ ls -a
+.
+..
+.env
+src
+x
+
+$ ls -A
+.env
+src
+x
+
+$ [ src/.. -ef . ] && echo "src/.. is this directory"
+src/.. is this directory
+
+$ (cd /; cd ..; pwd)
+/
+
+$ mkdir all; cp -R src/. all; ls -A all
+.hidden
+y
+
+$ mkdir some; cp -R src/* some; ls -A some
+y
+

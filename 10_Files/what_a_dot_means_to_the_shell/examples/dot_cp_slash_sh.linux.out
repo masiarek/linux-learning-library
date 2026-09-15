@@ -1,0 +1,7 @@
+$ mkdir slash; cp -R src/ slash; ls -A slash
+src
+
+$ mkdir dot; cp -R src/. dot; ls -A dot
+.hidden
+y
+

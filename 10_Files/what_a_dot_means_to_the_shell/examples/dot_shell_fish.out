@@ -1,0 +1,44 @@
+$ echo *
+notes.txt src x
+
+$ echo .*
+.env
+
+$ echo src/*
+src/y
+
+$ echo src/.*
+src/.hidden
+
+$ cd run
+
+$ command -v hello; or echo "not on PATH, status $status"
+not on PATH, status 127
+
+$ ./hello
+hello from ./hello
+
+$ fish --no-config vars.fish; set -q from; or echo "from is unset"
+from is unset
+
+$ source vars.fish; echo "from=$from"
+from=./vars.fish
+
+$ set -e from; set PATH $PWD/bin $PATH; source vars.fish; echo "from=$from"
+from=./vars.fish
+
+$ set -e from; . vars.fish; echo "status $status, from=$from"
+status 0, from=./vars.fish
+
+$ echo {1..5}
+{1..5}
+
+$ echo (seq 1 5)
+1 2 3 4 5
+
+$ path extension archive.tar.gz
+.gz
+
+$ path change-extension '' archive.tar.gz
+archive.tar
+
