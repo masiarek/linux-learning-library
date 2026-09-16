@@ -184,8 +184,9 @@ Measured differences — add a row when you find one, and say where you measured
 | `/usr/bin/awk` | mawk 1.3.4 20240123 | the one-true-awk, `awk version 20200816`. Neither has `gawk`'s `gensub`: `function gensub never defined` against `calling undefined function gensub`, status 2 on both |
 | `awk` field splitting, `NF`, `$NF`, `-F`, patterns, `END`, `-v`, and uninitialised variables | identical | identical |
 | the `sed` substitution, `-E` groups, `-n … p` and `!d` lines of chapter 12; `uniq` without `-c`, `sort -u`, `sort -n`; `xargs -n`, `-I {}` and `-0` | identical | identical |
+| `ps -o state=` | procps: one letter; the flags are in `ps -o stat=` | another name for `stat`: the letter, then flags that vary by process — a stopped child was `T` on macOS 26 x86-64 and `T<` (raised priority) on `macos-latest` arm64, so examples `cut -c1` it |
 
-Measured 2026-09-13; the file-type and dot rows 2026-09-14; the key-binding rows 2026-09-15; the wrangling rows (`sed`, `uniq -c`, `awk`, `xargs`) 2026-09-15.
+Measured 2026-09-13; the file-type and dot rows 2026-09-14; the key-binding rows 2026-09-15; the wrangling rows (`sed`, `uniq -c`, `awk`, `xargs`) 2026-09-15; the `ps -o state=` row 2026-09-16.
 
 **The runner is not the image.** `ubuntu-latest` carries packages and `/etc` files the `linux-lib-ubuntu` image does not, and two of them have changed an answer key — both found by CI, not by Docker:
 

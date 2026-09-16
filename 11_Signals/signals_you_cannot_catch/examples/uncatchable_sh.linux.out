@@ -65,7 +65,7 @@ this page. Name signals in a script; never number them.
 SIGSTOP suspends a process and is equally uncatchable. The difference is
 that it is reversible:
 
-$ ps -o state= -p "$victim" | tr -d " "
+$ ps -o state= -p "$victim" | tr -d " " | cut -c1
 T
 
 $ ps -o state= -p "$victim" | tr -d " " | cut -c1

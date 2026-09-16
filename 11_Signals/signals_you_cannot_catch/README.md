@@ -88,7 +88,7 @@ this page. Name signals in a script; never number them.
 SIGSTOP suspends a process and is equally uncatchable. The difference is
 that it is reversible:
 
-$ ps -o state= -p "$victim" | tr -d " "
+$ ps -o state= -p "$victim" | tr -d " " | cut -c1
 T
 
 $ ps -o state= -p "$victim" | tr -d " " | cut -c1
@@ -187,7 +187,7 @@ this page. Name signals in a script; never number them.
 SIGSTOP suspends a process and is equally uncatchable. The difference is
 that it is reversible:
 
-$ ps -o state= -p "$victim" | tr -d " "
+$ ps -o state= -p "$victim" | tr -d " " | cut -c1
 T
 
 $ ps -o state= -p "$victim" | tr -d " " | cut -c1
@@ -242,7 +242,7 @@ Two differences, and one of them is the reason the block above has two columns.
 
 `kill -l STOP` answers **17** on macOS and **19** on Linux. SIGSTOP is one of the signals POSIX numbers differently between systems, which is the concrete reason to write `kill -STOP` and `trap … STOP` and never `kill -17`. SIGKILL is 9 on both, and on every Unix still in service; it is the one number safe to carry in your head.
 
-`ps -o state=` prints `T` for a stopped process on both, so section 5 reads identically.
+`ps -o state=` is the other, and section 5 hides it on purpose. On Linux the `state` column is one letter, and the flags live in a separate `stat` column; on a Mac `state` is another name for `stat` — the letter, then flags about the process that have nothing to do with this lesson. Without its `cut -c1`, section 5 printed `T` for the stopped child on macOS 26 on x86-64 and `T<` on `macos-latest` on arm64, where `<` is BSD `ps` reporting a raised CPU scheduling priority. Nothing in the script changes a priority, so the child can only have inherited it from the runner; `N` is the opposite flag, for a process started under `nice`. Cut to its first character — the run state, where `T` means stopped on both — section 5 reads identically on both.
 
 ## In zsh and fish
 

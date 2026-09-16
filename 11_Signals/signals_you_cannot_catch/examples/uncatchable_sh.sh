@@ -91,7 +91,7 @@ echo
 rm -f ready; ./victim.sh & victim=$!
 await ready
 kill -STOP "$victim"; sleep 0.3
-say 'ps -o state= -p "$victim" | tr -d " "'
+say 'ps -o state= -p "$victim" | tr -d " " | cut -c1'
 kill -CONT "$victim"; sleep 0.3
 say 'ps -o state= -p "$victim" | tr -d " " | cut -c1'
 kill -KILL "$victim"; wait "$victim" 2>/dev/null
