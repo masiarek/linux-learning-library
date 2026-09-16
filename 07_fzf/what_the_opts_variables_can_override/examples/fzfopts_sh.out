@@ -1,0 +1,80 @@
+$ fzf --bash | sed -n '/^__fzf_defaults/,/^}/{p;/^}/q;}'
+__fzf_defaults() {
+  printf '%s\n' "--height ${FZF_TMUX_HEIGHT:-40%} --min-height 20+ --bind=ctrl-z:ignore $1"
+  command cat "${FZF_DEFAULT_OPTS_FILE-}" 2> /dev/null
+  printf '%s\n' "${FZF_DEFAULT_OPTS-} $2"
+}
+
+$ fzf --bash | grep -n -F 'FZF_DEFAULT_OPTS=$(__fzf_defaults' | grep -v COMPLETION
+54:    FZF_DEFAULT_OPTS=$(__fzf_defaults "--reverse --walker=file,dir,follow,hidden --scheme=path" "${FZF_CTRL_T_OPTS-} -m") \
+76:      FZF_DEFAULT_OPTS=$(__fzf_defaults "--reverse --walker=dir,follow,hidden --scheme=path" "${FZF_ALT_C_OPTS-} +m") \
+89:        FZF_DEFAULT_OPTS=$(__fzf_defaults "" "-n2..,.. --scheme=history --bind=ctrl-r:toggle-sort,alt-r:toggle-raw --wrap-sign '"$'\t'"↳ ' --highlight-line ${FZF_CTRL_R_OPTS-} +m --read0") \
+112:        FZF_DEFAULT_OPTS=$(__fzf_defaults "" "-n2..,.. --scheme=history --bind=ctrl-r:toggle-sort,alt-r:toggle-raw --wrap-sign '"$'\t'"↳ ' --highlight-line ${FZF_CTRL_R_OPTS-} +m --read0") \
+
+$ load; opts FZF_CTRL_T_OPTS
+--height 40% --min-height 20+ --bind=ctrl-z:ignore --reverse --walker=file,dir,follow,hidden --scheme=path
+  -m
+
+$ load; opts FZF_ALT_C_OPTS
+--height 40% --min-height 20+ --bind=ctrl-z:ignore --reverse --walker=dir,follow,hidden --scheme=path
+  +m
+
+$ load; opts FZF_CTRL_R_OPTS
+--height 40% --min-height 20+ --bind=ctrl-z:ignore 
+ -n2..,.. --scheme=history --bind=ctrl-r:toggle-sort,alt-r:toggle-raw --wrap-sign '\t↳ ' --highlight-line  +m --read0
+
+$ export FZF_DEFAULT_OPTS=--info=inline FZF_CTRL_T_OPTS="--preview 'cat {}' +m"; load; opts FZF_CTRL_T_OPTS
+--height 40% --min-height 20+ --bind=ctrl-z:ignore --reverse --walker=file,dir,follow,hidden --scheme=path
+--info=inline --preview 'cat {}' +m -m
+
+$ cat paths.txt
+src/app.js
+src/main/java/App.java
+doc/app/readme.md
+
+$ load; FZF_DEFAULT_OPTS=$(opts FZF_CTRL_T_OPTS) fzf --filter=app < paths.txt
+src/app.js
+src/main/java/App.java
+doc/app/readme.md
+
+$ export FZF_CTRL_T_OPTS=--scheme=default; load; FZF_DEFAULT_OPTS=$(opts FZF_CTRL_T_OPTS) fzf --filter=app < paths.txt
+src/app.js
+doc/app/readme.md
+src/main/java/App.java
+
+$ printf 'git status\0git push\0make test\0' > history.z
+
+$ load; FZF_DEFAULT_OPTS=$(opts FZF_CTRL_R_OPTS) fzf --filter=git --print0 < history.z
+git status\0
+git push\0
+
+$ export FZF_CTRL_R_OPTS=--no-read0; load; FZF_DEFAULT_OPTS=$(opts FZF_CTRL_R_OPTS) fzf --filter=git --print0 < history.z
+git status\0
+git push\0
+
+$ load; FZF_DEFAULT_OPTS=$(opts FZF_CTRL_R_OPTS) fzf --no-read0 --filter=git --print0 < history.z
+git status\0
+git push\0
+make test\0
+\0
+
+$ load; keys
+"\C-r"
+"\C-t"
+"\ec"
+
+$ FZF_CTRL_T_COMMAND= load; keys
+"\C-r"
+"\ec"
+
+$ FZF_CTRL_T_COMMAND="fd --type f" load; keys
+"\C-r"
+"\C-t"
+"\ec"
+
+$ FZF_CTRL_R_COMMAND="atuin search" load 2>&1 >/dev/null; keys
+warning: FZF_CTRL_R_COMMAND is set to a custom command, but custom commands are not yet supported for CTRL-R
+"\C-r"
+"\C-t"
+"\ec"
+

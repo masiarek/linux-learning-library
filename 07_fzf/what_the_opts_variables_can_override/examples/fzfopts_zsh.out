@@ -1,0 +1,28 @@
+$ diff <(fzf --bash | sed -n "/^__fzf_defaults/,/^}/{p;/^}/q;}") <(fzf --zsh | sed -n "/^__fzf_defaults/,/^}/{p;/^}/q;}") && echo "the composer is identical"
+the composer is identical
+
+$ fzf --zsh | grep -n -F 'FZF_DEFAULT_OPTS=$(__fzf_defaults' | grep -v COMPLETION
+77:  FZF_DEFAULT_OPTS=$(__fzf_defaults "--reverse --walker=file,dir,follow,hidden --scheme=path" "${FZF_CTRL_T_OPTS-} -m") \
+109:    FZF_DEFAULT_OPTS=$(__fzf_defaults "--reverse --walker=dir,follow,hidden --scheme=path" "${FZF_ALT_C_OPTS-} +m") \
+140:      FZF_DEFAULT_OPTS=$(__fzf_defaults "" "-n2..,.. --scheme=history --bind=ctrl-r:toggle-sort,alt-r:toggle-raw --wrap-sign '\t↳ ' --highlight-line ${FZF_CTRL_R_OPTS-} --query=${(qqq)LBUFFER} +m --read0") \
+144:      FZF_DEFAULT_OPTS=$(__fzf_defaults "" "-n2..,.. --scheme=history --bind=ctrl-r:toggle-sort,alt-r:toggle-raw --wrap-sign '\t↳ ' --highlight-line ${FZF_CTRL_R_OPTS-} --query=${(qqq)LBUFFER} +m") \
+
+$ load; opts FZF_CTRL_T_OPTS
+--height 40% --min-height 20+ --bind=ctrl-z:ignore --reverse --walker=file,dir,follow,hidden --scheme=path
+  -m
+
+$ export FZF_CTRL_T_OPTS=--scheme=default; load; FZF_DEFAULT_OPTS=$(opts FZF_CTRL_T_OPTS) fzf --filter=app < paths.txt
+src/app.js
+doc/app/readme.md
+src/main/java/App.java
+
+$ load; keys
+^T -> "^T" fzf-file-widget
+^R -> "^R" fzf-history-widget
+\ec -> "^[c" fzf-cd-widget
+
+$ FZF_CTRL_T_COMMAND= FZF_ALT_C_COMMAND= load; keys
+^T -> "^T" transpose-chars
+^R -> "^R" fzf-history-widget
+\ec -> "^[c" capitalize-word
+

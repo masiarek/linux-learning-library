@@ -150,6 +150,8 @@ Measured differences — add a row when you find one, and say where you measured
 | `fzf --version` | `0.67.0 (2ab923f3)`, the release binary | `0.67.0 (Homebrew)` — so no example prints it |
 | `fc -lnr -2147483648` in `bash -O lithist -i` | works, bash 5.2 | works, `/bin/bash` 3.2 |
 | the fzf chapter, every ranking and filter in bash, zsh and fish | identical | identical |
+| where a key bound to a fzf widget shows up | bash 5.2: `bind -X`, bound with `bind -x` | bash 3.2, which has no `bind -x` in a startup file: `bind -s`, a readline macro — so a probe asks both |
+| `__fzf_defaults`, the composed key-binding option lines, and which keys the FZF_*_COMMAND guards bind | identical | identical |
 | `/dev/fd` | a symlink to `/proc/self/fd` | a directory |
 | `echo x > /dev/stderr` while descriptors 1 and 2 share a file | reopens the file and truncates it; under an outer `>>` the line is lost too | duplicates descriptor 2; nothing is truncated |
 | `&>>` in bash | appends, bash 5.2 | a syntax error, bash 3.2 |
@@ -173,7 +175,7 @@ Measured differences — add a row when you find one, and say where you measured
 | `cp -R src/ dest`, `dest` an existing directory | GNU cp: `dest/src` | BSD cp: what is in `src`, as `src/.` gives on both |
 | `.` and `..` in `ls -a`, hidden names and `*`, `dotglob`, `./prog`, `.` and `source` in bash, and every dot in zsh and fish | identical | identical |
 
-Measured 2026-09-13; the file-type and dot rows 2026-09-14.
+Measured 2026-09-13; the file-type and dot rows 2026-09-14; the two key-binding rows 2026-09-15.
 
 **The runner is not the image.** `ubuntu-latest` carries packages and `/etc` files the `linux-lib-ubuntu` image does not, and two of them have changed an answer key — both found by CI, not by Docker:
 

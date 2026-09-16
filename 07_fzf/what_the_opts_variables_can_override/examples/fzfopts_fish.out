@@ -1,0 +1,55 @@
+$ fzf --fish | sed -n "/^  function __fzf_defaults/,/^  end/p"
+  function __fzf_defaults
+    # $argv[1]: Prepend to FZF_DEFAULT_OPTS_FILE and FZF_DEFAULT_OPTS
+    # $argv[2..]: Append to FZF_DEFAULT_OPTS_FILE and FZF_DEFAULT_OPTS
+    test -n "$FZF_TMUX_HEIGHT"; or set -l FZF_TMUX_HEIGHT 40%
+    string join ' ' -- \
+      "--height $FZF_TMUX_HEIGHT --min-height=20+ --bind=ctrl-z:ignore" $argv[1] \
+      (test -r "$FZF_DEFAULT_OPTS_FILE"; and string join -- ' ' <$FZF_DEFAULT_OPTS_FILE) \
+      $FZF_DEFAULT_OPTS $argv[2..-1]
+  end
+
+$ fzf --fish | sed -n "/FZF_DEFAULT_OPTS (__fzf_defaults/,/)\$/p"
+    set -lx FZF_DEFAULT_OPTS (__fzf_defaults \
+      "--reverse --walker=file,dir,follow,hidden --scheme=path" \
+      "$FZF_CTRL_T_OPTS --multi --print0")
+    set -lx FZF_DEFAULT_OPTS (__fzf_defaults '' \
+      '--nth=2..,.. --scheme=history --multi --wrap-sign="\t↳ "' \
+      '--bind=\'shift-delete:execute-silent(eval history delete --exact --case-sensitive -- (string escape -n -- {+} | string replace -r -a "^\d*\\\\\\t|(?<=\\\\\\n)\\\\\\t" ""))+reload(eval $FZF_DEFAULT_COMMAND)\'' \
+      "--bind=ctrl-r:toggle-sort,alt-r:toggle-raw --highlight-line $FZF_CTRL_R_OPTS" \
+      '--accept-nth=2.. --read0 --print0 --with-shell='(status fish-path)\\ -c)
+    set -lx FZF_DEFAULT_OPTS (__fzf_defaults \
+      "--reverse --walker=dir,follow,hidden --scheme=path" \
+      "$FZF_ALT_C_OPTS --no-multi --print0")
+
+$ fzf --fish | source; __fzf_defaults "--reverse --walker=file,dir,follow,hidden --scheme=path" "$FZF_CTRL_T_OPTS --multi --print0"
+--height 40% --min-height=20+ --bind=ctrl-z:ignore --reverse --walker=file,dir,follow,hidden --scheme=path  --multi --print0
+
+$ cat paths.txt
+src/app.js
+src/main/java/App.java
+doc/app/readme.md
+
+$ fzf --fish | source; set -lx FZF_DEFAULT_OPTS (__fzf_defaults "--reverse --walker=file,dir,follow,hidden --scheme=path" "$FZF_CTRL_T_OPTS --multi --print0"); fzf --filter=app < paths.txt | tr '\0' '\n'
+src/app.js
+src/main/java/App.java
+doc/app/readme.md
+
+$ set -gx FZF_CTRL_T_OPTS --scheme=default; fzf --fish | source; set -lx FZF_DEFAULT_OPTS (__fzf_defaults "--reverse --walker=file,dir,follow,hidden --scheme=path" "$FZF_CTRL_T_OPTS --multi --print0"); fzf --filter=app < paths.txt | tr '\0' '\n'
+src/app.js
+doc/app/readme.md
+src/main/java/App.java
+
+$ fzf --fish | source; for k in ctrl-t ctrl-r alt-c; bind $k; end
+bind ctrl-t fzf-file-widget
+bind ctrl-r fzf-history-widget
+bind alt-c fzf-cd-widget
+
+$ set -gx FZF_CTRL_T_COMMAND ""; fzf --fish | source; for k in ctrl-t ctrl-r alt-c; bind $k; echo "status $status"; end
+bind: No binding found for key 'ctrl-t'
+status 1
+bind ctrl-r fzf-history-widget
+status 0
+bind alt-c fzf-cd-widget
+status 0
+

@@ -9,5 +9,6 @@
 | [The extended search syntax](extended_search_syntax/README.md) | 201 | `'exact`, `^prefix`, `suffix$`, `!not`, a lone bar for "or", `--exact` and `+x`, and the `!`, `^` and `$` that each shell reads first |
 | [Smart case, and `cafe` finding `Café`](smart_case_and_accents/README.md) | 201 | Smart case, `-i` and `+i`, folding for `Café` and `Łódź` and where it stops, `--literal`, NFC against NFD, and lowering a query under `LC_ALL=C` |
 | [Ctrl-R is a pipeline](ctrl_r_is_a_pipeline/README.md) | 301 | The bash widget's `fc`, perl and `--read0` stages run by hand on bash 3.2 and 5.2, zsh's `$history`, and fish's `history -z` |
+| [What `FZF_CTRL_T_OPTS` can and cannot change](what_the_opts_variables_can_override/README.md) | 301 | `__fzf_defaults`' four layers, the fixed position your `FZF_*_OPTS` is spliced into, the flags fzf appends after it, and the empty string that removes a binding |
 
 Installing fzf and turning on its key bindings is covered by the Rust library's [Fuzzy finding ↗](https://masiarek.github.io/rust-learning-library/11_Unix/fuzzy_finding/index.html). These pages start where that one stops.

@@ -162,6 +162,7 @@ NAV_ORDER: dict[str, list[str]] = {
         "extended_search_syntax",
         "smart_case_and_accents",
         "ctrl_r_is_a_pipeline",
+        "what_the_opts_variables_can_override",
     ],
     # The page the book prompted, then the file that has to hold it.
     "08_Prompt": [
