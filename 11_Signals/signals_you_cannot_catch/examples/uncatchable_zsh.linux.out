@@ -1,0 +1,72 @@
+
+1. Two spellings, and zsh takes both
+--------------------------------------------------------------
+trap 'echo "trap INT   -- not stopping" >> log' INT     # bash's spelling
+TRAPQUIT() { echo "TRAPQUIT   -- not stopping" >> log }  # zsh's own
+trap 'echo "trap KILL"                  >> log' KILL
+
+zsh accepted all three without a word, including the last. Sending the
+first two:
+
+$ cat log
+trap INT   -- not stopping
+TRAPQUIT   -- not stopping
+
+A function named TRAPINT, TRAPQUIT or TRAPTERM is a handler, with no
+trap command anywhere. It is the readable form when the handler is more
+than one line, and it is zsh-only -- bash reads it as a plain function.
+
+2. The third one, which no spelling reaches
+--------------------------------------------------------------
+$ cat log
+trap INT   -- not stopping
+TRAPQUIT   -- not stopping
+
+$ wait $victim; echo $?
+137
+
+Two lines still, and 128 + 9 = 137. SIGKILL and SIGSTOP are removed by
+the kernel before any process sees them, so there is no shell, no
+handler and no spelling that changes this.
+
+3. kill -l, which zsh prints differently from bash
+--------------------------------------------------------------
+$ kill -l INT
+2
+
+$ kill -l STOP
+19
+
+$ kill -l
+HUP INT QUIT ILL TRAP IOT BUS FPE KILL USR1 SEGV USR2 PIPE ALRM TERM STKFLT CHLD CONT STOP TSTP TTIN TTOU URG XCPU XFSZ VTALRM PROF WINCH POLL PWR SYS
+
+zsh's bare 'kill -l' is a list of names and nothing else; bash prints
+numbered pairs. Reading a number out of either is the habit to lose --
+SIGSTOP is 17 on macOS and 19 on Linux, as the two columns here show.
+
+4. The one thing zsh will not let a script do
+--------------------------------------------------------------
+$ zsh -c "setopt monitor"
+zsh:setopt:1: can't change option: monitor
+
+bash turns job control on inside a script with 'set -m'; zsh refuses in
+a non-interactive shell and says so. Worth knowing before you copy a
+bash script's 'set -m' across and wonder why the job is still in the
+same process group.
+
+5. A background job's SIGINT was never yours to catch
+--------------------------------------------------------------
+$ cat log
+catcher: caught SIGINT
+
+It caught it -- and the bash column of this page did not. Both shells
+were handed the same thing: a parent starting a background job sets the
+child's SIGINT and SIGQUIT to ignored before exec, whichever shell the
+parent is. POSIX then says a signal already ignored at startup cannot be
+trapped, reset or caught. bash honours that rule; zsh overrides it and
+installs the trap anyway, and so does fish.
+
+Measured every way round: the parent shell makes no difference and the
+child shell makes all of it. A backgrounded wrapper whose Ctrl-C handler
+works is a wrapper running under zsh or fish, and changing its shebang
+to bash is enough to lose the handler with nothing printed about it.

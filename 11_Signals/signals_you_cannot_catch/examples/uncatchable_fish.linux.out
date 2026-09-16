@@ -1,0 +1,70 @@
+
+1. No trap builtin: a handler is a function
+--------------------------------------------------------------
+function on_int --on-signal INT
+    echo "on_int  -- not stopping" >> log
+end
+
+fish defined all four without a word, including the last. Sending the
+first three, a third of a second apart:
+
+$ cat log
+on_int  -- not stopping
+on_term -- not stopping
+
+fish ships a `trap` function for compatibility, and it is a thin wrapper
+that defines exactly this kind of function for you. There is no builtin
+underneath it.
+
+2. Three signals sent, two handlers ran
+--------------------------------------------------------------
+SIGINT and SIGTERM arrived. SIGQUIT did not, and its handler was
+declared in the same breath as the other two. fish does not deliver
+SIGQUIT to a --on-signal handler -- so Ctrl-\, which is the key that
+ends a program whose SIGINT handler has taken over, does nothing to a
+fish script either. That is fish's decision, not the kernel's.
+
+3. And the one no shell can reach
+--------------------------------------------------------------
+$ cat log
+on_int  -- not stopping
+on_term -- not stopping
+
+Unchanged. SIGKILL and SIGSTOP are acted on by the kernel before any
+process sees them, so no shell has anything to be wrong about -- fish
+accepting --on-signal KILL is the same silence as bash accepting
+trap ... KILL.
+
+4. The status a signal leaves behind
+--------------------------------------------------------------
+$ fish -c "kill -INT %self"; echo $status
+130
+
+$ fish -c "kill -KILL %self"; echo $status
+137
+
+fish spells it $status rather than $?, and the arithmetic is everyone
+else's: 128 + the signal number. 130 is somebody's Ctrl-C, 137 is a
+kill -9 or the out-of-memory killer, 143 is a shutdown that asked first.
+
+5. fish has no kill builtin, and it shows
+--------------------------------------------------------------
+$ kill -l KILL
+9
+
+bash and zsh both have a kill builtin that takes a signal name. fish
+does not, so this is /bin/kill -- and the two columns of this page are
+two different /bin/kill programs. Use the status arithmetic above
+instead; it is the same on both.
+
+6. A background job's SIGINT, where fish sides with zsh
+--------------------------------------------------------------
+$ cat log
+catcher: caught SIGINT
+
+It caught it. Every shell here starts a background child with SIGINT and
+SIGQUIT set to ignored, and POSIX says a signal ignored at startup can
+never be trapped afterwards. bash honours that and its handler never
+runs; fish and zsh override it and theirs do. The child's shell decides
+and the parent's does not -- which is the section to re-read when a
+wrapper script goes quiet after somebody changed its first line.

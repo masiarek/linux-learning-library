@@ -84,7 +84,14 @@ NAV_ORDER: dict[str, list[str]] = {
         "07_fzf",
         "08_Prompt",
         "10_Files",
+        "11_Signals",
         "09_Resources",
+    ],
+    # What a shell can trap first, since the two it cannot only make sense
+    # against the ones it can.
+    "11_Signals": [
+        "README.md",
+        "signals_you_cannot_catch",
     ],
     # The type letter first: what a name is, before what may be done with it;
     # then what a dot does, in a path, at the start of a name and as a command.

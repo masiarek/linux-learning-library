@@ -1,0 +1,95 @@
+
+1. This script traps four signals, and a helper sends it three
+--------------------------------------------------------------
+trap 'echo "caught SIGINT  -- not stopping" >> log' INT
+trap 'echo "caught SIGQUIT -- not stopping" >> log' QUIT
+trap 'echo "caught SIGTERM -- would clean up here" >> log' TERM
+trap 'echo "caught SIGKILL" >> log' KILL
+
+bash accepted all four without a word. Sending the first three:
+
+$ cat log
+caught SIGINT  -- not stopping
+caught SIGQUIT -- not stopping
+caught SIGTERM -- would clean up here
+
+Three signals, three lines, and this script is still the one printing.
+Ctrl-C sends SIGINT and Ctrl-\ sends SIGQUIT, so at a terminal neither
+key would have ended it either.
+
+2. The fourth trap, which will never run
+--------------------------------------------------------------
+A child with the same 'trap ... KILL' line, then kill -KILL:
+
+$ cat log
+caught SIGINT  -- not stopping
+caught SIGQUIT -- not stopping
+caught SIGTERM -- would clean up here
+
+$ wait "$victim"; echo $?
+137
+
+The log is unchanged -- still the three lines from section 1. SIGKILL is
+never delivered to the process; the kernel acts on it instead, so there
+is no handler to run and no last words to write. A shell that accepts
+the trap is doing what POSIX allows: trapping it is undefined, not an
+error, so nothing tells you.
+
+3. What the number means
+--------------------------------------------------------------
+A process ended BY a signal reports 128 + that signal's number:
+
+signal     number   status   where you meet it
+SIGINT     2        130      Ctrl-C, or a build you interrupted
+SIGQUIT    3        131      Ctrl-\, and a core dump if your ulimit allows one
+SIGTERM    15       143      kill with no argument; what an init system sends first
+SIGKILL    9        137      kill -9, and the out-of-memory killer
+
+So 130 in a CI log is somebody's Ctrl-C, 137 is usually the
+out-of-memory killer, and 143 is a shutdown that asked politely first.
+
+4. kill -l, and the one number that is not portable
+--------------------------------------------------------------
+$ kill -l KILL
+9
+
+$ kill -l STOP
+17
+
+SIGKILL is 9 on every Unix in use. SIGSTOP is not -- macOS says 17 and
+Linux says 19, which is the whole difference between the two columns on
+this page. Name signals in a script; never number them.
+
+5. The other one nothing can catch
+--------------------------------------------------------------
+SIGSTOP suspends a process and is equally uncatchable. The difference is
+that it is reversible:
+
+$ ps -o state= -p "$victim" | tr -d " "
+T
+
+$ ps -o state= -p "$victim" | tr -d " " | cut -c1
+S
+
+T is stopped, and the process still exists -- still holding its memory,
+its open files and its place in the process table. Only SIGCONT starts
+it again. That pair is what Ctrl-Z and fg are made of, which is why they
+are not in a trap table.
+
+6. The third way a trap never runs, and no kernel rule is involved
+--------------------------------------------------------------
+One script, run two ways. First in the background, from this
+non-interactive shell, then sent a SIGINT:
+
+$ cat log
+
+Empty. A shell starting a background job sets the child's SIGINT and
+SIGQUIT to ignored before it execs, and POSIX says a signal already
+ignored when a shell starts cannot be trapped, reset or caught. bash
+honours that: the trap command succeeds and does nothing.
+
+The same trap worked in section 1, where this script was in front. And
+it is bash being strict rather than the kernel being strict -- the same
+child written in zsh or fish catches the signal, because neither honours
+that rule. So a wrapper script can work when you test it by hand, work
+under zsh, and go quiet the day it is backgrounded under bash.
