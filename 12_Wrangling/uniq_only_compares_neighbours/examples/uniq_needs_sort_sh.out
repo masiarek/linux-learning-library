@@ -1,0 +1,36 @@
+$ cat users.txt
+admin
+root
+admin
+ci
+admin
+root
+
+$ uniq users.txt
+admin
+root
+admin
+ci
+admin
+root
+
+$ sort users.txt | uniq
+admin
+ci
+root
+
+$ sort -u users.txt
+admin
+ci
+root
+
+$ sort users.txt | uniq -d
+admin
+root
+
+$ sort users.txt | uniq -u
+ci
+
+$ sort users.txt | uniq | wc -l | tr -d " "
+3
+

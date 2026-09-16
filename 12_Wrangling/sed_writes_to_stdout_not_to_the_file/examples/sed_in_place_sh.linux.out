@@ -1,0 +1,39 @@
+$ sed -i 's/alpha/ALPHA/' one.txt; echo "status $?"
+status 0
+
+$ cat one.txt
+ALPHA
+beta
+
+$ sed -i '' 's/alpha/ALPHA/' two.txt; echo "status $?"
+sed: can't read s/alpha/ALPHA/: No such file or directory
+status 2
+
+$ cat two.txt
+alpha
+beta
+
+$ sed -i.bak 's/alpha/ALPHA/' three.txt; echo "status $?"
+status 0
+
+$ cat three.txt three.txt.bak
+ALPHA
+beta
+alpha
+beta
+
+$ sed 's/alpha/ALPHA/' four.txt > tmp.txt && mv tmp.txt four.txt; echo "status $?"
+status 0
+
+$ cat four.txt
+ALPHA
+beta
+
+$ sed 's/beta/BETA/' four.txt > four.txt; echo "status $?"
+status 0
+
+$ cat four.txt
+
+$ wc -c < four.txt | tr -d " "
+0
+

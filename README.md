@@ -21,6 +21,7 @@ Most Linux books are written on one machine, in one shell. The commands in them 
 | 07 | [fzf](07_fzf/README.md) | A fuzzy filter for any list, and the Ctrl-R history search built on it |
 | 08 | [The prompt](08_Prompt/README.md) | `PS1` in bash, `PROMPT` in zsh, and a function in fish |
 | 10 | [Files](10_Files/README.md) | The letter `ls -l` prints before the permissions: seven file types, what opening each one does, and the names `test`, `find`, zsh and fish give them. And what a dot means in a path, at the start of a name, and as a command |
+| 12 | [Data wrangling](12_Wrangling/README.md) | `sed`, `awk`, `sort \| uniq -c` and `xargs`: turning a log into a table, and the four places GNU and BSD answer differently |
 | 09 | [Resources](09_Resources/README.md) | The manuals behind each chapter, and the sibling libraries |
 
 ## Running the examples

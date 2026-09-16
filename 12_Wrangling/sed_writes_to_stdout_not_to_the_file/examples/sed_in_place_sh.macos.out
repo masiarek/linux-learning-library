@@ -1,0 +1,40 @@
+$ sed -i 's/alpha/ALPHA/' one.txt; echo "status $?"
+sed: 1: "one.txt
+": invalid command code o
+status 1
+
+$ cat one.txt
+alpha
+beta
+
+$ sed -i '' 's/alpha/ALPHA/' two.txt; echo "status $?"
+status 0
+
+$ cat two.txt
+ALPHA
+beta
+
+$ sed -i.bak 's/alpha/ALPHA/' three.txt; echo "status $?"
+status 0
+
+$ cat three.txt three.txt.bak
+ALPHA
+beta
+alpha
+beta
+
+$ sed 's/alpha/ALPHA/' four.txt > tmp.txt && mv tmp.txt four.txt; echo "status $?"
+status 0
+
+$ cat four.txt
+ALPHA
+beta
+
+$ sed 's/beta/BETA/' four.txt > four.txt; echo "status $?"
+status 0
+
+$ cat four.txt
+
+$ wc -c < four.txt | tr -d " "
+0
+

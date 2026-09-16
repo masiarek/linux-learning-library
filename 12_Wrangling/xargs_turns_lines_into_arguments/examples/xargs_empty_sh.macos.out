@@ -1,0 +1,18 @@
+$ printf "a\nb\nc\n" | xargs echo
+a b c
+
+$ printf "a\nb\nc\n" | xargs -n 1 echo
+a
+b
+c
+
+$ printf "a\nb\n" | xargs -I {} echo "<{}>"
+<a>
+<b>
+
+$ printf "" | xargs echo EMPTY; echo "status $?"
+status 0
+
+$ printf "" | xargs -r echo EMPTY; echo "status $?"
+status 0
+

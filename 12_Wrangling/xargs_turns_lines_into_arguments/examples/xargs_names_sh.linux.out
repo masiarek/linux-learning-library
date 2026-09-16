@@ -1,0 +1,24 @@
+$ ls d
+plain.txt
+two words.txt
+
+$ printf "d/plain.txt\nd/two words.txt\n" | xargs ls; echo "status $?"
+ls: cannot access 'd/two': No such file or directory
+ls: cannot access 'words.txt': No such file or directory
+d/plain.txt
+status 123
+
+$ printf "d/plain.txt\0d/two words.txt\0" | xargs -0 ls; echo "status $?"
+d/plain.txt
+d/two words.txt
+status 0
+
+$ find d -type f -print0 | xargs -0 ls; echo "status $?"
+d/plain.txt
+d/two words.txt
+status 0
+
+$ find d -type f -print0 | xargs -0 -n 1 basename | sort
+plain.txt
+two words.txt
+

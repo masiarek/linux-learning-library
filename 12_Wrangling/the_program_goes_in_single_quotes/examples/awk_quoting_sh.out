@@ -1,0 +1,54 @@
+$ awk '{print $1}' log.txt
+03:02:36
+03:02:37
+03:04:01
+03:05:12
+
+$ awk "{print $1}" log.txt
+03:02:36 sshd: Disconnected from invalid user admin 10.0.0.7
+03:02:37 sshd: Disconnected from invalid user root 10.0.0.9
+03:04:01 sshd: Disconnected from invalid user admin 10.0.1.4
+03:05:12 sshd: Accepted publickey for ci from 10.0.2.2
+
+$ awk '{print NF, $NF}' log.txt
+8 10.0.0.7
+8 10.0.0.9
+8 10.0.1.4
+8 10.0.2.2
+
+$ awk '/invalid/ {print $NF}' log.txt
+10.0.0.7
+10.0.0.9
+10.0.1.4
+
+$ printf 'a:b:c\n' | awk -F: '{print $2}'
+b
+
+$ awk 'END {print NR}' log.txt
+4
+
+$ printf '3\n4\n' | awk '{total += $1} END {print total}'
+7
+
+$ awk '$2 == "sshd:" {n++} END {print n}' log.txt
+4
+
+$ cat report.sh
+awk "{print $1}" log.txt
+
+$ bash report.sh
+03:02:36 sshd: Disconnected from invalid user admin 10.0.0.7
+03:02:37 sshd: Disconnected from invalid user root 10.0.0.9
+03:04:01 sshd: Disconnected from invalid user admin 10.0.1.4
+03:05:12 sshd: Accepted publickey for ci from 10.0.2.2
+
+$ bash report.sh ONE
+
+
+
+
+
+$ bash strict.sh ; echo "status $?"
+strict.sh: line 2: $1: unbound variable
+status 1
+

@@ -85,7 +85,18 @@ NAV_ORDER: dict[str, list[str]] = {
         "08_Prompt",
         "10_Files",
         "11_Signals",
+        "12_Wrangling",
         "09_Resources",
+    ],
+    # sed first, because it makes the lines the rest of the chapter counts;
+    # then the sort|uniq pipeline, the awk that reads its columns, and xargs,
+    # which is where a list of lines stops being text and becomes a command.
+    "12_Wrangling": [
+        "README.md",
+        "sed_writes_to_stdout_not_to_the_file",
+        "uniq_only_compares_neighbours",
+        "the_program_goes_in_single_quotes",
+        "xargs_turns_lines_into_arguments",
     ],
     # What a shell can trap first, since the two it cannot only make sense
     # against the ones it can.

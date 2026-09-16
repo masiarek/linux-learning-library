@@ -1,0 +1,19 @@
+$ awk '{print $1}' log.txt
+03:02:36
+03:05:12
+
+$ awk "{print $1}" log.txt
+03:02:36 sshd: Disconnected from invalid user admin 10.0.0.7
+03:05:12 sshd: Accepted publickey for ci from 10.0.2.2
+
+$ cat report.fish
+awk "{print $argv[1]}" log.txt
+
+$ fish --no-config report.fish
+03:02:36 sshd: Disconnected from invalid user admin 10.0.0.7
+03:05:12 sshd: Accepted publickey for ci from 10.0.2.2
+
+$ fish --no-config report.fish ONE
+
+
+

@@ -1,0 +1,43 @@
+$ cat log.txt
+03:02:36 sshd: Disconnected from invalid user admin 10.0.0.7
+03:02:37 sshd: Disconnected from invalid user root 10.0.0.9
+03:04:01 sshd: Disconnected from invalid user admin 10.0.1.4
+03:05:12 sshd: Accepted publickey for ci from 10.0.2.2
+
+$ sed 's/invalid user/BAD/' log.txt
+03:02:36 sshd: Disconnected from BAD admin 10.0.0.7
+03:02:37 sshd: Disconnected from BAD root 10.0.0.9
+03:04:01 sshd: Disconnected from BAD admin 10.0.1.4
+03:05:12 sshd: Accepted publickey for ci from 10.0.2.2
+
+$ echo 'a b a b' | sed 's/a/X/'
+X b a b
+
+$ echo 'a b a b' | sed 's/a/X/g'
+X b X b
+
+$ echo 'a b a b' | sed 's/a/X/2'
+a b X b
+
+$ sed -E 's/^([0-9:]+) sshd: Disconnected from invalid user ([a-z]+) (.*)/\2 \1 \3/' log.txt
+admin 03:02:36 10.0.0.7
+root 03:02:37 10.0.0.9
+admin 03:04:01 10.0.1.4
+03:05:12 sshd: Accepted publickey for ci from 10.0.2.2
+
+$ sed -n -E 's/^[0-9:]+ sshd: Disconnected from invalid user ([a-z]+) .*/\1/p' log.txt
+admin
+root
+admin
+
+$ sed '/Disconnected/!d' log.txt
+03:02:36 sshd: Disconnected from invalid user admin 10.0.0.7
+03:02:37 sshd: Disconnected from invalid user root 10.0.0.9
+03:04:01 sshd: Disconnected from invalid user admin 10.0.1.4
+
+$ cat log.txt
+03:02:36 sshd: Disconnected from invalid user admin 10.0.0.7
+03:02:37 sshd: Disconnected from invalid user root 10.0.0.9
+03:04:01 sshd: Disconnected from invalid user admin 10.0.1.4
+03:05:12 sshd: Accepted publickey for ci from 10.0.2.2
+

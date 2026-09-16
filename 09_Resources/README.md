@@ -15,6 +15,9 @@
 
 - [**GNU grep manual** ↗](https://www.gnu.org/software/grep/manual/grep.html) and the [**FreeBSD grep(1)** ↗](https://man.freebsd.org/cgi/man.cgi?query=grep) page cover the two greps chapter 04 compares.
 - [**GNU coreutils: tee** ↗](https://www.gnu.org/software/coreutils/manual/html_node/tee-invocation.html) and [**tr** ↗](https://www.gnu.org/software/coreutils/manual/html_node/tr-invocation.html).
+- [**GNU sed manual** ↗](https://www.gnu.org/software/sed/manual/sed.html) and [**FreeBSD `sed(1)`** ↗](https://man.freebsd.org/cgi/man.cgi?query=sed): the two `sed`s chapter 12 compares, including the two spellings of `-i`.
+- [**The GNU Awk User's Guide** ↗](https://www.gnu.org/software/gawk/manual/gawk.html) is the best-written of these by some distance, but it documents `gawk`, which neither machine here ships by default. [**POSIX `awk`** ↗](https://pubs.opengroup.org/onlinepubs/9799919799/utilities/awk.html) is what mawk on Ubuntu and the [**one-true-awk** ↗](https://github.com/onetrueawk/awk) on macOS both implement.
+- [**GNU findutils: `xargs`** ↗](https://www.gnu.org/software/findutils/manual/html_node/find_html/xargs-options.html) and [**FreeBSD `xargs(1)`** ↗](https://man.freebsd.org/cgi/man.cgi?query=xargs), which documents `-r` as a no-op kept for GNU compatibility.
 - [**fzf** ↗](https://junegunn.github.io/fzf/): the README, the search syntax, and the shell integration behind Ctrl-R.
 - **od** has no chapter here, because the encodings library already has the page: [`od` reads types, not bytes ↗](https://masiarek.github.io/encodings-learning-library/11_Tools/od/index.html). Its section [Reading a textbook's `od` session ↗](https://masiarek.github.io/encodings-learning-library/11_Tools/od/index.html#reading-a-textbooks-od-session) works through the Tevault book's od chapter on macOS and Ubuntu. It shows the UTF-8 BOM behind `357 273 277`, GNU od masking the high bit under `-t a` where BSD od does not, and `-j0000640` being octal because of its leading zero.
 
@@ -23,6 +26,10 @@
 - **The Ultimate Linux Shell Scripting Guide**, Donald A. Tevault (Packt, 2024). The book whose pages prompted chapters 01, 02, 03, 04, 08 and 10; chapter 10 starts from its Table 2.1, *File type designators*. It is written on Fedora in bash, and this library checks what changes on a Mac and in fish. Its chapter 7, "Using od", is covered by the encodings library's [od page ↗](https://masiarek.github.io/encodings-learning-library/11_Tools/od/index.html#reading-a-textbooks-od-session).
 - [**The Linux Command Line** ↗](https://linuxcommand.org/tlcl.php), William Shotts, free online. Redirection, pipelines and the prompt, from the beginning.
 - **Efficient Linux at the Command Line**, Daniel J. Barrett (O'Reilly, 2022). Pipelines as a way of thinking, plus a good chapter on history.
+
+## Courses
+
+- [**The Missing Semester of Your CS Education** ↗](https://missing.csail.mit.edu/), MIT. Its [*Data Wrangling* ↗](https://missing.csail.mit.edu/2019/data-wrangling/) lecture — `sed`, regular expressions, `sort | uniq -c`, `awk`, `paste`, `xargs` — is the source of chapter 12's topics. The lecture is given on Linux, in bash; chapter 12 runs its pipelines on a Mac too and says which lines change.
 
 ## Sibling libraries
 

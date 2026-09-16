@@ -1,0 +1,46 @@
+$ sort users.txt | uniq -c
+      3 admin
+      1 ci
+      2 root
+
+$ sort users.txt | uniq -c | sed -n l
+      3 admin$
+      1 ci$
+      2 root$
+
+$ printf '9 nine\n10 ten\n' | sort
+10 ten
+9 nine
+
+$ printf '9 nine\n10 ten\n' | sort -n
+9 nine
+10 ten
+
+$ sort users.txt | uniq -c | sort -rn
+      3 admin
+      2 root
+      1 ci
+
+$ sort users.txt | uniq -c | sort -rn | head -n 1
+      3 admin
+
+$ sort users.txt | uniq -c | cut -d' ' -f1 | sed -n l
+$
+$
+$
+
+$ sort users.txt | uniq -c | awk '{print $1}'
+3
+1
+2
+
+$ sort users.txt | uniq -c | sed 's/^ *//' | sed -n l
+3 admin$
+1 ci$
+2 root$
+
+$ sort users.txt | uniq -c | sort -rn | awk '{print $2, $1}'
+admin 3
+root 2
+ci 1
+

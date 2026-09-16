@@ -174,13 +174,24 @@ Measured differences — add a row when you find one, and say where you measured
 | `{01..03}` in bash | `01 02 03` | `1 2 3` |
 | `cp -R src/ dest`, `dest` an existing directory | GNU cp: `dest/src` | BSD cp: what is in `src`, as `src/.` gives on both |
 | `.` and `..` in `ls -a`, hidden names and `*`, `dotglob`, `./prog`, `.` and `source` in bash, and every dot in zsh and fish | identical | identical |
+| `sed -i`, in-place editing | GNU sed 4.9: the suffix is optional and attached, so `-i` edits with no backup; `-i ''` reads `s/…/…/` as a file name — `can't read`, status 2 | BSD sed: the argument is required, so `-i ''` is the no-backup form; `-i` alone takes the next word as the script — `invalid command code o`, status 1 |
+| `sed -i.bak`, and `sed … > new && mv new old` | in place, backup kept | the same, both |
+| `\+`, `\|` and `\b` in a `sed` basic expression | GNU extensions: repeat, alternate, word edge | literal `+`, `\|` and `b`; `-E` spells the first two on both machines |
+| `\t` in a `sed` replacement | a TAB | a TAB on macOS 26 — the widely repeated advice that BSD `sed` writes the letter `t` is out of date on this machine |
+| `uniq -c` | GNU coreutils 9.4: the count right-aligned in 7 columns | BSD `uniq`: 4 columns — so no script may `cut -c` it |
+| `xargs` with empty input | GNU findutils: runs the command once with no arguments; `-r` suppresses that | BSD `xargs`: does not run it at all, and documents `-r` as a no-op accepted for GNU compatibility |
+| `xargs` when the command it ran exits non-zero | status 123, which it reserves for that | status 1 |
+| `/usr/bin/awk` | mawk 1.3.4 20240123 | the one-true-awk, `awk version 20200816`. Neither has `gawk`'s `gensub`: `function gensub never defined` against `calling undefined function gensub`, status 2 on both |
+| `awk` field splitting, `NF`, `$NF`, `-F`, patterns, `END`, `-v`, and uninitialised variables | identical | identical |
+| the `sed` substitution, `-E` groups, `-n … p` and `!d` lines of chapter 12; `uniq` without `-c`, `sort -u`, `sort -n`; `xargs -n`, `-I {}` and `-0` | identical | identical |
 
-Measured 2026-09-13; the file-type and dot rows 2026-09-14; the two key-binding rows 2026-09-15.
+Measured 2026-09-13; the file-type and dot rows 2026-09-14; the key-binding rows 2026-09-15; the wrangling rows (`sed`, `uniq -c`, `awk`, `xargs`) 2026-09-15.
 
 **The runner is not the image.** `ubuntu-latest` carries packages and `/etc` files the `linux-lib-ubuntu` image does not, and two of them have changed an answer key — both found by CI, not by Docker:
 
 - **Ubuntu's `command-not-found` package** takes over fish's unknown-command message: `[[ -s hosts.txt ]]: command not found` instead of `fish: Unknown command: '[[ -s hosts.txt ]]'`. A child fish that must show fish's own words gets `-C 'functions -q fish_command_not_found; function fish_command_not_found; __fish_default_command_not_found_handler $argv; end'`.
 - **`/etc/zsh/zshrc` runs `compinit`**, which prints `not interactive and can't open terminal` and `compinit: initialization aborted` in an interactive zsh that reads a pipe. Start zsh with `-f`, or `-d` when `~/.zshrc` must still be read.
+- **`bc` and `jq` are not installed in the image**, and both are on `ubuntu-latest`. An example that uses either would pass CI and fail for anyone reproducing the Linux column in Docker, so a lesson that needs one has to add it to [`tools/linux_image/Dockerfile`](tools/linux_image/Dockerfile) first.
 - **fish saves only what it reads from a terminal.** A command piped into `fish -i` runs but is not saved, so the history lessons type into fish through a pseudo-terminal ([`fish_at_a_terminal.py`](06_History/history_is_a_list_in_memory/examples/fish_at_a_terminal.py)). That is the one place examples depend on timing: the helper sleeps nowhere, but it types every line ahead of fish, reads and discards what fish draws until fish exits, and gives up after 60 seconds. Its fish examples passed repeated runs on both machines; a flake there is the first thing to suspect on a slow runner.
 
 ## Links
