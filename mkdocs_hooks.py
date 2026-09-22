@@ -105,11 +105,13 @@ NAV_ORDER: dict[str, list[str]] = {
         "signals_you_cannot_catch",
     ],
     # The type letter first: what a name is, before what may be done with it;
-    # then what a dot does, in a path, at the start of a name and as a command.
+    # then what a dot does, in a path, at the start of a name and as a command;
+    # then copying one, where the destination's mere existence changes the verb.
     "10_Files": [
         "README.md",
         "the_first_letter_is_the_type",
         "what_a_dot_means_to_the_shell",
+        "a_copy_nests_if_the_destination_exists",
     ],
     # The status the pipe reports, the stream it does not carry, the variables
     # that do not come back, then what each end can tell about the other.

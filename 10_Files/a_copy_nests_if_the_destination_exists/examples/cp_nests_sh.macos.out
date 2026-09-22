@@ -1,0 +1,40 @@
+$ find src | sort
+src
+src/a.txt
+src/b.txt
+
+$ cp -R src dst; find dst | sort
+dst
+dst/a.txt
+dst/b.txt
+
+$ cp -R src dst; find dst | sort
+dst
+dst/a.txt
+dst/b.txt
+dst/src
+dst/src/a.txt
+dst/src/b.txt
+
+$ cp -R src/ slash; find slash | sort
+slash
+slash/a.txt
+slash/b.txt
+
+$ cp -R src/ slash; find slash | sort
+slash
+slash/a.txt
+slash/b.txt
+
+$ cp -RT src tgt; find tgt | sort
+cp: illegal option -- T
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-aclpSsvXx] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-aclpSsvXx] source_file ... target_directory
+find: tgt: No such file or directory
+
+$ cp -RT src tgt; find tgt | sort
+cp: illegal option -- T
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-aclpSsvXx] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-aclpSsvXx] source_file ... target_directory
+find: tgt: No such file or directory
+

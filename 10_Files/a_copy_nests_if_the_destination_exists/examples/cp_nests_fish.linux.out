@@ -1,0 +1,41 @@
+$ find src | sort
+src
+src/a.txt
+src/b.txt
+
+$ cp -R src dst; find dst | sort
+dst
+dst/a.txt
+dst/b.txt
+
+$ cp -R src dst; find dst | sort
+dst
+dst/a.txt
+dst/b.txt
+dst/src
+dst/src/a.txt
+dst/src/b.txt
+
+$ cp -R src/ slash; find slash | sort
+slash
+slash/a.txt
+slash/b.txt
+
+$ cp -R src/ slash; find slash | sort
+slash
+slash/a.txt
+slash/b.txt
+slash/src
+slash/src/a.txt
+slash/src/b.txt
+
+$ cp -RT src tgt; find tgt | sort
+tgt
+tgt/a.txt
+tgt/b.txt
+
+$ cp -RT src tgt; find tgt | sort
+tgt
+tgt/a.txt
+tgt/b.txt
+
